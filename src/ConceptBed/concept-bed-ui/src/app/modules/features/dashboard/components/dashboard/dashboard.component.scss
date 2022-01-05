@@ -1,0 +1,24 @@
+:host {
+  section {
+    margin: 1rem;
+  }
+
+  [matPrefix] {
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  mat-spinner {
+    margin-left: 4px;
+  }
+
+  .mat-table {
+    .mat-header-cell {
+      padding: 1rem;
+    }
+
+    .mat-cell {
+      padding: 1rem;
+    }
+  }
+}

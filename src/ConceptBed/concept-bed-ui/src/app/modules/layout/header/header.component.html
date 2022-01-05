@@ -1,0 +1,17 @@
+<mat-toolbar color="primary" role="banner">
+  <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="layout.toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a mat-button [routerLink]="['']">{{title}}</a>
+  <span class="mat-spacer"></span>
+  <button mat-icon-button aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button mat-icon-button aria-label="Bring up the Angular Help" [routerLink]="['help']">
+    <mat-icon>help</mat-icon>
+  </button>
+  <a mat-icon-button #profile class="app-c-profile-picture" role="button" (click)="isProfileOpen = !isProfileOpen">
+    <img [src]="account | graphPicture: 'my'" title="{{account?.name}}" defaultPicture>
+  </a>
+  <app-profile class="app-c-profile" [hidden]="!isProfileOpen" (escape)="onProfileEscape($event)"></app-profile>
+</mat-toolbar>

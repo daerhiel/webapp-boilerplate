@@ -1,0 +1,11 @@
+<app-header class="mat-elevation-z2"></app-header>
+<mat-sidenav-container (backdropClick)="layout.toggleSidenav(false)">
+  <mat-sidenav #sidenav mode="side" class="mat-elevation-z2" [opened]="layout.isSidenavOpen" (keydown.escape)="layout.toggleSidenav(false)" disableClose>
+    <p>Actions</p>
+    <router-outlet name="sidenav.actions"></router-outlet>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-portal></app-portal>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-footer></app-footer>

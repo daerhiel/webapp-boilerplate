@@ -1,0 +1,85 @@
+// Custom Theming for Angular Material: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+@use "./styles.theme" as styles;
+
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$concept-bed-ui-primary: mat.define-palette(mat.$indigo-palette, 400);
+$concept-bed-ui-accent: mat.define-palette(mat.$teal-palette, A200, A100, A400);
+$concept-bed-ui-warn: mat.define-palette(mat.$red-palette);
+$concept-bed-ui-frames: mat.define-palette(mat.$teal-palette, 600);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$concept-bed-ui-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $concept-bed-ui-primary,
+      accent: $concept-bed-ui-accent,
+      warn: $concept-bed-ui-warn
+    ),
+  )
+);
+
+// Use https://github.dev/angular/components/blob/master/src/material/core/theming/_theming.scss for
+// getting the palette names for application UI elements
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.core-theme($concept-bed-ui-theme);
+@include mat.sidenav-theme($concept-bed-ui-theme);
+@include mat.divider-theme($concept-bed-ui-theme);
+@include mat.toolbar-theme($concept-bed-ui-theme);
+@include mat.progress-bar-theme($concept-bed-ui-theme);
+@include mat.progress-spinner-theme($concept-bed-ui-theme);
+@include mat.form-field-theme($concept-bed-ui-theme);
+@include mat.input-theme($concept-bed-ui-theme);
+@include mat.button-theme($concept-bed-ui-theme);
+@include mat.icon-theme($concept-bed-ui-theme);
+@include mat.card-theme($concept-bed-ui-theme);
+@include mat.table-theme($concept-bed-ui-theme);
+@include mat.list-theme($concept-bed-ui-theme);
+@include mat.paginator-theme($concept-bed-ui-theme);
+@include mat.sort-theme($concept-bed-ui-theme);
+@include mat.tooltip-theme($concept-bed-ui-theme);
+@include mat.select-theme($concept-bed-ui-theme);
+@include styles.theme($concept-bed-ui-theme);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+
+  &.mat-typography {
+    font: 400 14px / 20px "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.app-c-profile-picture img {
+  width: 2rem;
+  height: 2rem;
+  vertical-align: middle;
+  max-width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.app-c-profile {
+  box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+  overflow: hidden;
+  position: absolute;
+  right: 8px;
+  top: 62px;
+  animation: gb__a 0.2s;
+}
