@@ -7,11 +7,11 @@ export const environment = {
   title: 'Concept-Bed Boilerplate',
   appUrl: '/',
   apiUrl: 'https://localhost:44305/api/v1',
-  apiScopes: [],
+  apiScopes: ["api://35bad842-4b42-420c-8b7d-f08c345e80a2/user_impersonation"],
   graphUrl: 'https://graph.microsoft.com/v1.0',
   graphScopes: ['user.read'],
   appInsights: {
-    instrumentationKey: ''
+    instrumentationKey: 'd84f131f-2595-416f-b0af-b51d4769c915'
   }
 };
 
