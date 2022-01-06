@@ -3,8 +3,8 @@ import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 import { catchError, of, Subscription, tap } from 'rxjs';
 
-import { GraphClientService, UserIdentityApi } from 'src/app/modules/backend/backend.module';
-import { BroadcastService } from 'src/app/modules/services/services.module';
+import { GraphClientService, UserIdentityApi } from '@modules/backend/backend.module';
+import { BroadcastService } from '@modules/services/services.module';
 
 @Component({
   selector: 'app-profile',

@@ -9,7 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 
-import { ServicesModule } from 'src/app/modules/services/services.module';
+import { ServicesModule } from '@modules/services/services.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidenavActionsComponent } from './components/sidenav-actions/sidenav-actions.component';

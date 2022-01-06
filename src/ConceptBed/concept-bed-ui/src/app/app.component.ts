@@ -3,9 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
-import { ContentStateService } from './modules/backend/backend.module';
-import { LayoutService } from './modules/layout/layout.service';
+import { environment } from '@environments/environment';
+import { ContentStateService } from '@modules/backend/backend.module';
+import { LayoutService } from '@modules/layout/layout.service';
 
 @Component({
   selector: 'app-root',

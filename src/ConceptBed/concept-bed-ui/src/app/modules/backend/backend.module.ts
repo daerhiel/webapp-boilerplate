@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { ServicesModule } from '../services/services.module';
+import { ServicesModule } from '@modules/services/services.module';
 import { GraphPicturePipe } from './pipes/graph-picture.pipe';
 import { DefaultPictureDirective } from './directives/default-picture.directive';
 

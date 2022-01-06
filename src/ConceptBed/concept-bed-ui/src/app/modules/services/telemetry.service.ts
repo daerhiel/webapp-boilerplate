@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ApplicationInsights, DistributedTracingModes, IEventTelemetry, IExceptionTelemetry, IMetricTelemetry, IPageViewTelemetry, ITraceTelemetry } from '@microsoft/applicationinsights-web';
 import { Subscription } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'

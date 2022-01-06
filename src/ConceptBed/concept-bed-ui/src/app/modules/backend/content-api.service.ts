@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
 import { DeepPartial } from './structure/deep-partial';
 import { ODataQuery } from './structure/odata-query';
 import { ODataResultSet } from './structure/odata-result-set';

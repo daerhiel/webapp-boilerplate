@@ -7,10 +7,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 
-import { configuration, guards, interceptors } from 'src/environments/authentication';
-import { ErrorHandlerService } from './modules/services/services.module';
-import { BackendModule } from './modules/backend/backend.module';
-import { LayoutModule } from './modules/layout/layout.module';
+import { configuration, guards, interceptors } from '@environments/authentication';
+import { ErrorHandlerService } from '@modules/services/services.module';
+import { BackendModule } from '@modules/backend/backend.module';
+import { LayoutModule } from '@modules/layout/layout.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RoutingStrategyService } from './extensions/routing-strategy.service';
 import { AppComponent } from './app.component';

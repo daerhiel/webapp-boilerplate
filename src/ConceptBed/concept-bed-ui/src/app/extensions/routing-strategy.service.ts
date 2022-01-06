@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { DashboardComponent } from '../modules/features/dashboard/dashboard.module';
+import { DashboardComponent } from '@modules/features/dashboard/dashboard.module';
 
 /**
  * The routing strategy to reuse the master/detail components implemented per guide:

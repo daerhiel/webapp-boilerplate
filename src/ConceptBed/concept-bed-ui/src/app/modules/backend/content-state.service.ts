@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { catchError, map, Observable, of, Subscription } from 'rxjs';
 import { ContentApiService } from './content-api.service';
 
-import { BroadcastService } from 'src/app/modules/services/broadcast.service';
+import { BroadcastService } from '@modules/services/broadcast.service';
 import { convert, create, ODataResultSet } from './structure/odata-result-set';
 import { ODataQuery } from './structure/odata-query';
 import { WeatherForecast } from './models/weather-forecast';

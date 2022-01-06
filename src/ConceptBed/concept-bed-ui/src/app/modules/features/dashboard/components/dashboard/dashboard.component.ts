@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
 
-import { ContentStateService, ODataSource, WeatherForecast } from 'src/app/modules/backend/backend.module';
+import { ContentStateService, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
 @Component({
