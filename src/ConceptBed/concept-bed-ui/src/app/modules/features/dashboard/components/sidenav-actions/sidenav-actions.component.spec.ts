@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatListModule } from '@angular/material/list';
 
 import { SidenavActionsComponent } from './sidenav-actions.component';
 
@@ -8,9 +9,13 @@ describe('SidenavActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidenavActionsComponent ]
-    })
-    .compileComponents();
+      imports: [
+        MatListModule
+      ],
+      declarations: [
+        SidenavActionsComponent
+      ]
+    }).compileComponents();
   });
 
   beforeEach(() => {

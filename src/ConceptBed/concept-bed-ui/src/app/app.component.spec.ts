@@ -1,12 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalModule } from '@azure/msal-angular';
+
+import { configuration, guards, interceptors } from '@environments/authentication';
+import { LayoutModule } from './modules/layout/layout.module';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        BrowserAnimationsModule,
+        HttpClientModule,
+        RouterTestingModule,
+        MatSidenavModule,
+        LayoutModule,
+        MsalModule.forRoot(
+          new PublicClientApplication(configuration),
+          guards, interceptors)
       ],
       declarations: [
         AppComponent
@@ -20,16 +35,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'concept-bed-ui'`, () => {
+  it(`should have as title 'Concept-Bed Boilerplate'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('concept-bed-ui');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('concept-bed-ui app is running!');
+    expect(app.title).toEqual('Concept-Bed Boilerplate');
   });
 });
