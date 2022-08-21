@@ -15,30 +15,30 @@ import { LayoutService } from '../layout.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public isProfileOpen: boolean = false;
+  isProfileOpen: boolean = false;
 
-  public get title(): string { return this.title$.getTitle(); }
-  public get account(): AccountInfo | null {
+  get title(): string { return this.title$.getTitle(); }
+  get account(): AccountInfo | null {
     const accounts = this.auth.instance.getAllAccounts();
     return accounts.length > 0 ? accounts[0] : null;
   }
 
   @ViewChild('profile', { static: true })
-  public profile?: MatAnchor;
+  profile?: MatAnchor;
 
-  public constructor(private auth: MsalService, private title$: Title, public layout: LayoutService) {
+  constructor(private auth: MsalService, private title$: Title, public layout: LayoutService) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public onProfileEscape(event: Event) {
+  onProfileEscape(event: Event) {
     if (this.profile && !this.profile._elementRef.nativeElement.contains(event.target as Node)) {
       this.isProfileOpen = false;
     }

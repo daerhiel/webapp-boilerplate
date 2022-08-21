@@ -15,21 +15,21 @@ export class RoutingStrategyService extends RouteReuseStrategy implements OnDest
   private readonly subscriptions: Subscription[] = [];
   private readonly routes: Map<string | undefined, DetachedRouteHandle | null> = new Map();
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
+  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
     this.routes.set(route.routeConfig?.path, handle);
   }
 
-  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     return this.routes.get(route.routeConfig?.path) ?? null;
   }
 
-  public shouldAttach(route: ActivatedRouteSnapshot): boolean {
+  shouldAttach(route: ActivatedRouteSnapshot): boolean {
     switch (route.component && (route.component as any).name) {
       // case DashboardComponent.name:
       //   return true;
@@ -38,11 +38,11 @@ export class RoutingStrategyService extends RouteReuseStrategy implements OnDest
     }
   }
 
-  public shouldDetach(route: ActivatedRouteSnapshot): boolean {
+  shouldDetach(route: ActivatedRouteSnapshot): boolean {
     return !!route.routeConfig && !!this.routes.get(route.routeConfig.path);
   }
 
-  public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+  shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
     return future.routeConfig === curr.routeConfig;
   }
 }

@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs';
 export class DashboardService implements OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public constructor() {
+  constructor() {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

@@ -28,14 +28,14 @@ export class ODataSource<T> implements DataSource<T> {
   private sort$: MatSort | undefined;
   private $sort: Subscription | undefined;
 
-  public readonly loading: Observable<boolean> = this.loading$.asObservable();
-  public readonly length: Observable<number> = this.length$.asObservable();
+  readonly loading: Observable<boolean> = this.loading$.asObservable();
+  readonly length: Observable<number> = this.length$.asObservable();
 
-  public get filter(): string | undefined { return this.filter$.value; }
-  public set filter(value: string | undefined) { this.filter$.next(value); }
+  get filter(): string | undefined { return this.filter$.value; }
+  set filter(value: string | undefined) { this.filter$.next(value); }
 
-  public get paginator(): MatPaginator | undefined { return this.paginator$; }
-  public set paginator(value: MatPaginator | undefined) {
+  get paginator(): MatPaginator | undefined { return this.paginator$; }
+  set paginator(value: MatPaginator | undefined) {
     if (this.paginator$ !== value) {
       this.$paginator?.unsubscribe(), this.$paginator = undefined;
       this.paginator$ = value;
@@ -46,8 +46,8 @@ export class ODataSource<T> implements DataSource<T> {
     }
   }
 
-  public get sort(): MatSort | undefined { return this.sort$; }
-  public set sort(value: MatSort | undefined) {
+  get sort(): MatSort | undefined { return this.sort$; }
+  set sort(value: MatSort | undefined) {
     if (this.sort$ !== value) {
       this.$sort?.unsubscribe(), this.$sort = undefined;
       this.sort$ = value;
@@ -58,7 +58,7 @@ export class ODataSource<T> implements DataSource<T> {
     }
   }
 
-  public constructor(private readonly endpoint: ODataEndpointFn<T>, private readonly factory?: ODataFilterBuilderFn) {
+  constructor(private readonly endpoint: ODataEndpointFn<T>, private readonly factory?: ODataFilterBuilderFn) {
     this.subscriptions.push(this.requests.pipe(switchMap(query => {
       this.loading$.next(true);
       return this.endpoint(query).pipe(
@@ -74,13 +74,13 @@ export class ODataSource<T> implements DataSource<T> {
     })).subscribe());
   }
 
-  public complete() {
+  complete() {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(collectionViewer: CollectionViewer): Observable<T[]> {
     if (!!this.paginator$) {
       this.current.page = { pageIndex: this.paginator$.pageIndex, pageSize: this.paginator$.pageSize, length: this.paginator$.length };
     }
@@ -91,10 +91,10 @@ export class ODataSource<T> implements DataSource<T> {
     return this.entries$.asObservable();
   }
 
-  public disconnect(collectionViewer: CollectionViewer): void {
+  disconnect(collectionViewer: CollectionViewer): void {
   }
 
-  public load(filter: string | undefined, page: PageEvent | null, sort: Sort | null): void {
+  load(filter: string | undefined, page: PageEvent | null, sort: Sort | null): void {
     const query: ODataQuery = {};
     if (!!this.factory) {
       const $filter = this.factory(filter);

@@ -11,13 +11,13 @@ import { DashboardService } from '../../dashboard.service';
 export class SidenavActionsComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public constructor(public dashboard: DashboardService) {
+  constructor(private dashboard: DashboardService) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

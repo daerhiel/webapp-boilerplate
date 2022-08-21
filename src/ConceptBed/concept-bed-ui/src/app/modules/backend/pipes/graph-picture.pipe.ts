@@ -10,10 +10,10 @@ import { GraphClientService } from '../graph-client.service';
 export class GraphPicturePipe implements PipeTransform {
   private static cache: { [id: string]: Blob | string | SafeValue } = {};
 
-  public constructor(private graph: GraphClientService, private sanitazer: DomSanitizer) {
+  constructor(private graph: GraphClientService, private sanitazer: DomSanitizer) {
   }
 
-  public transform(account: AccountInfo | null, source?: 'my'): any {
+  transform(account: AccountInfo | null, source?: 'my'): any {
     const id = account?.username ?? '#unknown';
     if (!!id && !GraphPicturePipe.cache.hasOwnProperty(id)) {
       GraphPicturePipe.cache[id] = '';

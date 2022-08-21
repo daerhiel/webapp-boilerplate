@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs';
 export class PortalComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public isRouteLoading: boolean = false;
+  isRouteLoading: boolean = false;
 
-  public constructor(private router: Router) {
+  constructor(private router: Router) {
     this.subscriptions.push(this.router.events.subscribe(event => {
       if (event instanceof RouteConfigLoadStart) {
         this.isRouteLoading = true;
@@ -22,10 +22,10 @@ export class PortalComponent implements OnInit, OnDestroy {
     }))
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

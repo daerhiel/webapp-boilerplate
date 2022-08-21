@@ -16,7 +16,7 @@ export class DataUtilities {
    * Checks if the object is of a primitive type and deep comparison should be used.
    * @param value The object value to check for compexity.
    */
-  public static isComplex(value: any): value is object {
+  static isComplex(value: any): value is object {
     return !!value && !DataUtilities.types.includes(typeof value);
   }
 
@@ -25,7 +25,7 @@ export class DataUtilities {
    * @param value The date and time string representation to convert.
    * @param fallback The date and time value converted if valid; otherwise, undefined.
    */
-  public static of(value: string | number | Date | DeepPartial<Date> | undefined, fallback?: Date): Date {
+  static of(value: string | number | Date | DeepPartial<Date> | undefined, fallback?: Date): Date {
     if (typeof value === 'number' || typeof value === 'string') {
       return new Date(value);
     } else if (!!value) {
@@ -40,7 +40,7 @@ export class DataUtilities {
    * @param value The requested typeless representation to convert.
    * @param type The requested type to validate the value against.
    */
-  public static ofType<T>(value: T, type: Constructor<T>): T {
+  static ofType<T>(value: T, type: Constructor<T>): T {
     return value instanceof type ? value : new type(value);
   }
 }

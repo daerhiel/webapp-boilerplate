@@ -1,12 +1,12 @@
 import { MessageType } from './message-type.enum';
 
 export class Message {
-  public type: MessageType;
-  public text: string;
-  public canClose: boolean;
-  public timeout: number;
+  type: MessageType;
+  text: string;
+  canClose: boolean;
+  timeout: number;
 
-  public constructor(type: MessageType, message: string, timeout: number, canClose: boolean) {
+  constructor(type: MessageType, message: string, timeout: number, canClose: boolean) {
     this.type = type;
     this.text = message;
     this.timeout = timeout;

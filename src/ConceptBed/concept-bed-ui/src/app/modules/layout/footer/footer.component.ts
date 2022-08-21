@@ -9,13 +9,13 @@ import { Subscription } from 'rxjs';
 export class FooterComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public constructor() {
+  constructor() {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

@@ -14,21 +14,21 @@ import { DashboardService } from '../../dashboard.service';
 export class DashboardComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public displayedColumns: string[] = ['id', 'date', 'summary', 'temperature', 'status'];
+  displayedColumns: string[] = ['id', 'date', 'summary', 'temperature', 'status'];
 
   @ViewChild('dataPages', { static: true }) private dataPages?: MatPaginator;
   @ViewChild(MatSort, { static: true }) private dataSort?: MatSort;
-  public data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x), x => WeatherForecast.buildQuery(x));
+  data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x), x => WeatherForecast.buildQuery(x));
 
-  public constructor(private state: ContentStateService, public dashboard: DashboardService) {
+  constructor(private state: ContentStateService, private dashboard: DashboardService) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.data.paginator = this.dataPages;
     this.data.sort = this.dataSort;
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

@@ -11,7 +11,7 @@ export class TelemetryService implements OnDestroy {
   private readonly subscriptions: Subscription[] = [];
   private appInsights: ApplicationInsights;
 
-  public constructor() {
+  constructor() {
     this.appInsights = new ApplicationInsights({
       config: {
         instrumentationKey: environment.appInsights.instrumentationKey,
@@ -28,29 +28,29 @@ export class TelemetryService implements OnDestroy {
     this.appInsights.loadAppInsights();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public logPageView(telemetry: IPageViewTelemetry): void {
+  logPageView(telemetry: IPageViewTelemetry): void {
     this.appInsights.trackPageView(telemetry);
   }
 
-  public logEvent(telemetry: IEventTelemetry, properties?: { [key: string]: any }): void {
+  logEvent(telemetry: IEventTelemetry, properties?: { [key: string]: any }): void {
     this.appInsights.trackEvent(telemetry, properties);
   }
 
-  public logMetric(telemetry: IMetricTelemetry, properties?: { [key: string]: any }): void {
+  logMetric(telemetry: IMetricTelemetry, properties?: { [key: string]: any }): void {
     this.appInsights.trackMetric(telemetry, properties);
   }
 
-  public logException(telemetry: IExceptionTelemetry): void {
+  logException(telemetry: IExceptionTelemetry): void {
     this.appInsights.trackException(telemetry);
   }
 
-  public logTrace(telemetry: ITraceTelemetry, properties?: { [key: string]: any }): void {
+  logTrace(telemetry: ITraceTelemetry, properties?: { [key: string]: any }): void {
     this.appInsights.trackTrace(telemetry, properties);
   }
 }

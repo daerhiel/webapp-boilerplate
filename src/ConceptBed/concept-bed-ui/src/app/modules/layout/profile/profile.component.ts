@@ -14,15 +14,15 @@ import { BroadcastService } from '@modules/services/services.module';
 export class ProfileComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public profile: UserIdentityApi | undefined;
-  public isQuerying: boolean = false;
+  profile: UserIdentityApi | undefined;
+  isQuerying: boolean = false;
 
-  public get account(): AccountInfo | null {
+  get account(): AccountInfo | null {
     const accounts = this.auth.instance.getAllAccounts();
     return accounts.length > 0 ? accounts[0] : null;
   }
 
-  public constructor(private auth: MsalService, private graph: GraphClientService, private broadcast: BroadcastService) {
+  constructor(private auth: MsalService, private graph: GraphClientService, private broadcast: BroadcastService) {
     this.isQuerying = true;
     this.subscriptions.push(this.graph.getMe().pipe(
       tap(() => this.isQuerying = false),
@@ -30,16 +30,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
     ).subscribe(profile => this.profile = profile));
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public onLogout(): void {
+  onLogout(): void {
     this.auth.logoutRedirect({ account: this.account });
   }
 }

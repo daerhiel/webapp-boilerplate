@@ -13,24 +13,24 @@ export class GraphClientService implements OnDestroy {
   private readonly subscriptions: Subscription[] = [];
   private readonly apiUrl: string = environment.graphUrl;
 
-  public constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }
   }
 
-  public getMe() : Observable<UserIdentityApi>{
+  getMe() : Observable<UserIdentityApi>{
     return this.http.get<UserIdentityApi>(UrlUtilities.buildUrl(this.apiUrl, 'me'));
   }
 
-  public getMyPhoto(): Observable<Blob> {
+  getMyPhoto(): Observable<Blob> {
     return this.http.get(UrlUtilities.buildUrl(this.apiUrl, 'me', ['photo', '$value']), { responseType: 'blob' });
   }
 
-  public getPhoto(id: string): Observable<Blob> {
+  getPhoto(id: string): Observable<Blob> {
     return this.http.get(UrlUtilities.buildUrl(this.apiUrl, 'users', [id, 'photo', '$value']), { responseType: 'blob' });
   }
 }

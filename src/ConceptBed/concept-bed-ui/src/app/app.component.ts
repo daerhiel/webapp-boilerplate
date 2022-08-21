@@ -15,18 +15,18 @@ import { LayoutService } from '@modules/layout/layout.service';
 export class AppComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public get title(): string { return this.title$.getTitle(); }
+  get title(): string { return this.title$.getTitle(); }
 
   @ViewChild('sidenav') sidenav?: MatSidenav;
 
-  public constructor(private state: ContentStateService, private title$: Title, public layout: LayoutService) {
+  constructor(private state: ContentStateService, private title$: Title, public layout: LayoutService) {
     this.title$.setTitle(environment.title);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

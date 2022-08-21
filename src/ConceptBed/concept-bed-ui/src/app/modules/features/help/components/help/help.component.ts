@@ -10,15 +10,15 @@ import { Subscription } from 'rxjs';
 export class HelpComponent implements OnInit, OnDestroy {
   private readonly subscriptions: Subscription[] = [];
 
-  public get title(): string { return this.title$.getTitle(); }
+  get title(): string { return this.title$.getTitle(); }
 
-  public constructor(private title$: Title) {
+  constructor(private title$: Title) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     while (this.subscriptions.length > 0) {
       this.subscriptions.shift()?.unsubscribe();
     }

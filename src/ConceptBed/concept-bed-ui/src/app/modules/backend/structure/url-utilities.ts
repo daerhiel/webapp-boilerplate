@@ -3,7 +3,7 @@ interface Parameters {
 }
 
 export class UrlUtilities {
-  public static buildUrl(baseUrl: string, controller: string, actions?: string[], params: Parameters = {}): string {
+  static buildUrl(baseUrl: string, controller: string, actions?: string[], params: Parameters = {}): string {
     const parameters = new URLSearchParams();
     for (const name in params ?? {}) {
       var param = params[name];
