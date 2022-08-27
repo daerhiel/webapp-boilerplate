@@ -4,6 +4,7 @@ import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort, Sort } from "@angular/material/sort";
 import { BehaviorSubject, debounceTime, distinctUntilChanged, finalize, Observable, skip, Subject, Subscription, switchMap, tap } from "rxjs";
 
+import { Subscriptions } from "@modules/services/services.module";
 import { ODataQuery } from "./odata-query";
 import { ODataResultSet } from "./odata-result-set";
 
@@ -16,7 +17,7 @@ export interface ODataFilterBuilderFn {
 }
 
 export class ODataSource<T> implements DataSource<T> {
-  private readonly subscriptions: Subscription[] = [];
+  private readonly subscriptions: Subscriptions = new Subscriptions();
   private readonly entries$: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
   private readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true); // TODO: Fugure out change detection issue (change to false).
   private readonly length$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -37,7 +38,7 @@ export class ODataSource<T> implements DataSource<T> {
   get paginator(): MatPaginator | undefined { return this.paginator$; }
   set paginator(value: MatPaginator | undefined) {
     if (this.paginator$ !== value) {
-      this.$paginator?.unsubscribe(), this.$paginator = undefined;
+      this.$paginator?.unsubscribe();
       this.paginator$ = value;
       this.$paginator = this.paginator$?.page.pipe(tap(page => {
         this.current.page = page;
@@ -49,7 +50,7 @@ export class ODataSource<T> implements DataSource<T> {
   get sort(): MatSort | undefined { return this.sort$; }
   set sort(value: MatSort | undefined) {
     if (this.sort$ !== value) {
-      this.$sort?.unsubscribe(), this.$sort = undefined;
+      this.$sort?.unsubscribe();
       this.sort$ = value;
       this.$sort = this.sort$?.sortChange.pipe(tap(sort => {
         this.current.sort = sort;
@@ -59,7 +60,7 @@ export class ODataSource<T> implements DataSource<T> {
   }
 
   constructor(private readonly endpoint: ODataEndpointFn<T>, private readonly factory?: ODataFilterBuilderFn) {
-    this.subscriptions.push(this.requests.pipe(switchMap(query => {
+    this.subscriptions.subscribe(this.requests.pipe(switchMap(query => {
       this.loading$.next(true);
       return this.endpoint(query).pipe(
         tap(x => {
@@ -68,16 +69,14 @@ export class ODataSource<T> implements DataSource<T> {
         }),
         finalize(() => this.loading$.next(false))
       );
-    })).subscribe());
-    this.subscriptions.push(this.filter$.pipe(skip(1), distinctUntilChanged(), debounceTime(300), tap(filter => {
+    })));
+    this.subscriptions.subscribe(this.filter$.pipe(skip(1), distinctUntilChanged(), debounceTime(300), tap(filter => {
       this.load(filter, this.current.page, this.current.sort)
-    })).subscribe());
+    })));
   }
 
   complete() {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   connect(collectionViewer: CollectionViewer): Observable<T[]> {

@@ -41,6 +41,7 @@ $concept-bed-ui-theme: mat.define-dark-theme(
 @include mat.button-theme($concept-bed-ui-theme);
 @include mat.icon-theme($concept-bed-ui-theme);
 @include mat.card-theme($concept-bed-ui-theme);
+@include mat.chips-theme($concept-bed-ui-theme);
 @include mat.table-theme($concept-bed-ui-theme);
 @include mat.list-theme($concept-bed-ui-theme);
 @include mat.paginator-theme($concept-bed-ui-theme);

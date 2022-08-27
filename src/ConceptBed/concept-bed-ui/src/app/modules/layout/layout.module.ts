@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { ServicesModule } from '@modules/services/services.module';
 import { BackendModule } from '@modules/backend/backend.module';
@@ -32,7 +33,8 @@ import { ProfileComponent } from './profile/profile.component';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatChipsModule
   ],
   exports: [
     PortalComponent,

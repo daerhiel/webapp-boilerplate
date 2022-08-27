@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 import { DashboardService } from '../../dashboard.service';
 
@@ -8,18 +7,10 @@ import { DashboardService } from '../../dashboard.service';
   templateUrl: './sidenav-actions.component.html',
   styleUrls: ['./sidenav-actions.component.scss']
 })
-export class SidenavActionsComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
+export class SidenavActionsComponent implements OnInit {
   constructor(private dashboard: DashboardService) {
   }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 }

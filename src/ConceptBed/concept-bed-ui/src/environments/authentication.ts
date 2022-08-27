@@ -9,12 +9,20 @@ function logEvent(logLevel: LogLevel, message: string, piiEnabled: boolean) {
   }
 }
 
+function getBaseUrl(): string {
+  let url = document.getElementsByTagName('base')[0].href;
+  if (url && url.slice(-1) === '/') {
+    url = url.slice(0, -1);
+  }
+  return url;
+}
+
 export const configuration: Configuration = {
   auth: {
     authority: 'https://login.microsoftonline.com/e0225ff9-4f8e-4edf-9abf-89c4dc7fb590',
-    clientId: '427f7349-94c0-40ed-aeb1-fe10e437059b',
-    redirectUri: environment.appUrl,
-    postLogoutRedirectUri: environment.appUrl
+    clientId: 'a5355185-a5e1-44f6-9ae1-4106b39bd3c8',
+    redirectUri: getBaseUrl(),
+    postLogoutRedirectUri: getBaseUrl()
   },
   cache: {
     cacheLocation: 'localStorage',

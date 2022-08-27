@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { SeverityLevel } from '@microsoft/applicationinsights-web';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { TelemetryService } from './telemetry.service';
 import { Message } from './models/message';
@@ -11,7 +11,6 @@ import { MessageType } from './models/message-type.enum';
   providedIn: 'root'
 })
 export class BroadcastService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
   private messages$ = new Subject<Message>();
 
   get messages(): Observable<Message> { return this.messages$.asObservable(); }
@@ -20,9 +19,6 @@ export class BroadcastService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
     this.messages$.complete();
   }
 

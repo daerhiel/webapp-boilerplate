@@ -1,23 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
 })
-export class FooterComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
+export class FooterComponent implements OnInit {
   constructor() {
   }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 }

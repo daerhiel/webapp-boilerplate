@@ -1,1 +1,1 @@
-# WebApp Boilerplate with ASP.NET 6 / Angular 13
+# WebApp Boilerplate with ASP.NET 6 / Angular 14

@@ -1,5 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { catchError, map, Observable, of, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { catchError, map, Observable, of } from 'rxjs';
 import { ContentApiService } from './content-api.service';
 
 import { BroadcastService } from '@modules/services/broadcast.service';
@@ -10,18 +10,10 @@ import { WeatherForecast } from './models/weather-forecast';
 @Injectable({
   providedIn: 'root'
 })
-export class ContentStateService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
+export class ContentStateService {
   isWeatherBusy: boolean = false;
 
   constructor(private api: ContentApiService, private broadcast: BroadcastService) {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 
   getWeather(id: string): Observable<WeatherForecast> {

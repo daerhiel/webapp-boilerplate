@@ -1,11 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LayoutService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
   private readonly sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private readonly isSidenavOpenName: string = 'layout.sidenav';
 
@@ -19,9 +18,6 @@ export class LayoutService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
     this.sidenavOpened$.complete();
   }
 

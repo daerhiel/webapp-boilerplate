@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import { DeepPartial } from './structure/deep-partial';
@@ -12,17 +12,10 @@ import { WeatherForecastApi } from './models/weather-forecast-api';
 @Injectable({
   providedIn: 'root'
 })
-export class ContentApiService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+export class ContentApiService {
   private readonly apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 
   getWeather(id: string): Observable<DeepPartial<WeatherForecastApi>> {

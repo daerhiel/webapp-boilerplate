@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { TitleResolverService } from '@app/extensions/title-resolver.service';
 import { HelpComponent } from './components/help/help.component';
 
 const routes: Routes = [
-  { path: '', component: HelpComponent }
+  { path: '', title: TitleResolverService, component: HelpComponent }
 ];
 
 @NgModule({

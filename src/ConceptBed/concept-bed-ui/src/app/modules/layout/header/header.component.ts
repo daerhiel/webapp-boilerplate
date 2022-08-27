@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MatAnchor } from '@angular/material/button';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { Subscription } from 'rxjs';
 
+import { HistoryService } from '@modules/services/history.service';
+import { NavigationTarget } from '@modules/services/services.module';
 import { LayoutService } from '../layout.service';
 
 @Component({
@@ -12,9 +13,7 @@ import { LayoutService } from '../layout.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
+export class HeaderComponent implements OnInit {
   isProfileOpen: boolean = false;
 
   get title(): string { return this.title$.getTitle(); }
@@ -23,19 +22,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return accounts.length > 0 ? accounts[0] : null;
   }
 
+  get segments(): NavigationTarget[] { return this.history.getContainedHistory(); }
+
   @ViewChild('profile', { static: true })
   profile?: MatAnchor;
 
-  constructor(private auth: MsalService, private title$: Title, public layout: LayoutService) {
+  constructor(private auth: MsalService, private title$: Title, private history: HistoryService, public layout: LayoutService) {
   }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 
   onProfileEscape(event: Event) {

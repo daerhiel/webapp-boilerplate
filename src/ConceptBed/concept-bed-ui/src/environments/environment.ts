@@ -5,9 +5,8 @@
 export const environment = {
   production: false,
   title: 'Concept-Bed Boilerplate',
-  appUrl: '/',
   apiUrl: 'https://localhost:44305/api/v1',
-  apiScopes: ["api://35bad842-4b42-420c-8b7d-f08c345e80a2/user_impersonation"],
+  apiScopes: ["api://bf2f676b-dee2-41cf-b2f6-517045f608b8/user_impersonation"],
   graphUrl: 'https://graph.microsoft.com/v1.0',
   graphScopes: ['user.read'],
   appInsights: {

@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { tap } from 'rxjs';
+
+import { Subscriptions } from '@modules/services/services.module';
+
 
 @Component({
   selector: 'app-portal',
@@ -8,26 +11,24 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./portal.component.scss']
 })
 export class PortalComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+  private readonly subscriptions: Subscriptions = new Subscriptions();
 
   isRouteLoading: boolean = false;
 
   constructor(private router: Router) {
-    this.subscriptions.push(this.router.events.subscribe(event => {
+    this.subscriptions.subscribe(this.router.events.pipe(tap(event => {
       if (event instanceof RouteConfigLoadStart) {
         this.isRouteLoading = true;
       } else if (event instanceof RouteConfigLoadEnd) {
         this.isRouteLoading = false;
       }
-    }))
+    })));
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 }

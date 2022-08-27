@@ -1,18 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
+export class DashboardService {
   constructor() {
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 }

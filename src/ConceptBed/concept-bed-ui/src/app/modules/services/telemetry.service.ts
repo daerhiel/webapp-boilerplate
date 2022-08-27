@@ -1,14 +1,12 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ApplicationInsights, DistributedTracingModes, IEventTelemetry, IExceptionTelemetry, IMetricTelemetry, IPageViewTelemetry, ITraceTelemetry } from '@microsoft/applicationinsights-web';
-import { Subscription } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TelemetryService implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+export class TelemetryService {
   private appInsights: ApplicationInsights;
 
   constructor() {
@@ -26,12 +24,6 @@ export class TelemetryService implements OnDestroy {
       }
     });
     this.appInsights.loadAppInsights();
-  }
-
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
   }
 
   logPageView(telemetry: IPageViewTelemetry): void {

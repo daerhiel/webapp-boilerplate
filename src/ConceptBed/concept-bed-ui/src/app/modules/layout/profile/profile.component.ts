@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { catchError, of, Subscription, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 
 import { GraphClientService, UserIdentityApi } from '@modules/backend/backend.module';
-import { BroadcastService } from '@modules/services/services.module';
+import { BroadcastService, Subscriptions } from '@modules/services/services.module';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +12,7 @@ import { BroadcastService } from '@modules/services/services.module';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+  private readonly subscriptions: Subscriptions = new Subscriptions;
 
   profile: UserIdentityApi | undefined;
   isQuerying: boolean = false;
@@ -24,19 +24,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(private auth: MsalService, private graph: GraphClientService, private broadcast: BroadcastService) {
     this.isQuerying = true;
-    this.subscriptions.push(this.graph.getMe().pipe(
-      tap(() => this.isQuerying = false),
-      catchError(e => (this.broadcast.excepion(e), of(undefined)))
-    ).subscribe(profile => this.profile = profile));
+    this.subscriptions.subscribe(this.graph.getMe().pipe(
+      tap(profile => this.profile = profile),
+      catchError(e => (this.broadcast.excepion(e), of(undefined))),
+      tap(() => this.isQuerying = false)
+    ));
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   onLogout(): void {

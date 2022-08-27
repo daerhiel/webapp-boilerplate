@@ -1,8 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
-import { Subscription } from 'rxjs';
-
-import { DashboardComponent } from '@modules/features/dashboard/dashboard.module';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, Route, RouteReuseStrategy } from '@angular/router';
+import { isPersistent } from '@app/modules/services/models/persistent';
 
 /**
  * The routing strategy to reuse the master/detail components implemented per guide:
@@ -11,38 +9,41 @@ import { DashboardComponent } from '@modules/features/dashboard/dashboard.module
 @Injectable({
   providedIn: 'root'
 })
-export class RoutingStrategyService extends RouteReuseStrategy implements OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-  private readonly routes: Map<string | undefined, DetachedRouteHandle | null> = new Map();
+export class RoutingStrategyService extends RouteReuseStrategy {
+  private readonly routes: Map<Route, DetachedRouteHandle> = new Map();
 
-  ngOnDestroy(): void {
-    while (this.subscriptions.length > 0) {
-      this.subscriptions.shift()?.unsubscribe();
-    }
-  }
-
-  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
-    this.routes.set(route.routeConfig?.path, handle);
-  }
-
-  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    return this.routes.get(route.routeConfig?.path) ?? null;
-  }
-
+  /** Determines if this route (and its subtree) should be reattached. */
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    switch (route.component && (route.component as any).name) {
-      // case DashboardComponent.name:
-      //   return true;
-      default:
-        return false;
-    }
+    return !!route.routeConfig && this.routes.has(route.routeConfig);
   }
 
+  /** Determines if this route (and its subtree) should be detached to be reused later. */
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return !!route.routeConfig && !!this.routes.get(route.routeConfig.path);
+    return !!route.routeConfig && isPersistent(route.component);
   }
 
+  /** Determines if a route should be reused. */
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
     return future.routeConfig === curr.routeConfig;
+  }
+
+  /** Stores the detached route. Storing a `null` value should erase the previously stored value. */
+  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
+    if (route.routeConfig) {
+      if (handle) {
+        this.routes.set(route.routeConfig, handle);
+      } else {
+        this.routes.delete(route.routeConfig);
+      }
+    }
+  }
+
+  /** Retrieves the previously stored route. */
+  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    if (route.routeConfig) {
+      return this.routes.get(route.routeConfig) ?? null;
+    } else {
+      return null;
+    }
   }
 }
