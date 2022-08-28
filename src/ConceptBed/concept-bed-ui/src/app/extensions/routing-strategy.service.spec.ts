@@ -1,7 +1,7 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component, Type } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouteReuseStrategy, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouteReuseStrategy, RouterOutlet, Routes } from '@angular/router';
 
 import { PersistanceMode, Persistent } from '@modules/services/models/persistent';
 import { RoutingStrategyService } from './routing-strategy.service';
@@ -39,6 +39,11 @@ function getSnapshot(router: Router, component: Type<any> | null): ActivatedRout
     snapshot = snapshot.children[0];
   }
   return snapshot;
+}
+
+function getActivatedInstance<T>(router: Router): T {
+  const outlet = (router as any).rootContexts.getContext('primary').outlet;
+  return outlet.activated.instance as T;
 }
 
 const routes: Routes = [
@@ -90,6 +95,7 @@ describe('RoutingStrategyService', () => {
   it('should not persist parent component from own route', inject([Router], async (router: Router) => {
     router.navigate(['parent']);
     await fixture.whenStable();
+    const instance = getActivatedInstance<ParentComponent>(router);
     const snapshot = getSnapshot(router, ParentComponent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
@@ -99,9 +105,14 @@ describe('RoutingStrategyService', () => {
   }));
 
   it('should persist parent component from child route', inject([Router], async (router: Router) => {
+    router.navigate(['parent']);
+    await fixture.whenStable();
+    const instance = getActivatedInstance<ParentComponent>(router);
+    const snapshot = getSnapshot(router, ParentComponent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
     router.navigate(['parent', 'default']);
     await fixture.whenStable();
-    const snapshot = getSnapshot(router, ParentComponent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
     router.navigate(['parent']);
