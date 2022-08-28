@@ -1,7 +1,7 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Component, Type } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouteReuseStrategy, RouterOutlet, Routes } from '@angular/router';
+import { Component, OnDestroy, OnInit, Type } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouteReuseStrategy, Routes } from '@angular/router';
 
 import { PersistanceMode, Persistent } from '@modules/services/models/persistent';
 import { RoutingStrategyService } from './routing-strategy.service';
@@ -14,23 +14,26 @@ class RoutingComponent {
 
 @Persistent()
 @Component({})
-class DefaultComponent {
-  private static global: number = 0;
-  id: number = DefaultComponent.global++;
+class DefaultComponent implements OnInit, OnDestroy {
+  static current: DefaultComponent | null = null;
+  ngOnInit(): void { DefaultComponent.current = this; }
+  ngOnDestroy(): void { DefaultComponent.current = null; }
 }
 
 @Persistent({ persistanceMode: PersistanceMode.Parent })
 @Component({})
-class ParentComponent {
-  private static global: number = 0;
-  id: number = ParentComponent.global++;
+class ParentComponent implements OnDestroy {
+  static current: ParentComponent | null = null;
+  ngOnInit(): void { ParentComponent.current = this; }
+  ngOnDestroy(): void { ParentComponent.current = null; }
 }
 
 @Persistent({ persistanceMode: PersistanceMode.Global })
 @Component({})
-class GlobalComponent {
-  private static global: number = 0;
-  id: number = GlobalComponent.global++;
+class GlobalComponent implements OnDestroy {
+  static current: GlobalComponent | null = null;
+  ngOnInit(): void { GlobalComponent.current = this; }
+  ngOnDestroy(): void { GlobalComponent.current = null; }
 }
 
 function getSnapshot(router: Router, component: Type<any> | null): ActivatedRouteSnapshot {
@@ -41,17 +44,19 @@ function getSnapshot(router: Router, component: Type<any> | null): ActivatedRout
   return snapshot;
 }
 
-function getActivatedInstance<T>(router: Router): T {
-  const outlet = (router as any).rootContexts.getContext('primary').outlet;
-  return outlet.activated.instance as T;
-}
-
 const routes: Routes = [
+  { path: '', component: RoutingComponent },
+  {
+    path: 'default', component: DefaultComponent, children: [
+      { path: 'default', component: DefaultComponent }
+    ]
+  },
   { path: 'global', component: GlobalComponent },
   {
     path: 'parent', component: ParentComponent,
     children: [
-      { path: 'default', component: DefaultComponent }
+      { path: 'default1', component: DefaultComponent },
+      { path: 'default2', component: DefaultComponent }
     ]
   }
 ];
@@ -62,7 +67,7 @@ describe('RoutingStrategyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes(routes)
+        RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledBlocking' })
       ],
       declarations: [
         RoutingComponent,
@@ -81,42 +86,109 @@ describe('RoutingStrategyService', () => {
     expect(router.routeReuseStrategy).toBeInstanceOf(RoutingStrategyService);
   }));
 
+  it('should not persist default component from own route', inject([Router], async (router: Router) => {
+    router.navigate(['default']);
+    await fixture.whenStable();
+    const snapshot = getSnapshot(router, DefaultComponent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['']);
+    await fixture.whenStable();
+    expect(DefaultComponent.current).toBeNull();
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeTruthy();
+  }));
+
+  it('should not persist default component from child route', inject([Router], async (router: Router) => {
+    router.navigate(['default']);
+    await fixture.whenStable();
+    const parent = DefaultComponent.current;
+    const snapshot = getSnapshot(router, DefaultComponent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['default/default']);
+    await fixture.whenStable();
+    expect(DefaultComponent.current).toEqual(parent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['']);
+    await fixture.whenStable();
+    expect(DefaultComponent.current).toBeNull();
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeTruthy();
+  }));
+
   it('should persist global component from own route', inject([Router], async (router: Router) => {
     router.navigate(['global']);
     await fixture.whenStable();
+    const parent = GlobalComponent.current;
     const snapshot = getSnapshot(router, GlobalComponent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
     router.navigate(['']);
     await fixture.whenStable();
+    expect(GlobalComponent.current).toEqual(parent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeTruthy();
   }));
 
   it('should not persist parent component from own route', inject([Router], async (router: Router) => {
     router.navigate(['parent']);
     await fixture.whenStable();
-    const instance = getActivatedInstance<ParentComponent>(router);
     const snapshot = getSnapshot(router, ParentComponent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
     router.navigate(['']);
     await fixture.whenStable();
+    expect(ParentComponent.current).toBeNull();
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
   }));
 
   it('should persist parent component from child route', inject([Router], async (router: Router) => {
     router.navigate(['parent']);
     await fixture.whenStable();
-    const instance = getActivatedInstance<ParentComponent>(router);
+    const parent = ParentComponent.current;
     const snapshot = getSnapshot(router, ParentComponent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
-    router.navigate(['parent', 'default']);
+    router.navigate(['parent', 'default1']);
     await fixture.whenStable();
+    expect(ParentComponent.current).toEqual(parent);
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
 
     router.navigate(['parent']);
     await fixture.whenStable();
+    expect(ParentComponent.current).toEqual(parent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['']);
+    await fixture.whenStable();
+    expect(ParentComponent.current).toBeNull();
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+  }));
+
+  it('should persist parent component between child routes', inject([Router], async (router: Router) => {
+    router.navigate(['parent']);
+    await fixture.whenStable();
+    const parent = ParentComponent.current;
+    const snapshot = getSnapshot(router, ParentComponent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['parent', 'default1']);
+    await fixture.whenStable();
+    expect(ParentComponent.current).toEqual(parent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['parent', 'default2']);
+    await fixture.whenStable();
+    expect(ParentComponent.current).toEqual(parent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['parent']);
+    await fixture.whenStable();
+    expect(ParentComponent.current).toEqual(parent);
+    expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
+
+    router.navigate(['']);
+    await fixture.whenStable();
+    expect(ParentComponent.current).toBeNull();
     expect(router.routeReuseStrategy.retrieve(snapshot)).toBeFalsy();
   }));
 });
