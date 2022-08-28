@@ -1,17 +1,20 @@
-export interface Persistent {
-  isPersistentComponent: boolean;
+export enum PersistanceMode {
+  Global,
+  Parent
 }
 
-export function Persistent() {
-  const propertyName = 'isPersistentComponent';
+export interface Persistance {
+  persistanceMode: PersistanceMode;
+}
+
+
+export function Persistent(persistance?: Partial<Persistance>) {
+  const propertyName = 'persistanceMode';
 
   return (target: object): void => {
+    const mode = persistance?.persistanceMode ?? PersistanceMode.Global;
     if (!Object.getOwnPropertyDescriptor(target, propertyName)) {
-      Object.defineProperty(target, propertyName, { get: () => true });
+      Object.defineProperty(target, propertyName, { get: () => mode });
     }
   }
-}
-
-export function isPersistent(content: object | null): content is Persistent {
-  return (content as Persistent).isPersistentComponent !== undefined;
 }

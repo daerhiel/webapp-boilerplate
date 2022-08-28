@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Route, RouteReuseStrategy } from '@angular/router';
-import { isPersistent } from '@app/modules/services/models/persistent';
+
+import { Persistance, PersistanceMode } from '@modules/services/models/persistent';
+
+export function isPersistent(snapshot: ActivatedRouteSnapshot): boolean {
+  const component: any = snapshot.component;
+  switch ((component as Persistance).persistanceMode) {
+    case PersistanceMode.Parent:
+      return snapshot.children.length > 0;
+    case PersistanceMode.Global:
+      return true;
+    default:
+      return false;
+  }
+}
 
 /**
  * The routing strategy to reuse the master/detail components implemented per guide:
@@ -19,7 +32,7 @@ export class RoutingStrategyService extends RouteReuseStrategy {
 
   /** Determines if this route (and its subtree) should be detached to be reused later. */
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return !!route.routeConfig && isPersistent(route.component);
+    return !!route.routeConfig && isPersistent(route);
   }
 
   /** Determines if a route should be reused. */
