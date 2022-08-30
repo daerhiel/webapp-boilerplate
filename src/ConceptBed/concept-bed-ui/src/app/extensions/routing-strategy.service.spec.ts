@@ -78,7 +78,7 @@ describe('RoutingStrategyService', () => {
       providers: [
         { provide: RouteReuseStrategy, useClass: RoutingStrategyService },
       ]
-    });
+    }).compileComponents();
     fixture = TestBed.createComponent(RoutingComponent);
   });
 
