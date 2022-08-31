@@ -13,14 +13,17 @@ class RoutingComponent {
 }
 
 @Component({})
-class DefaultComponent {
+class HomeComponent {
+}
+
+@Component({})
+class AboutComponent {
 }
 
 const routes: Routes = [
-  { path: '', component: RoutingComponent },
   {
-    path: 'home', title: 'Home', component: DefaultComponent, children: [
-      { path: 'about', title: 'About', component: DefaultComponent }
+    path: '', title: 'Home', component: HomeComponent, children: [
+      { path: 'about', title: 'About', component: AboutComponent }
     ]
   }
 ];
@@ -31,11 +34,12 @@ describe('TitleStrategyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledBlocking' })
+        RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledNonBlocking' })
       ],
       declarations: [
         RoutingComponent,
-        DefaultComponent
+        HomeComponent,
+        AboutComponent
       ],
       providers: [
         { provide: TitleStrategy, useClass: TitleStrategyService },
@@ -48,20 +52,14 @@ describe('TitleStrategyService', () => {
     expect(router.titleStrategy).toBeTruthy();
   }));
 
-  it('should have title for default route', inject([Router, Title], async (router: Router, title: Title) => {
-    router.navigate(['']);
-    await fixture.whenStable();
-    expect(title.getTitle()).toEqual('Concept Bed');
-  }));
-
   it('should have title for home route', inject([Router, Title], async (router: Router, title: Title) => {
-    router.navigate(['home']);
+    router.navigate(['']);
     await fixture.whenStable();
     expect(title.getTitle()).toEqual('Concept Bed - Home');
   }));
 
   it('should have title for about route', inject([Router, Title], async (router: Router, title: Title) => {
-    router.navigate(['home/about']);
+    router.navigate(['about']);
     await fixture.whenStable();
     expect(title.getTitle()).toEqual('Concept Bed - About');
   }));
