@@ -53,13 +53,13 @@ describe('TitleStrategyService', () => {
   }));
 
   it('should have title for home route', inject([Router, Title], async (router: Router, title: Title) => {
-    router.navigate(['']);
+    await router.navigate(['']);
     await fixture.whenStable();
     expect(title.getTitle()).toEqual('Concept Bed - Home');
   }));
 
   it('should have title for about route', inject([Router, Title], async (router: Router, title: Title) => {
-    router.navigate(['about']);
+    await router.navigate(['about']);
     await fixture.whenStable();
     expect(title.getTitle()).toEqual('Concept Bed - About');
   }));

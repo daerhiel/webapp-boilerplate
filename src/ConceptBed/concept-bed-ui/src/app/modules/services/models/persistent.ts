@@ -7,7 +7,6 @@ export interface Persistance {
   persistanceMode: PersistanceMode;
 }
 
-
 export function Persistent(persistance?: Partial<Persistance>) {
   const propertyName = 'persistanceMode';
 
