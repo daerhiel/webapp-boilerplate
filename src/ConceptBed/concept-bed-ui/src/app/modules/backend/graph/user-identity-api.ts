@@ -1,7 +1,7 @@
 export interface UserIdentityApi {
   id: string;
-  businessPhones: string[];
   userPrincipalName: string;
+  businessPhones: string[];
   displayName: string;
   givenName: string;
   surname: string;
