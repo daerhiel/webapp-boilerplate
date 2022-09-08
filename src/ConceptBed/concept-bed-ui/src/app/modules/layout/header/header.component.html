@@ -16,7 +16,7 @@
     <mat-icon>help</mat-icon>
   </button>
   <a mat-icon-button #profile class="app-c-profile-picture" role="button" (click)="isProfileOpen = !isProfileOpen">
-    <img [src]="account | graphPicture: 'my'" title="{{account?.name}}" defaultPicture>
+    <img [src]="account | graph | async" title="{{account?.name}}" defaultPicture>
   </a>
   <app-profile class="app-c-profile" [hidden]="!isProfileOpen" (escape)="onProfileEscape($event)"></app-profile>
 </mat-toolbar>

@@ -1,6 +1,6 @@
 <mat-card class="example-card">
   <mat-card-content>
-    <img mat-card-image class="app-u-profile-image" [src]="account | graphPicture: 'my'" defaultPicture>
+    <img mat-card-image class="app-u-profile-image" [src]="account | graph | async" defaultPicture>
   </mat-card-content>
   <mat-card-title>{{account?.name}}</mat-card-title>
   <mat-card-subtitle>{{account?.username}}</mat-card-subtitle>
