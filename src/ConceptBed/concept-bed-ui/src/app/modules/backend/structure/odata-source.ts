@@ -9,7 +9,7 @@ import { ODataQuery } from "./odata-query";
 import { ODataResultSet } from "./odata-result-set";
 
 export interface ODataEndpointFn<T> {
-  (query: ODataQuery): Observable<ODataResultSet<T>>;
+  (query: ODataQuery<T>): Observable<ODataResultSet<T>>;
 }
 
 export interface ODataFilterBuilderFn {
@@ -22,7 +22,7 @@ export class ODataSource<T> implements DataSource<T> {
   private readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true); // TODO: Fugure out change detection issue (change to false).
   private readonly length$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private readonly current: { page: PageEvent | null; sort: Sort | null; } = { page: null, sort: null };
-  private readonly requests: Subject<ODataQuery> = new Subject();
+  private readonly requests: Subject<ODataQuery<T>> = new Subject();
   private filter$: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private paginator$: MatPaginator | undefined;
   private $paginator: Subscription | undefined;
@@ -94,7 +94,7 @@ export class ODataSource<T> implements DataSource<T> {
   }
 
   load(filter: string | undefined, page: PageEvent | null, sort: Sort | null): void {
-    const query: ODataQuery = {};
+    const query: ODataQuery<T> = {};
     if (!!this.factory) {
       const $filter = this.factory(filter);
       if (!!$filter) {

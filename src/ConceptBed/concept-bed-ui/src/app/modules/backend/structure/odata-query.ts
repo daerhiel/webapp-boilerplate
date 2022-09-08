@@ -1,4 +1,4 @@
-export interface ODataQuery {
+export interface ODataQuery<T> {
   $filter?: string;
   $expand?: string;
   $orderby?: string;

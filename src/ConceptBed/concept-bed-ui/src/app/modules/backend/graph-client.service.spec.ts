@@ -1,8 +1,10 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
-import { GraphClientService } from './graph-client.service';
 import { lastValueFrom } from 'rxjs';
+
+import { environment } from '@environments/environment';
+import { GraphClientService } from './graph-client.service';
+import { UrlUtilities } from './structure/url-utilities';
 
 describe('GraphClientService', () => {
   let controller: HttpTestingController;
@@ -30,6 +32,10 @@ describe('GraphClientService', () => {
     controller = TestBed.inject(HttpTestingController);
   });
 
+  afterEach(() => {
+    controller.verify();
+  });
+
   it('should be created', inject([GraphClientService], async (graph: GraphClientService) => {
     expect(graph).toBeTruthy();
   }));
@@ -37,7 +43,7 @@ describe('GraphClientService', () => {
   it('should get current user', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = lastValueFrom(graph.getMe());
 
-    const request = controller.expectOne(`https://graph.microsoft.com/v1.0/me`);
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me'));
     expect(request.request.method).toEqual('GET');
     request.flush(user);
 
@@ -49,7 +55,7 @@ describe('GraphClientService', () => {
     const promise = lastValueFrom(graph.getMyPhoto());
     const picture = new Blob(['picture'], { type: 'image/png' });
 
-    const request = controller.expectOne(`https://graph.microsoft.com/v1.0/me/photo/$value`);
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me', ['photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 
@@ -61,7 +67,7 @@ describe('GraphClientService', () => {
     const promise = lastValueFrom(graph.getPhoto(localAccountId));
     const picture = new Blob(['picture'], { type: 'image/png' });
 
-    const request = controller.expectOne(`https://graph.microsoft.com/v1.0/users/${localAccountId}/photo/$value`);
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 

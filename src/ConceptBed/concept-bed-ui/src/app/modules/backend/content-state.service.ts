@@ -6,6 +6,7 @@ import { BroadcastService } from '@modules/services/broadcast.service';
 import { convert, create, ODataResultSet } from './structure/odata-result-set';
 import { ODataQuery } from './structure/odata-query';
 import { WeatherForecast } from './models/weather-forecast';
+import { WeatherForecastApi } from './models/weather-forecast-api';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ContentStateService {
     );
   }
 
-  getWeatherForecast(query: ODataQuery): Observable<ODataResultSet<WeatherForecast>> {
+  getWeatherForecast(query: ODataQuery<WeatherForecastApi>): Observable<ODataResultSet<WeatherForecast>> {
     return this.api.getWeatherForecast(query).pipe(
       map(xs => convert(xs, x => new WeatherForecast(x))),
       catchError(e => (this.broadcast.excepion(e), of(create<WeatherForecast>())))
