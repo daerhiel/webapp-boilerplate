@@ -1,5 +1,5 @@
-import { DataUtilities } from "../structure/data-utilities";
 import { DeepPartial } from "../structure/deep-partial";
+import { DataUtilities } from "../structure/data-utilities";
 import { WeatherForecastApi } from "./weather-forecast-api";
 
 export class WeatherForecast implements WeatherForecastApi {
@@ -7,7 +7,7 @@ export class WeatherForecast implements WeatherForecastApi {
   date!: Date;
   temperature!: number;
   summary!: string;
-  state!: number;
+  status!: number;
 
   constructor(values: DeepPartial<WeatherForecastApi> = {}) {
     this.update(values);

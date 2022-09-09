@@ -6,5 +6,5 @@ export interface WeatherForecastApi {
   temperature: number;
   summary: string;
   history?: WeatherLogEntryApi[] | null;
-  state: number;
+  status: number;
 }

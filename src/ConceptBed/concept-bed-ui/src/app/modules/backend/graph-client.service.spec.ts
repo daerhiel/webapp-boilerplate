@@ -1,6 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import { GraphClientService } from './graph-client.service';
@@ -41,7 +41,7 @@ describe('GraphClientService', () => {
   }));
 
   it('should get current user', inject([GraphClientService], async (graph: GraphClientService) => {
-    const promise = lastValueFrom(graph.getMe());
+    const promise = firstValueFrom(graph.getMe());
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me'));
     expect(request.request.method).toEqual('GET');
@@ -52,7 +52,7 @@ describe('GraphClientService', () => {
   }));
 
   it('should get current user picture', inject([GraphClientService], async (graph: GraphClientService) => {
-    const promise = lastValueFrom(graph.getMyPhoto());
+    const promise = firstValueFrom(graph.getMyPhoto());
     const picture = new Blob(['picture'], { type: 'image/png' });
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me', ['photo', '$value']));
@@ -64,7 +64,7 @@ describe('GraphClientService', () => {
   }));
 
   it('should get user picture', inject([GraphClientService], async (graph: GraphClientService) => {
-    const promise = lastValueFrom(graph.getPhoto(localAccountId));
+    const promise = firstValueFrom(graph.getPhoto(localAccountId));
     const picture = new Blob(['picture'], { type: 'image/png' });
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
