@@ -4,41 +4,42 @@ import { lastValueFrom } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import { ContentApiService } from './content-api.service';
-import { WeatherForecastApi } from './models/weather-forecast-api';
-import { UrlUtilities } from './structure/url-utilities';
 import { ODataQuery } from './structure/odata-query';
+import { UrlUtilities } from './structure/url-utilities';
+import { WeatherForecastApi } from './models/weather-forecast-api';
+
+export const weatherId = '00d2ecb6-ea0b-4d73-a087-a30a2d580150';
+export const weathers = {
+  offset: 0,
+  count: 50,
+  elements: [{
+    id: '00d2ecb6-ea0b-4d73-a087-a30a2d580150',
+    date: '2022-02-15T20:16:04.6253229Z',
+    temperature: -18,
+    summary: 'Bracing',
+    history: [],
+    status: 0
+  },
+  {
+    id: '03168dd9-83e4-4f53-b781-a8c8dbdc6e16',
+    date: '2022-02-12T20:16:04.6253197Z',
+    temperature: -7,
+    summary: 'Mild',
+    history: [],
+    status: 0
+  },
+  {
+    id: '0e774bcb-05f5-4eed-9d9d-883947c34442',
+    date: '2022-02-20T20:16:04.6253239Z',
+    temperature: 33,
+    summary: 'Cool',
+    history: [],
+    status: 0
+  }]
+};
 
 describe('ContentApiService', () => {
   let controller: HttpTestingController;
-  const weatherId = '00d2ecb6-ea0b-4d73-a087-a30a2d580150';
-  const weathers = {
-    offset: 0,
-    count: 50,
-    elements: [{
-      id: '00d2ecb6-ea0b-4d73-a087-a30a2d580150',
-      date: '2022-02-15T20:16:04.6253229Z',
-      temperature: -18,
-      summary: 'Bracing',
-      history: [],
-      status: 0
-    },
-    {
-      id: '03168dd9-83e4-4f53-b781-a8c8dbdc6e16',
-      date: '2022-02-12T20:16:04.6253197Z',
-      temperature: -7,
-      summary: 'Mild',
-      history: [],
-      status: 0
-    },
-    {
-      id: '0e774bcb-05f5-4eed-9d9d-883947c34442',
-      date: '2022-02-20T20:16:04.6253239Z',
-      temperature: 33,
-      summary: 'Cool',
-      history: [],
-      status: 0
-    }]
-  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
