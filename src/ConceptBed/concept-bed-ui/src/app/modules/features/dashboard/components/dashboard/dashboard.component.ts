@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
 import { Persistent } from '@modules/services/models/persistent';
-import { ContentStateService, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
+import { ContentStateService, guard, isResult, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
 @Persistent()
@@ -18,7 +18,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('dataPages', { static: true }) private dataPages?: MatPaginator;
   @ViewChild(MatSort, { static: true }) private dataSort?: MatSort;
 
-  data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x), x => WeatherForecast.buildQuery(x));
+  data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x).pipe(
+    guard(isResult),
+  ), x => WeatherForecast.buildQuery(x));
 
   constructor(private state: ContentStateService, private dashboard: DashboardService) {
   }

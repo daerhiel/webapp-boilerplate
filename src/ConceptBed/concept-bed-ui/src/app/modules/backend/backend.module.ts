@@ -23,6 +23,10 @@ export * from './structure/odata-result-set';
 export * from './structure/odata-source';
 export * from './structure/url-utilities';
 export * from './structure/data-utilities';
+export * from './structure/problem-details';
+export * from './structure/problem-details-api';
+export * from './structure/exception-details-api';
+export * from './structure/guard';
 
 @NgModule({
   declarations: [
