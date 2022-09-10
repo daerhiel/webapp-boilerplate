@@ -14,6 +14,9 @@ export * from './models/message';
 export * from './models/message-type.enum';
 export * from './models/subscriptions';
 export * from './models/navigation-target';
+export * from './models/persistent';
+
+export * from './reactive/guard';
 
 @NgModule({
   declarations: [

@@ -1,6 +1,6 @@
 import { TestScheduler } from "rxjs/testing";
 
-import { guard } from "./guard";
+import { guard, isInstanceOf } from "./guard";
 
 class Base { constructor(public value: number) { } }
 class Derived1 extends Base { }
@@ -35,7 +35,7 @@ describe('guard', () => {
       const e1subs = '  ^----------------!';
       const expected = '--0--1--2--3--4--|';
 
-      expectObservable(e1.pipe(guard((x: Base): x is any => x instanceof Base))).toBe(expected, instances);
+      expectObservable(e1.pipe(guard(isInstanceOf(Base)))).toBe(expected, instances);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -46,7 +46,7 @@ describe('guard', () => {
       const e1subs = '  ^----------------!';
       const expected = '-----1-----------|';
 
-      expectObservable(e1.pipe(guard((x: Base): x is any => x instanceof Derived1))).toBe(expected, instances);
+      expectObservable(e1.pipe(guard(isInstanceOf(Derived1)))).toBe(expected, instances);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
@@ -57,7 +57,7 @@ describe('guard', () => {
       const e1subs = '  ^----------------!';
       const expected = '-----------3-----|';
 
-      expectObservable(e1.pipe(guard((x: Base): x is any => x instanceof Derived2))).toBe(expected, instances);
+      expectObservable(e1.pipe(guard(isInstanceOf(Derived2)))).toBe(expected, instances);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

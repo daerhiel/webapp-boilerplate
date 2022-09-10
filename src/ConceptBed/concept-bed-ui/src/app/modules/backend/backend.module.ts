@@ -26,7 +26,6 @@ export * from './structure/data-utilities';
 export * from './structure/problem-details';
 export * from './structure/problem-details-api';
 export * from './structure/exception-details-api';
-export * from './structure/guard';
 
 @NgModule({
   declarations: [

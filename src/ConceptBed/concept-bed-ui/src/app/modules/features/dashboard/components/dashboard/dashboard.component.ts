@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { Persistent } from '@modules/services/models/persistent';
-import { ContentStateService, guard, isResult, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
+import { guard, Persistent } from '@modules/services/services.module';
+import { ContentStateService, isResult, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
 @Persistent()

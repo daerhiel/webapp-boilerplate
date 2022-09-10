@@ -3,7 +3,7 @@ import { ExceptionDetailsApi } from "./exception-details-api";
 import { ProblemDetailsApi } from "./problem-details-api";
 
 export function isResult<T>(value: T | ProblemDetails): value is T {
-  return !(value instanceof ProblemDetails);
+  return value && !(value instanceof ProblemDetails);
 }
 
 export class ProblemDetails implements ProblemDetailsApi {

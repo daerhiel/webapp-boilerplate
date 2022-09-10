@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject, tap } from 'rxjs';
 
+import { guard, isInstanceOf } from './reactive/guard';
 import { Subscriptions } from './models/subscriptions';
 import { getPath, NavigationTarget } from './models/navigation-target';
 
@@ -18,11 +19,9 @@ export class HistoryService implements OnDestroy {
   get navigated(): Observable<NavigationEnd> { return this.navigated$.asObservable(); }
 
   constructor(private route: ActivatedRoute, private router: Router) {
-    this.subscriptions.subscribe(this.router.events.pipe(tap(event => {
-      if (event instanceof NavigationEnd) {
-        this.handleNavigation();
-        this.navigated$.next(event);
-      }
+    this.subscriptions.subscribe(this.router.events.pipe(guard(isInstanceOf(NavigationEnd)), tap(event => {
+      this.handleNavigation();
+      this.navigated$.next(event);
     })));
   }
 
