@@ -72,9 +72,9 @@ describe('ContentApiService', () => {
   }));
 
   it('should request weather object', inject([ContentApiService], async (api: ContentApiService) => {
-    const promise = firstValueFrom(api.getWeather(weatherId));
     const weather = weathers.elements.find(x => x.id === weatherId)!;
 
+    const promise = firstValueFrom(api.getWeather(weatherId));
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));
     expect(request.request.method).toEqual('GET');
     request.flush(weather);
@@ -85,7 +85,6 @@ describe('ContentApiService', () => {
 
   it('should request weather object collection', inject([ContentApiService], async (api: ContentApiService) => {
     const promise = firstValueFrom(api.getWeatherForecast({}));
-
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', []));
     expect(request.request.method).toEqual('GET');
     request.flush(weathers);
@@ -98,8 +97,8 @@ describe('ContentApiService', () => {
     const query: ODataQuery<WeatherForecastApi> = {
       $filter: 'summary=\'Bracing\''
     };
-    const promise = firstValueFrom(api.getWeatherForecast(query));
 
+    const promise = firstValueFrom(api.getWeatherForecast(query));
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [], query));
     expect(request.request.method).toEqual('GET');
     request.flush(weathers);
@@ -112,8 +111,8 @@ describe('ContentApiService', () => {
     const query: ODataQuery<WeatherForecastApi> = {
       $expand: 'history'
     };
-    const promise = firstValueFrom(api.getWeatherForecast(query));
 
+    const promise = firstValueFrom(api.getWeatherForecast(query));
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [], query));
     expect(request.request.method).toEqual('GET');
     request.flush(weathers);
@@ -126,8 +125,8 @@ describe('ContentApiService', () => {
     const query: ODataQuery<WeatherForecastApi> = {
       $orderby: 'temperature'
     };
-    const promise = firstValueFrom(api.getWeatherForecast(query));
 
+    const promise = firstValueFrom(api.getWeatherForecast(query));
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [], query));
     expect(request.request.method).toEqual('GET');
     request.flush(weathers);
@@ -141,8 +140,8 @@ describe('ContentApiService', () => {
       $skip: 10,
       $top: 10
     };
-    const promise = firstValueFrom(api.getWeatherForecast(query));
 
+    const promise = firstValueFrom(api.getWeatherForecast(query));
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [], query));
     expect(request.request.method).toEqual('GET');
     request.flush(weathers);

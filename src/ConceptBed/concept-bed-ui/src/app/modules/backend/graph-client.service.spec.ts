@@ -6,22 +6,26 @@ import { environment } from '@environments/environment';
 import { GraphClientService } from './graph-client.service';
 import { UrlUtilities } from './structure/url-utilities';
 
+const localAccountId = 'abcdef01-1234-5678-90ab-abcdef012345';
+const tenant = 'domain.onmicrosoft.com';
+const username = 'user.name@microsoft.com';
+const userPrincipalName = `${username.replace('@', '_')}#EXT#@${tenant}`;
+const givenName = 'User';
+const surname = 'Name';
+const displayName = `${givenName} ${surname}`;
+const user = {
+  id: localAccountId, userPrincipalName, displayName, givenName, surname,
+  jobTitle: null, mail: null, mobilePhone: null, businessPhones: [],
+  officeLocation: null,
+  preferredLanguage: null,
+  '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity'
+}
+const picture = new Blob([new Uint8Array(window.atob('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=').split('').map(x => x.charCodeAt(0)))], {
+  type: 'image/gif'
+});
+
 describe('GraphClientService', () => {
   let controller: HttpTestingController;
-  const localAccountId = 'abcdef01-1234-5678-90ab-abcdef012345';
-  const tenant = 'domain.onmicrosoft.com';
-  const username = 'user.name@microsoft.com';
-  const userPrincipalName = `${username.replace('@', '_')}#EXT#@${tenant}`;
-  const givenName = 'User';
-  const surname = 'Name';
-  const displayName = `${givenName} ${surname}`;
-  const user = {
-    id: localAccountId, userPrincipalName, displayName, givenName, surname,
-    jobTitle: null, mail: null, mobilePhone: null, businessPhones: [],
-    officeLocation: null,
-    preferredLanguage: null,
-    '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity'
-  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,7 +46,6 @@ describe('GraphClientService', () => {
 
   it('should get current user', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getMe());
-
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me'));
     expect(request.request.method).toEqual('GET');
     request.flush(user);
@@ -53,7 +56,6 @@ describe('GraphClientService', () => {
 
   it('should get current user picture', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getMyPhoto());
-    const picture = new Blob(['picture'], { type: 'image/png' });
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me', ['photo', '$value']));
     expect(request.request.method).toEqual('GET');
@@ -65,7 +67,6 @@ describe('GraphClientService', () => {
 
   it('should get user picture', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getPhoto(localAccountId));
-    const picture = new Blob(['picture'], { type: 'image/png' });
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request.request.method).toEqual('GET');
