@@ -44,7 +44,7 @@ describe('ContentStateService', () => {
     expect(actual).toEqual(new WeatherForecast(weather));
   }));
 
-  it('should get error on request weather object failure', inject([ContentStateService, BroadcastService], async (state: ContentStateService, broadcast: BroadcastService) => {
+  it('should get error on request weather object failure', inject([ContentStateService], async (state: ContentStateService) => {
     const promise = firstValueFrom(state.getWeather(weatherId), { defaultValue: undefined });
 
     const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));

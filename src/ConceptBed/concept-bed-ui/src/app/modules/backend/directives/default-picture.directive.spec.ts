@@ -1,27 +1,40 @@
-import { TestBed } from '@angular/core/testing';
-import { Component, ElementRef } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, ElementRef } from '@angular/core';
 
 import { DefaultPictureDirective } from './default-picture.directive';
 
 @Component({
-  template: `<img defaultPicture>Component</h2>`
+  template: `<img src="https://test/unknown" defaultPicture />`
 })
-class TestComponent { onEscape(): void { } }
+class TestComponent { }
 
 describe('DefaultPictureDirective', () => {
-  let element: ElementRef;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      declarations: [
+        TestComponent,
+        DefaultPictureDirective
+      ],
       providers: [
         { provide: ElementRef, useClass: TestComponent }
       ]
-    });
-    element = TestBed.inject(ElementRef);
+    }).compileComponents();
   });
 
-  it('should create an instance', () => {
+  it('should create an instance', inject([ElementRef<HTMLIFrameElement>], (element: ElementRef<HTMLImageElement>) => {
     const directive = new DefaultPictureDirective(element);
     expect(directive).toBeTruthy();
+  }));
+
+  it('should set default picture url', async () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    const element: HTMLElement = fixture.nativeElement;
+
+    const img = element.querySelector('img');
+    expect(img).not.toBeNull();
+
+    new DebugElement(img!).triggerEventHandler('error');
+    expect(img!.src).toMatch(/assets\/images\/default-profile.jpg$/i);
   });
 });

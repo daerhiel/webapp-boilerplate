@@ -6,12 +6,12 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 export class DefaultPictureDirective {
   @Input() defaultPicture: string | undefined
 
-  constructor(private ref: ElementRef) {
+  constructor(private ref: ElementRef<HTMLImageElement>) {
   }
 
   @HostListener('error', ['$event'])
   onError(event: Event): void {
-    const element = this.ref.nativeElement as HTMLImageElement;
+    const element = this.ref.nativeElement;
     if (!!element && !element.nonce) {
       element.src = this.defaultPicture || 'assets/images/default-profile.jpg';
       element.nonce = Math.random().toFixed(20);
