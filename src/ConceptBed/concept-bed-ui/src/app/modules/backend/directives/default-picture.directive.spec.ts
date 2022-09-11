@@ -9,7 +9,6 @@ import { DefaultPictureDirective } from './default-picture.directive';
 class TestComponent { }
 
 describe('DefaultPictureDirective', () => {
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [

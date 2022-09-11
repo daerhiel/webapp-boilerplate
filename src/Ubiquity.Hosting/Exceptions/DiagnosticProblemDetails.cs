@@ -12,7 +12,6 @@ using Ubiquity.Framework;
 
 namespace Ubiquity.Hosting.Exceptions
 {
-
     /// <summary>
     /// Represents a diagnostic <see cref="ProblemDetails"/> that encapsulates global application diagnostic responses.
     /// </summary>
