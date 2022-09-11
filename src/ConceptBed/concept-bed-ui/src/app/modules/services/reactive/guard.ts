@@ -8,6 +8,6 @@ export function isInstanceOf<T, R extends T>(type: new (...args: any[]) => R) {
 
 export function guard<T, R extends T>(guard: (value: T) => value is R, thisArg?: any): OperatorFunction<T, R> {
   return operate((source, subscriber) => {
-    source.subscribe(createOperatorSubscriber(subscriber, value => guard.call(thisArg, value) && subscriber.next(value as R)));
+    source.subscribe(createOperatorSubscriber(subscriber, (value: T) => guard.call(thisArg, value) && subscriber.next(value as R)));
   });
 }

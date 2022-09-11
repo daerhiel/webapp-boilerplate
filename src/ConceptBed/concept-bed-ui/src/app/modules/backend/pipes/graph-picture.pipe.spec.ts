@@ -81,7 +81,7 @@ describe('GraphPicturePipe', () => {
     expect(actual.constructor.name).toEqual('SafeUrlImpl');
   }));
 
-  it('should transform account info from cached a picture', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
+  it('should transform account info from cached picture', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
     clearGraphPipeCache();
 
     const pipe = new GraphPicturePipe(graph, sanitizer);
@@ -93,9 +93,7 @@ describe('GraphPicturePipe', () => {
     const expected = await promise1;
 
     const promise2 = firstValueFrom(pipe.transform(account));
-    const request2 = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
-    expect(request2.request.method).toEqual('GET');
-    request2.flush(picture);
+    controller.expectNone(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
 
     const actual = await promise2;
 

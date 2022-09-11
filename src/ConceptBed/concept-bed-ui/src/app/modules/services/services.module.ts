@@ -17,6 +17,7 @@ export * from './models/navigation-target';
 export * from './models/persistent';
 
 export * from './reactive/guard';
+export * from './reactive/cache';
 
 @NgModule({
   declarations: [
