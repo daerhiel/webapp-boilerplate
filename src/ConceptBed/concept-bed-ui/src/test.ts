@@ -20,7 +20,7 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting(),
   {
     errorOnUnknownElements: true,
-    errorOnUnknownProperties: true,
+    errorOnUnknownProperties: true
   }
 );
 
