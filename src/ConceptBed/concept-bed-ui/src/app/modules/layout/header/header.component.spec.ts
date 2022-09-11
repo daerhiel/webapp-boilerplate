@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalModule, MsalService } from '@azure/msal-angular';
 
@@ -20,6 +21,7 @@ describe('HeaderComponent', () => {
         BackendModule,
         LayoutModule,
         MatToolbarModule,
+        MatIconModule,
         MsalModule.forRoot(
           new PublicClientApplication(configuration),
           guards, interceptors)

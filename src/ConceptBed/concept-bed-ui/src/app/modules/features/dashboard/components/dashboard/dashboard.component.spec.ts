@@ -6,7 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 import { DashboardComponent } from './dashboard.component';
 
@@ -24,7 +26,9 @@ describe('DashboardComponent', () => {
         MatInputModule,
         MatTableModule,
         MatPaginatorModule,
-        MatProgressSpinnerModule
+        MatSortModule,
+        MatProgressSpinnerModule,
+        MatIconModule
       ],
       declarations: [
         DashboardComponent

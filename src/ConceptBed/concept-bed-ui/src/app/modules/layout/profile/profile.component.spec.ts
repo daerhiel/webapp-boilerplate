@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalModule, MsalService } from '@azure/msal-angular';
 
@@ -22,6 +23,7 @@ describe('ProfileComponent', () => {
         MatCardModule,
         MatDividerModule,
         MatProgressBarModule,
+        MatButtonModule,
         MsalModule.forRoot(
           new PublicClientApplication(configuration),
           guards, interceptors)
