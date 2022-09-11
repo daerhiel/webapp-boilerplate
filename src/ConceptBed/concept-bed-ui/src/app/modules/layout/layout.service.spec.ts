@@ -3,7 +3,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { LayoutService } from './layout.service';
 
-fdescribe('LayoutService', () => {
+describe('LayoutService', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({}).compileComponents();
   });
@@ -25,7 +25,7 @@ fdescribe('LayoutService', () => {
     localStorage.removeItem(LayoutService.sidenavOpenedName);
     const service = TestBed.inject(LayoutService);
 
-    expect(await firstValueFrom(service.sidenavOpened)).toBeFalse();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeFalse();
   });
 
   it('should read sidenav open', () => {
@@ -39,7 +39,7 @@ fdescribe('LayoutService', () => {
     localStorage.setItem(LayoutService.sidenavOpenedName, JSON.stringify(true))
     const service = TestBed.inject(LayoutService);
 
-    expect(await firstValueFrom(service.sidenavOpened)).toBeTrue();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeTrue();
   });
 
   it('should read sidenav closed', () => {
@@ -53,7 +53,7 @@ fdescribe('LayoutService', () => {
     localStorage.setItem(LayoutService.sidenavOpenedName, JSON.stringify(false))
     const service = TestBed.inject(LayoutService);
 
-    expect(await firstValueFrom(service.sidenavOpened)).toBeFalse();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeFalse();
   });
 
   it('should toggle sidenav open', async () => {
@@ -61,12 +61,12 @@ fdescribe('LayoutService', () => {
     const service = TestBed.inject(LayoutService);
 
     expect(service.isSidenavOpen).toBeFalse();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeFalse();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeFalse();
 
     service.toggleSidenav();
 
     expect(service.isSidenavOpen).toBeTrue();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeTrue();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeTrue();
     expect(JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false')).toBeTrue();
   });
 
@@ -75,12 +75,12 @@ fdescribe('LayoutService', () => {
     const service = TestBed.inject(LayoutService);
 
     expect(service.isSidenavOpen).toBeTrue();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeTrue();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeTrue();
 
     service.toggleSidenav();
 
     expect(service.isSidenavOpen).toBeFalse();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeFalse();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeFalse();
     expect(JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false')).toBeFalse();
   });
 
@@ -89,7 +89,7 @@ fdescribe('LayoutService', () => {
     service.toggleSidenav(true);
 
     expect(service.isSidenavOpen).toBeTrue();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeTrue();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeTrue();
     expect(JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false')).toBeTrue();
   });
 
@@ -98,7 +98,7 @@ fdescribe('LayoutService', () => {
     service.toggleSidenav(false);
 
     expect(service.isSidenavOpen).toBeFalse();
-    expect(await firstValueFrom(service.sidenavOpened)).toBeFalse();
+    expect(await firstValueFrom(service.isSidenavOpen$)).toBeFalse();
     expect(JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false')).toBeFalse();
   });
 });
