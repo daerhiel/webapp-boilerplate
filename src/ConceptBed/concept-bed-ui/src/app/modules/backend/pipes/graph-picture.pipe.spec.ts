@@ -6,16 +6,18 @@ import { DomSanitizer, SafeValue } from '@angular/platform-browser';
 import { AccountInfo } from '@azure/msal-browser';
 import { firstValueFrom, Observable } from 'rxjs';
 
+import * as uuid from 'uuid';
+
 import { environment } from '@environments/environment';
 import { GraphClientService } from '../graph-client.service';
 import { GraphPicturePipe } from './graph-picture.pipe';
 import { UrlUtilities } from '../structure/url-utilities';
 
-const tenantId = '00000000-1234-5678-90ab-abcdef012345';
-const localAccountId = 'abcdef01-1234-5678-90ab-abcdef012345';
+const tenantId = uuid.v4();
+const localAccountId = uuid.v4();
 const username = 'user.name@microsoft.com';
 const account = {
-  homeAccountId: '00000000-0000-0000-c41c-d9a99aaa6fe4.9188040d-6c67-4c5b-b112-36a304b66dad',
+  homeAccountId: `${uuid.v4()}.${uuid.v4()}`,
   environment: 'login.windows.net', tenantId, username, localAccountId, name: 'User Name'
 };
 const picture = new Blob([new Uint8Array(window.atob('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=').split('').map(x => x.charCodeAt(0)))], {
@@ -44,7 +46,7 @@ class TestComponent {
 
 describe('GraphPicturePipe', () => {
   let controller: HttpTestingController;
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
         TestComponent,

@@ -2,11 +2,13 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 
+import * as uuid from 'uuid';
+
 import { environment } from '@environments/environment';
 import { GraphClientService } from './graph-client.service';
 import { UrlUtilities } from './structure/url-utilities';
 
-const localAccountId = 'abcdef01-1234-5678-90ab-abcdef012345';
+const localAccountId = uuid.v4();
 const tenant = 'domain.onmicrosoft.com';
 const username = 'user.name@microsoft.com';
 const userPrincipalName = `${username.replace('@', '_')}#EXT#@${tenant}`;
@@ -27,7 +29,7 @@ const picture = new Blob([new Uint8Array(window.atob('R0lGODlhAQABAAD/ACwAAAAAAQ
 describe('GraphClientService', () => {
   let controller: HttpTestingController;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,

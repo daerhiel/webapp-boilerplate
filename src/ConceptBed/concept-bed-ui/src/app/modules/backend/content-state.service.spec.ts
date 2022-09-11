@@ -2,10 +2,10 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { failure, weatherId, weathers } from './content-api.service.spec';
+import { failure, weatherId2, weathers } from './content-api.service.spec';
 
 import { environment } from '@environments/environment';
-import { BroadcastService, Message, MessageType } from '@modules/services/services.module';
+import { BroadcastService, MessageType } from '@modules/services/services.module';
 import { ContentStateService } from './content-state.service';
 import { UrlUtilities } from './structure/url-utilities';
 import { ProblemDetails } from './structure/problem-details';
@@ -14,7 +14,7 @@ import { WeatherForecast } from './models/weather-forecast';
 describe('ContentStateService', () => {
   let controller: HttpTestingController;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule
@@ -32,10 +32,10 @@ describe('ContentStateService', () => {
   }));
 
   it('should request weather object', inject([ContentStateService], async (state: ContentStateService) => {
-    const weather = weathers.elements.find(x => x.id === weatherId)!;
+    const weather = weathers.elements.find(x => x.id === weatherId2)!;
 
-    const promise = firstValueFrom(state.getWeather(weatherId));
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));
+    const promise = firstValueFrom(state.getWeather(weatherId2));
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(weather);
 
@@ -45,8 +45,8 @@ describe('ContentStateService', () => {
   }));
 
   it('should get error on request weather object failure', inject([ContentStateService], async (state: ContentStateService) => {
-    const promise = firstValueFrom(state.getWeather(weatherId), { defaultValue: undefined });
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));
+    const promise = firstValueFrom(state.getWeather(weatherId2), { defaultValue: undefined });
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(failure, { status: failure.status, statusText: failure.title });
 
@@ -58,8 +58,8 @@ describe('ContentStateService', () => {
   it('should broadcast on request weather object failure', inject([ContentStateService, BroadcastService], async (state: ContentStateService, broadcast: BroadcastService) => {
     const notify = firstValueFrom(broadcast.messages);
 
-    const promise = firstValueFrom(state.getWeather(weatherId), { defaultValue: undefined });
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));
+    const promise = firstValueFrom(state.getWeather(weatherId2), { defaultValue: undefined });
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(failure, { status: failure.status, statusText: failure.title });
 

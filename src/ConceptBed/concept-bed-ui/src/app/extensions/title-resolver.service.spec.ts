@@ -32,7 +32,7 @@ const routes: Routes = [
 describe('TitleResolverService', () => {
   let fixture: ComponentFixture<RoutingComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledBlocking' })

@@ -31,7 +31,7 @@ const routes: Routes = [
 describe('TitleStrategyService', () => {
   let fixture: ComponentFixture<RoutingComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledNonBlocking' })

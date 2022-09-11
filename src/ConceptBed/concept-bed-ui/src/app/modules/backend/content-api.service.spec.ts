@@ -2,6 +2,8 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 
+import * as uuid from 'uuid';
+
 import { environment } from '@environments/environment';
 import { ContentApiService } from './content-api.service';
 import { DeepPartial } from './structure/deep-partial';
@@ -11,12 +13,14 @@ import { UrlUtilities } from './structure/url-utilities';
 import { WeatherForecastApi } from './models/weather-forecast-api';
 import { ProblemDetailsApi } from './structure/problem-details-api';
 
-export const weatherId = '00d2ecb6-ea0b-4d73-a087-a30a2d580150';
+export const weatherId1 = uuid.v4();
+export const weatherId2 = uuid.v4();
+export const weatherId3 = uuid.v4();
 export const weathers: ODataResultSet<WeatherForecastApi> = {
   offset: 0,
   count: 50,
   elements: [{
-    id: '00d2ecb6-ea0b-4d73-a087-a30a2d580150',
+    id: weatherId1,
     date: new Date('2022-02-15T20:16:04.6253229Z'),
     temperature: -18,
     summary: 'Bracing',
@@ -24,7 +28,7 @@ export const weathers: ODataResultSet<WeatherForecastApi> = {
     status: 0
   },
   {
-    id: '03168dd9-83e4-4f53-b781-a8c8dbdc6e16',
+    id: weatherId2,
     date: new Date('2022-02-12T20:16:04.6253197Z'),
     temperature: -7,
     summary: 'Mild',
@@ -32,7 +36,7 @@ export const weathers: ODataResultSet<WeatherForecastApi> = {
     status: 0
   },
   {
-    id: '0e774bcb-05f5-4eed-9d9d-883947c34442',
+    id: weatherId3,
     date: new Date('2022-02-20T20:16:04.6253239Z'),
     temperature: 33,
     summary: 'Cool',
@@ -54,7 +58,7 @@ export const failure: DeepPartial<ProblemDetailsApi> = {
 describe('ContentApiService', () => {
   let controller: HttpTestingController;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule
@@ -72,10 +76,10 @@ describe('ContentApiService', () => {
   }));
 
   it('should request weather object', inject([ContentApiService], async (api: ContentApiService) => {
-    const weather = weathers.elements.find(x => x.id === weatherId)!;
+    const weather = weathers.elements.find(x => x.id === weatherId2)!;
 
-    const promise = firstValueFrom(api.getWeather(weatherId));
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId]));
+    const promise = firstValueFrom(api.getWeather(weatherId2));
+    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(weather);
 
