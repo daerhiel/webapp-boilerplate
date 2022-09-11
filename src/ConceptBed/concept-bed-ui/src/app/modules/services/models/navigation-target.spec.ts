@@ -7,12 +7,12 @@ import { NavigationTarget } from './navigation-target';
 describe('NavigationTarget', () => {
   let route: ActivatedRoute;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         RouterTestingModule
       ]
-    });
+    }).compileComponents();
     route = TestBed.inject(ActivatedRoute);
   });
 

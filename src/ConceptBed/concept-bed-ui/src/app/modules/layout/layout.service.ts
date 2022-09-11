@@ -6,14 +6,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class LayoutService implements OnDestroy {
   private readonly sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private readonly isSidenavOpenName: string = 'layout.sidenav';
+
+  static readonly sidenavOpenedName: string = 'layout.sidenav';
 
   isSidenavOpen: boolean = false;
 
   get sidenavOpened(): Observable<boolean> { return this.sidenavOpened$.asObservable(); }
 
   constructor() {
-    this.isSidenavOpen = JSON.parse(localStorage.getItem(this.isSidenavOpenName) ?? 'false');
+    this.isSidenavOpen = JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false');
     this.sidenavOpened$.next(this.isSidenavOpen);
   }
 
@@ -27,7 +28,7 @@ export class LayoutService implements OnDestroy {
     } else {
       this.isSidenavOpen = !this.isSidenavOpen
     }
-    localStorage.setItem(this.isSidenavOpenName, JSON.stringify(this.isSidenavOpen));
+    localStorage.setItem(LayoutService.sidenavOpenedName, JSON.stringify(this.isSidenavOpen));
     this.sidenavOpened$.next(this.isSidenavOpen);
   }
 }

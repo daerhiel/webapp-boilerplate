@@ -5,8 +5,8 @@ import { TelemetryService } from './telemetry.service';
 describe('TelemetryService', () => {
   let service: TelemetryService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(TelemetryService);
   });
 

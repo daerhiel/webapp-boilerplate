@@ -6,12 +6,12 @@ import { HistoryService } from './history.service';
 describe('HistoryService', () => {
   let service: HistoryService;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         RouterTestingModule
       ]
-    });
+    }).compileComponents();
     service = TestBed.inject(HistoryService);
   });
 

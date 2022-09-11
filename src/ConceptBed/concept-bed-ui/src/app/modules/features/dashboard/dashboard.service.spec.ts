@@ -5,8 +5,8 @@ import { DashboardService } from './dashboard.service';
 describe('DashboardService', () => {
   let service: DashboardService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(DashboardService);
   });
 

@@ -5,8 +5,8 @@ import { BroadcastService } from './broadcast.service';
 describe('BroadastService', () => {
   let service: BroadcastService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(BroadcastService);
   });
 

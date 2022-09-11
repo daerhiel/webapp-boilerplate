@@ -11,12 +11,12 @@ class TestComponent { onEscape(): void { } }
 describe('EscapeDirective', () => {
   let element: ElementRef;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ElementRef, useClass: TestComponent }
       ]
-    });
+    }).compileComponents();
     element = TestBed.inject(ElementRef);
   });
 

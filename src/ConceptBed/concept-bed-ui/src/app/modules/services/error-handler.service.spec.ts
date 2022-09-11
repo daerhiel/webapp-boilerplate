@@ -5,8 +5,8 @@ import { ErrorHandlerService } from './error-handler.service';
 describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(ErrorHandlerService);
   });
 
