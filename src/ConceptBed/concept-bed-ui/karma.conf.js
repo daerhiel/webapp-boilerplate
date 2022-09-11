@@ -5,6 +5,10 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    files: [
+      { pattern: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap', type: 'css', included: true, watched: false },
+      { pattern: 'https://fonts.googleapis.com/icon?family=Material+Icons', type: 'css', included: true, watched: false }
+    ],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
