@@ -23,9 +23,23 @@ export const user = {
   preferredLanguage: null,
   '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity'
 }
-export const picture = new Blob([new Uint8Array(window.atob('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=').split('').map(x => x.charCodeAt(0)))], {
-  type: 'image/gif'
-});
+export const picture = buildPicture();
+
+function buildPicture(): Blob {
+  const canvas: HTMLCanvasElement = document.createElement('canvas');
+  canvas.width = canvas.height = 120;
+  const context = canvas.getContext('2d')!;
+  const gradient = context.createLinearGradient(0, 0, 120, 120);
+  gradient.addColorStop(0, '#ff8f00');
+  gradient.addColorStop(0.5, '#ffa000');
+  gradient.addColorStop(1.0, '#ffb300');
+  context.arc(60, 60, 50, 0, 2 * Math.PI);
+  context.strokeStyle = gradient;
+  context.lineWidth = 10;
+  context.stroke();
+  const [_, type, data] = /data:(\w+\/\w+);base64,([\w\/+=]+)/i.exec(canvas.toDataURL()) as string[];
+  return new Blob([new Uint8Array(window.atob(data).split('').map(x => x.charCodeAt(0)))], { type: type })
+}
 
 export function graphApiMock(controller: HttpTestingController, result: any, root: string, actions?: string[]): void {
   const request = controller.expectOne(buildUrl(environment.graphUrl, root, actions));

@@ -41,6 +41,7 @@ class TestComponent {
 
 describe('GraphPicturePipe', () => {
   let controller: HttpTestingController;
+
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
@@ -50,8 +51,7 @@ describe('GraphPicturePipe', () => {
       imports: [
         CommonModule,
         HttpClientTestingModule,
-      ],
-      providers: []
+      ]
     }).compileComponents();
     controller = TestBed.inject(HttpTestingController);
   });
