@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Component, NgZone } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { firstValueFrom, tap, toArray } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { PortalComponent } from './portal.component';
-import { Subscriptions } from '@app/modules/services/services.module';
+import { Subscriptions } from '@modules/services/services.module';
 
 @Component({ standalone: true })
 class TestComponent {
@@ -33,10 +33,7 @@ describe('PortalComponent', () => {
       ],
       declarations: [
         PortalComponent
-      ],
-      teardown: {
-        destroyAfterEach: false
-      }
+      ]
     }).compileComponents();
   });
 
