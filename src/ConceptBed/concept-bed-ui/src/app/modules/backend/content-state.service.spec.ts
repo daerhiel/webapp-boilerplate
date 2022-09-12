@@ -7,7 +7,7 @@ import { failure, weatherId2, weathers } from './content-api.service.spec';
 import { environment } from '@environments/environment';
 import { BroadcastService, MessageType } from '@modules/services/services.module';
 import { ContentStateService } from './content-state.service';
-import { UrlUtilities } from './structure/url-utilities';
+import { buildUrl } from './structure/url-utilities';
 import { ProblemDetails } from './structure/problem-details';
 import { WeatherForecast } from './models/weather-forecast';
 
@@ -35,7 +35,7 @@ describe('ContentStateService', () => {
     const weather = weathers.elements.find(x => x.id === weatherId2)!;
 
     const promise = firstValueFrom(state.getWeather(weatherId2));
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
+    const request = controller.expectOne(buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(weather);
 
@@ -46,7 +46,7 @@ describe('ContentStateService', () => {
 
   it('should get error on request weather object failure', inject([ContentStateService], async (state: ContentStateService) => {
     const promise = firstValueFrom(state.getWeather(weatherId2), { defaultValue: undefined });
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
+    const request = controller.expectOne(buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(failure, { status: failure.status, statusText: failure.title });
 
@@ -59,7 +59,7 @@ describe('ContentStateService', () => {
     const notify = firstValueFrom(broadcast.messages);
 
     const promise = firstValueFrom(state.getWeather(weatherId2), { defaultValue: undefined });
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
+    const request = controller.expectOne(buildUrl(environment.apiUrl, 'weatherforecast', [weatherId2]));
     expect(request.request.method).toEqual('GET');
     request.flush(failure, { status: failure.status, statusText: failure.title });
 

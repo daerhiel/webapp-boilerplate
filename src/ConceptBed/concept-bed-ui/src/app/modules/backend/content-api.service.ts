@@ -6,7 +6,7 @@ import { environment } from '@environments/environment';
 import { DeepPartial } from './structure/deep-partial';
 import { ODataResultSet } from './structure/odata-result-set';
 import { ODataQuery } from './structure/odata-query';
-import { UrlUtilities } from './structure/url-utilities';
+import { buildUrl } from './structure/url-utilities';
 import { WeatherForecastApi } from './models/weather-forecast-api';
 
 @Injectable({
@@ -19,10 +19,10 @@ export class ContentApiService {
   }
 
   getWeather(id: string): Observable<DeepPartial<WeatherForecastApi>> {
-    return this.http.get<WeatherForecastApi>(UrlUtilities.buildUrl(this.apiUrl, 'weatherforecast', [id]), { withCredentials: true })
+    return this.http.get<WeatherForecastApi>(buildUrl(this.apiUrl, 'weatherforecast', [id]), { withCredentials: true })
   }
 
   getWeatherForecast(query: ODataQuery<WeatherForecastApi>): Observable<ODataResultSet<DeepPartial<WeatherForecastApi>>> {
-    return this.http.get<ODataResultSet<DeepPartial<WeatherForecastApi>>>(UrlUtilities.buildUrl(this.apiUrl, 'weatherforecast', [], query), { withCredentials: true })
+    return this.http.get<ODataResultSet<DeepPartial<WeatherForecastApi>>>(buildUrl(this.apiUrl, 'weatherforecast', [], query), { withCredentials: true })
   }
 }

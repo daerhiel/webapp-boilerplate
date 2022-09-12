@@ -6,7 +6,7 @@ import * as uuid from 'uuid';
 
 import { environment } from '@environments/environment';
 import { GraphClientService } from './graph-client.service';
-import { UrlUtilities } from './structure/url-utilities';
+import { buildUrl } from './structure/url-utilities';
 
 const localAccountId = uuid.v4();
 const tenant = 'domain.onmicrosoft.com';
@@ -48,7 +48,7 @@ describe('GraphClientService', () => {
 
   it('should get current user', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getMe());
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me'));
+    const request = controller.expectOne(buildUrl(environment.graphUrl, 'me'));
     expect(request.request.method).toEqual('GET');
     request.flush(user);
 
@@ -59,7 +59,7 @@ describe('GraphClientService', () => {
   it('should get current user picture', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getMyPhoto());
 
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'me', ['photo', '$value']));
+    const request = controller.expectOne(buildUrl(environment.graphUrl, 'me', ['photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 
@@ -70,7 +70,7 @@ describe('GraphClientService', () => {
   it('should get user picture', inject([GraphClientService], async (graph: GraphClientService) => {
     const promise = firstValueFrom(graph.getPhoto(localAccountId));
 
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
+    const request = controller.expectOne(buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 

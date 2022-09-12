@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import { UserIdentityApi } from './graph/user-identity-api';
-import { UrlUtilities } from './structure/url-utilities';
+import { buildUrl } from './structure/url-utilities';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +16,14 @@ export class GraphClientService {
   }
 
   getMe(): Observable<UserIdentityApi> {
-    return this.http.get<UserIdentityApi>(UrlUtilities.buildUrl(this.apiUrl, 'me'));
+    return this.http.get<UserIdentityApi>(buildUrl(this.apiUrl, 'me'));
   }
 
   getMyPhoto(): Observable<Blob> {
-    return this.http.get(UrlUtilities.buildUrl(this.apiUrl, 'me', ['photo', '$value']), { responseType: 'blob' });
+    return this.http.get(buildUrl(this.apiUrl, 'me', ['photo', '$value']), { responseType: 'blob' });
   }
 
   getPhoto(id: string): Observable<Blob> {
-    return this.http.get(UrlUtilities.buildUrl(this.apiUrl, 'users', [id, 'photo', '$value']), { responseType: 'blob' });
+    return this.http.get(buildUrl(this.apiUrl, 'users', [id, 'photo', '$value']), { responseType: 'blob' });
   }
 }

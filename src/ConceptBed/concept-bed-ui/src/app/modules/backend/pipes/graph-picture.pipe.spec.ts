@@ -11,7 +11,7 @@ import * as uuid from 'uuid';
 import { environment } from '@environments/environment';
 import { GraphClientService } from '../graph-client.service';
 import { GraphPicturePipe } from './graph-picture.pipe';
-import { UrlUtilities } from '../structure/url-utilities';
+import { buildUrl } from '../structure/url-utilities';
 
 const tenantId = uuid.v4();
 const localAccountId = uuid.v4();
@@ -75,7 +75,7 @@ describe('GraphPicturePipe', () => {
 
     const pipe = new GraphPicturePipe(graph, sanitizer);
     const promise = firstValueFrom(pipe.transform(account));
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
+    const request = controller.expectOne(buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 
@@ -88,14 +88,14 @@ describe('GraphPicturePipe', () => {
 
     const pipe = new GraphPicturePipe(graph, sanitizer);
     const promise1 = firstValueFrom(pipe.transform(account));
-    const request1 = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
+    const request1 = controller.expectOne(buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request1.request.method).toEqual('GET');
     request1.flush(picture);
 
     const expected = await promise1;
 
     const promise2 = firstValueFrom(pipe.transform(account));
-    controller.expectNone(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
+    controller.expectNone(buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
 
     const actual = await promise2;
 
@@ -110,7 +110,7 @@ describe('GraphPicturePipe', () => {
 
     fixture.detectChanges();
 
-    const request = controller.expectOne(UrlUtilities.buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
+    const request = controller.expectOne(buildUrl(environment.graphUrl, 'users', [localAccountId, 'photo', '$value']));
     expect(request.request.method).toEqual('GET');
     request.flush(picture);
 
