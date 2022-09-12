@@ -13,7 +13,7 @@ import { LayoutService } from '../layout.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   isProfileOpen: boolean = false;
 
   get title(): string { return this.title$.getTitle(); }
@@ -28,9 +28,6 @@ export class HeaderComponent implements OnInit {
   profile?: MatAnchor;
 
   constructor(private auth: MsalService, private title$: Title, private history: HistoryService, public layout: LayoutService) {
-  }
-
-  ngOnInit(): void {
   }
 
   onProfileEscape(event: Event) {

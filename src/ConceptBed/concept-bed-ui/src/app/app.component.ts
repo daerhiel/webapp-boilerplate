@@ -10,12 +10,9 @@ import { LayoutService } from '@modules/layout/layout.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   @ViewChild('sidenav') sidenav?: MatSidenav;
 
   constructor(private history: HistoryService, public layout: LayoutService) {
-  }
-
-  ngOnInit(): void {
   }
 }

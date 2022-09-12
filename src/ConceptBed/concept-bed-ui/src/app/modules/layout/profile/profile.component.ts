@@ -11,7 +11,7 @@ import { BroadcastService, Subscriptions } from '@modules/services/services.modu
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnDestroy {
   private readonly subscriptions: Subscriptions = new Subscriptions;
 
   profile: UserIdentityApi | undefined;
@@ -29,9 +29,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       catchError(e => (this.broadcast.excepion(e), of(undefined))),
       tap(() => this.isQuerying = false)
     ));
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

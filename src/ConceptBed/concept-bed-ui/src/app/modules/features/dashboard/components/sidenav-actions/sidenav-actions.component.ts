@@ -7,10 +7,7 @@ import { DashboardService } from '../../dashboard.service';
   templateUrl: './sidenav-actions.component.html',
   styleUrls: ['./sidenav-actions.component.scss']
 })
-export class SidenavActionsComponent implements OnInit {
+export class SidenavActionsComponent {
   constructor(private dashboard: DashboardService) {
-  }
-
-  ngOnInit(): void {
   }
 }

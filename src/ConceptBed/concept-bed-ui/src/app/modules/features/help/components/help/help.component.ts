@@ -6,12 +6,9 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss']
 })
-export class HelpComponent implements OnInit {
+export class HelpComponent {
   get title(): string { return this.title$.getTitle(); }
 
   constructor(private title$: Title) {
-  }
-
-  ngOnInit(): void {
   }
 }
