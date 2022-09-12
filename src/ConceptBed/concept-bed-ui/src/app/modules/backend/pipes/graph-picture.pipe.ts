@@ -10,15 +10,18 @@ import { cacheMap, CacheInstance } from '@modules/services/services.module';
   name: 'graph'
 })
 export class GraphPicturePipe implements PipeTransform {
-  private static cache: CacheInstance<SafeUrl> = {};
+  private static unknownId: string = '#unknown';
+  private static cache: CacheInstance<SafeUrl | undefined> = {};
 
   constructor(private graph: GraphClientService, private sanitizer: DomSanitizer) {
   }
 
-  transform(account: AccountInfo | null): Observable<SafeUrl> {
-    const id = account?.localAccountId ?? '#unknown';
-    return of(id).pipe(cacheMap(GraphPicturePipe.cache, x =>
-      this.graph.getPhoto(x).pipe(map(x => this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(x))), shareReplay(1))
+  transform(account: AccountInfo | null | undefined): Observable<SafeUrl | undefined> {
+    const id = account?.localAccountId ?? GraphPicturePipe.unknownId;
+    return of(id).pipe(cacheMap(GraphPicturePipe.cache, x => x !== GraphPicturePipe.unknownId ?
+      this.graph.getPhoto(x).pipe(map(x =>
+        this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(x))), shareReplay(1)) :
+      of(undefined)
     ));
   }
 }
