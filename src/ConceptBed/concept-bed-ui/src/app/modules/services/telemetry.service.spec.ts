@@ -6,7 +6,7 @@ describe('TelemetryService', () => {
   let service: TelemetryService;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(TelemetryService);
   });
 

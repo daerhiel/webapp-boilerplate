@@ -10,29 +10,29 @@ import { getPath, NavigationTarget } from './models/navigation-target';
   providedIn: 'root'
 })
 export class HistoryService implements OnDestroy {
-  private readonly subscriptions: Subscriptions = new Subscriptions();
-  private readonly navigated$: Subject<NavigationEnd> = new Subject();
-  private readonly history: NavigationTarget[] = [];
-  private readonly container: NavigationTarget[] = [];
-  private readonly active: NavigationTarget[] = [];
+  private readonly _subscriptions: Subscriptions = new Subscriptions();
+  private readonly _navigated: Subject<NavigationEnd> = new Subject();
+  private readonly _history: NavigationTarget[] = [];
+  private readonly _container: NavigationTarget[] = [];
+  private readonly _active: NavigationTarget[] = [];
 
-  get navigated(): Observable<NavigationEnd> { return this.navigated$.asObservable(); }
+  get navigated$(): Observable<NavigationEnd> { return this._navigated.asObservable(); }
 
   constructor(private route: ActivatedRoute, private router: Router) {
-    this.subscriptions.subscribe(this.router.events.pipe(guard(isInstanceOf(NavigationEnd)), tap(event => {
+    this._subscriptions.subscribe(this.router.events.pipe(guard(isInstanceOf(NavigationEnd)), tap(event => {
       this.handleNavigation();
-      this.navigated$.next(event);
+      this._navigated.next(event);
     })));
   }
 
   private isSameContainer(segments: NavigationTarget[]): boolean {
-    return this.container.length <= 2 || segments.length <= 2 && segments.length <= this.container.length;
+    return this._container.length <= 2 || segments.length <= 2 && segments.length <= this._container.length;
   }
 
   private getLastSegmentIndex(segment: NavigationTarget | undefined) {
     if (segment) {
-      for (let i = this.history.length - 1; i >= 0; i--) {
-        if (this.history[i].isMatch(segment)) {
+      for (let i = this._history.length - 1; i >= 0; i--) {
+        if (this._history[i].isMatch(segment)) {
           return i;
         }
       }
@@ -41,11 +41,11 @@ export class HistoryService implements OnDestroy {
   }
 
   private getContainedChain(): NavigationTarget[] {
-    if (this.container.length > 0) {
-      const segment = this.container[this.container.length - 1];
+    if (this._container.length > 0) {
+      const segment = this._container[this._container.length - 1];
       const index = this.getLastSegmentIndex(segment);
       if (index >= 0) {
-        return this.history.slice(index + 1);
+        return this._history.slice(index + 1);
       }
     }
     return [];
@@ -69,29 +69,29 @@ export class HistoryService implements OnDestroy {
     if (segment) {
       const index = this.getLastSegmentIndex(segment);
       if (index < 0 || segments.length <= 2) {
-        this.history.push(segment);
+        this._history.push(segment);
       } else {
-        this.history.splice(index + 1);
+        this._history.splice(index + 1);
       }
     }
     if (this.isSameContainer(segments)) {
-      this.container.splice(0, this.container.length, ...segments);
+      this._container.splice(0, this._container.length, ...segments);
     }
-    this.active.splice(0, this.active.length, ...segments);
+    this._active.splice(0, this._active.length, ...segments);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this._subscriptions.unsubscribe();
   }
 
   getContainedHistory(): NavigationTarget[] {
-    return this.container.concat(this.getContainedChain());
+    return this._container.concat(this.getContainedChain());
   }
 
   navigateBack(): void {
-    this.history.pop();
-    if (this.history.length > 0) {
-      const segment = this.history[this.history.length - 1];
+    this._history.pop();
+    if (this._history.length > 0) {
+      const segment = this._history[this._history.length - 1];
       this.router.navigate(['/'].concat(segment.path), { replaceUrl: true });
     }
   }

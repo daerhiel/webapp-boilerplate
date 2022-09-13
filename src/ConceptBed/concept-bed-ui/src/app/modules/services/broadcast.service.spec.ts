@@ -6,7 +6,7 @@ describe('BroadastService', () => {
   let service: BroadcastService;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(BroadcastService);
   });
 

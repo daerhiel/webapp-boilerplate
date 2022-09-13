@@ -11,15 +11,15 @@ import { MessageType } from './models/message-type.enum';
   providedIn: 'root'
 })
 export class BroadcastService implements OnDestroy {
-  private messages$ = new Subject<Message>();
+  private readonly _messages: Subject<Message> = new Subject();
 
-  get messages(): Observable<Message> { return this.messages$.asObservable(); }
+  get messages(): Observable<Message> { return this._messages.asObservable(); }
 
   constructor(private telemetry: TelemetryService) {
   }
 
   ngOnDestroy(): void {
-    this.messages$.complete();
+    this._messages.complete();
   }
 
   success(message: string, timeout: number = 12000, canClose: boolean = true): Message {
@@ -54,7 +54,7 @@ export class BroadcastService implements OnDestroy {
 
   alert(type: MessageType, message: string, timeout: number, canClose: boolean): Message {
     const alert = new Message(type, message, timeout, canClose);
-    this.messages$.next(alert);
+    this._messages.next(alert);
     return alert;
   }
 }

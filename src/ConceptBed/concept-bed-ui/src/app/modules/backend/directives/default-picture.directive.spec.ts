@@ -10,7 +10,7 @@ class TestComponent { }
 
 describe('DefaultPictureDirective', () => {
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         TestComponent,
         DefaultPictureDirective

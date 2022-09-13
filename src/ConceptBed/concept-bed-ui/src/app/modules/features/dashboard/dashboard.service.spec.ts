@@ -6,7 +6,7 @@ describe('DashboardService', () => {
   let service: DashboardService;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(DashboardService);
   });
 

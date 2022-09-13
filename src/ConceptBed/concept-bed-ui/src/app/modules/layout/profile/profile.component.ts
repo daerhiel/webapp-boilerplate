@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, map, Observable, of, tap } from 'rxjs';
 
 import { GraphClientService, UserIdentityApi } from '@modules/backend/backend.module';
 import { BroadcastService, Subscriptions } from '@modules/services/services.module';
@@ -9,13 +9,17 @@ import { BroadcastService, Subscriptions } from '@modules/services/services.modu
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileComponent implements OnDestroy {
-  private readonly subscriptions: Subscriptions = new Subscriptions;
+  private readonly _subscriptions: Subscriptions = new Subscriptions;
 
-  profile: UserIdentityApi | undefined;
-  isQuerying: boolean = false;
+  private readonly _profile = new BehaviorSubject<UserIdentityApi | null | undefined>(undefined);
+  get profile$(): Observable<UserIdentityApi | null | undefined> { return this._profile.asObservable(); }
+  get profile(): UserIdentityApi | null | undefined { return this._profile.value; }
+
+  public readonly isLoading$: Observable<boolean> = combineLatest([this._profile]).pipe(map(x => x[0] === undefined));
 
   get account(): AccountInfo | null {
     const accounts = this.auth.instance.getAllAccounts();
@@ -23,16 +27,15 @@ export class ProfileComponent implements OnDestroy {
   }
 
   constructor(private auth: MsalService, private graph: GraphClientService, private broadcast: BroadcastService) {
-    this.isQuerying = true;
-    this.subscriptions.subscribe(this.graph.getMe().pipe(
-      tap(profile => this.profile = profile),
+    this._subscriptions.subscribe(this.graph.getMe().pipe(
+      tap(profile => this._profile.next(profile ?? null)),
       catchError(e => (this.broadcast.excepion(e), of(undefined))),
-      tap(() => this.isQuerying = false)
     ));
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this._profile.complete();
+    this._subscriptions.unsubscribe();
   }
 
   onLogout(): void {

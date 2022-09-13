@@ -32,7 +32,7 @@ describe('TitleStrategyService', () => {
   let fixture: ComponentFixture<RoutingComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes, { initialNavigation: 'enabledNonBlocking' })
       ],

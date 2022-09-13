@@ -8,7 +8,7 @@ describe('NavigationTarget', () => {
   let route: ActivatedRoute;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ]

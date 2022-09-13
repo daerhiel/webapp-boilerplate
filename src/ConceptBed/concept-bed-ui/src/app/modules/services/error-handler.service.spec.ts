@@ -6,7 +6,7 @@ describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
     service = TestBed.inject(ErrorHandlerService);
   });
 

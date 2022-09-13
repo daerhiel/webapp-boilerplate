@@ -4,15 +4,20 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
-import { PublicClientApplication } from '@azure/msal-browser';
+import { EndSessionRequest, PublicClientApplication } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 
 import { graphApiMock, localAccountId, picture, user } from '@modules/backend/graph-client.service.spec';
 import { account, clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
 import { BackendModule } from '@modules/backend/backend.module';
 import { ProfileComponent } from './profile.component';
+import { firstValueFrom, Observable, of, timer } from 'rxjs';
 
-describe('ProfileComponent', () => {
+const msalServiceMock = jasmine.createSpyObj<MsalService>('MsalServiceMock', ['logoutRedirect'], {
+  instance: jasmine.createSpyObj<PublicClientApplication>('ClientApplication', { getAllAccounts: [account] })
+});
+
+fdescribe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let controller: HttpTestingController;
@@ -30,11 +35,9 @@ describe('ProfileComponent', () => {
       declarations: [
         ProfileComponent
       ],
-      providers: [{
-        provide: MsalService, useValue: jasmine.createSpyObj<MsalService>('MsalServiceMock', {}, {
-          instance: jasmine.createSpyObj<PublicClientApplication>('ClientApplication', { getAllAccounts: [account] })
-        })
-      }],
+      providers: [
+        { provide: MsalService, useValue: msalServiceMock }
+      ],
       teardown: {
         destroyAfterEach: false
       }
@@ -55,5 +58,48 @@ describe('ProfileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display current user', async () => {
+    while (await firstValueFrom(component.isLoading$)) {
+      await (firstValueFrom(timer(100)));
+    }
+    fixture.detectChanges();
+
+    expect(account).toEqual(account);
+
+    const title: HTMLElement = fixture.nativeElement.querySelector('mat-card-title');
+    expect(title.innerHTML).toEqual(account.name);
+
+    const subtitle: HTMLElement = fixture.nativeElement.querySelector('mat-card-subtitle');
+    expect(subtitle.innerHTML).toEqual(account.username);
+  });
+
+  it('should load profile', async () => {
+    while (await firstValueFrom(component.isLoading$)) {
+      await (firstValueFrom(timer(100)));
+    }
+    fixture.detectChanges();
+
+    expect(account).toEqual(account);
+
+    expect(await firstValueFrom(component.profile$)).toEqual(user);
+    expect(component.profile).toEqual(user);
+    expect(await firstValueFrom(component.isLoading$)).toBeFalse();
+  });
+
+  it('should run logout', async () => {
+    while (await firstValueFrom(component.isLoading$)) {
+      await (firstValueFrom(timer(100)));
+    }
+    fixture.detectChanges();
+
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[mat-button]#logout');
+    expect(button).toBeTruthy();
+
+    button.click();
+    fixture.detectChanges();
+
+    expect(msalServiceMock.logoutRedirect).toHaveBeenCalled();
   });
 });

@@ -5,14 +5,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LayoutService implements OnDestroy {
-  private readonly _isSidenavOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  get isSidenavOpen$(): Observable<boolean> { return this._isSidenavOpen.asObservable(); }
-  isSidenavOpen: boolean = false;
   static readonly sidenavOpenedName: string = 'layout.sidenav';
 
+  private readonly _isSidenavOpen = new BehaviorSubject<boolean>(false);
+  get isSidenavOpen$(): Observable<boolean> { return this._isSidenavOpen.asObservable(); }
+  get isSidenavOpen(): boolean { return this._isSidenavOpen.value; }
+
   constructor() {
-    this.isSidenavOpen = JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false');
-    this._isSidenavOpen.next(this.isSidenavOpen);
+    this._isSidenavOpen.next(JSON.parse(localStorage.getItem(LayoutService.sidenavOpenedName) ?? 'false'));
   }
 
   ngOnDestroy(): void {
@@ -20,12 +20,7 @@ export class LayoutService implements OnDestroy {
   }
 
   toggleSidenav(isOpen?: boolean) {
-    if (isOpen !== undefined) {
-      this.isSidenavOpen = isOpen;
-    } else {
-      this.isSidenavOpen = !this.isSidenavOpen
-    }
+    this._isSidenavOpen.next(isOpen ?? !this.isSidenavOpen);
     localStorage.setItem(LayoutService.sidenavOpenedName, JSON.stringify(this.isSidenavOpen));
-    this._isSidenavOpen.next(this.isSidenavOpen);
   }
 }

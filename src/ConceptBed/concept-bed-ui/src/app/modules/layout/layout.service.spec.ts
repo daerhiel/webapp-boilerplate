@@ -5,7 +5,7 @@ import { LayoutService } from './layout.service';
 
 describe('LayoutService', () => {
   beforeEach(async () => {
-    TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   it('should be created', () => {

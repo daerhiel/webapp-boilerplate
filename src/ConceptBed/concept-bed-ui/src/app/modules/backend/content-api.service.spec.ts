@@ -59,7 +59,7 @@ describe('ContentApiService', () => {
   let controller: HttpTestingController;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule
       ]

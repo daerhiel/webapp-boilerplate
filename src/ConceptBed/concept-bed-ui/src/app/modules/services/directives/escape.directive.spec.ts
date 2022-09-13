@@ -12,7 +12,7 @@ describe('EscapeDirective', () => {
   let element: ElementRef;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       providers: [
         { provide: ElementRef, useClass: TestComponent }
       ]

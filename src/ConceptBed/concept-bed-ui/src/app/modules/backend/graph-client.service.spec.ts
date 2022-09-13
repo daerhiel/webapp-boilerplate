@@ -51,7 +51,7 @@ describe('GraphClientService', () => {
   let controller: HttpTestingController;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
       ]

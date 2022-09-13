@@ -7,7 +7,7 @@ describe('HistoryService', () => {
   let service: HistoryService;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ]

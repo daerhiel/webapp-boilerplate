@@ -43,7 +43,7 @@ describe('GraphPicturePipe', () => {
   let controller: HttpTestingController;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         TestComponent,
         GraphPicturePipe

@@ -12,22 +12,21 @@ import { Subscriptions } from '@modules/services/services.module';
 })
 export class PortalComponent implements OnDestroy {
   private readonly _subscriptions: Subscriptions = new Subscriptions();
-  private readonly _routeLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private routeLoading: number = 0;
 
-  isRouteLoading: boolean = false;
-
-  get isRouteLoading$(): Observable<boolean> { return this._routeLoading.asObservable(); }
+  private readonly _isRouteLoading = new BehaviorSubject<boolean>(false);
+  get isRouteLoading$(): Observable<boolean> { return this._isRouteLoading.asObservable(); }
+  get isRouteLoading(): boolean { return this._isRouteLoading.value; }
 
   constructor(private router: Router) {
     this._subscriptions.subscribe(this.router.events.pipe(tap(event => {
       if (event instanceof RouteConfigLoadStart) {
         if (++this.routeLoading === 1) {
-          this._routeLoading.next(this.isRouteLoading = true);
+          this._isRouteLoading.next(true);
         }
       } else if (event instanceof RouteConfigLoadEnd) {
         if (this.routeLoading-- === 1) {
-          this._routeLoading.next(this.isRouteLoading = false);
+          this._isRouteLoading.next(false);
         }
       }
     })));
@@ -35,6 +34,6 @@ export class PortalComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
-    this._routeLoading.complete();
+    this._isRouteLoading.complete();
   }
 }
