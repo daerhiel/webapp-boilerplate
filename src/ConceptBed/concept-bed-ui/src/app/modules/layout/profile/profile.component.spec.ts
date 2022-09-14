@@ -1,23 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { By } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
-import { EndSessionRequest, PublicClientApplication } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 
-import { graphApiMock, localAccountId, picture, user } from '@modules/backend/graph-client.service.spec';
-import { account, clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
-import { BackendModule } from '@modules/backend/backend.module';
+import { account, graphApiMock, localAccountId, msalServiceMock, picture, user } from '@modules/backend/graph-client.service.spec';
+import { clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
+import { BackendModule, GraphPicturePipe } from '@modules/backend/backend.module';
 import { ProfileComponent } from './profile.component';
-import { firstValueFrom, Observable, of, timer } from 'rxjs';
+import { firstValueFrom, timer } from 'rxjs';
 
-const msalServiceMock = jasmine.createSpyObj<MsalService>('MsalServiceMock', ['logoutRedirect'], {
-  instance: jasmine.createSpyObj<PublicClientApplication>('ClientApplication', { getAllAccounts: [account] })
-});
-
-fdescribe('ProfileComponent', () => {
+describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let controller: HttpTestingController;
@@ -37,20 +33,18 @@ fdescribe('ProfileComponent', () => {
       ],
       providers: [
         { provide: MsalService, useValue: msalServiceMock }
-      ],
-      teardown: {
-        destroyAfterEach: false
-      }
+      ]
     }).compileComponents();
     controller = TestBed.inject(HttpTestingController);
   });
 
   beforeEach(() => {
+    clearGraphPipeCache();
+
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    clearGraphPipeCache();
     graphApiMock(controller, user, 'me');
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
     fixture.detectChanges();
@@ -68,11 +62,25 @@ fdescribe('ProfileComponent', () => {
 
     expect(account).toEqual(account);
 
-    const title: HTMLElement = fixture.nativeElement.querySelector('mat-card-title');
-    expect(title.innerHTML).toEqual(account.name);
+    const title = fixture.debugElement.query(By.css('mat-card-title'));
+    expect(title.nativeElement.innerHTML).toEqual(account.name);
 
-    const subtitle: HTMLElement = fixture.nativeElement.querySelector('mat-card-subtitle');
-    expect(subtitle.innerHTML).toEqual(account.username);
+    const subtitle = fixture.debugElement.query(By.css('mat-card-subtitle'));
+    expect(subtitle.nativeElement.innerHTML).toEqual(account.username);
+  });
+
+  it('should display current user picture', async () => {
+    while (await firstValueFrom(component.isLoading$)) {
+      await (firstValueFrom(timer(100)));
+    }
+    fixture.detectChanges();
+
+    await firstValueFrom(GraphPicturePipe.get(account));
+    fixture.detectChanges();
+
+    const img = fixture.debugElement.query(By.css('img'));
+    expect(img.nativeElement).not.toBeNull();
+    expect(img.nativeElement.src).toMatch(/^blob:http:/i);
   });
 
   it('should load profile', async () => {
@@ -94,10 +102,10 @@ fdescribe('ProfileComponent', () => {
     }
     fixture.detectChanges();
 
-    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[mat-button]#logout');
-    expect(button).toBeTruthy();
+    const button = fixture.debugElement.query(By.css('button[mat-button]#logout'));
+    expect(button.nativeElement).toBeTruthy();
 
-    button.click();
+    button.nativeElement.click();
     fixture.detectChanges();
 
     expect(msalServiceMock.logoutRedirect).toHaveBeenCalled();

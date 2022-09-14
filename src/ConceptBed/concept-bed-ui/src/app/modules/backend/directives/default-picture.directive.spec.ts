@@ -1,5 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { Component, DebugElement, ElementRef } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 import { DefaultPictureDirective } from './default-picture.directive';
 
@@ -21,19 +22,18 @@ describe('DefaultPictureDirective', () => {
     }).compileComponents();
   });
 
-  it('should create an instance', inject([ElementRef<HTMLIFrameElement>], (element: ElementRef<HTMLImageElement>) => {
+  it('should create an instance', inject([ElementRef<HTMLImageElement>], (element: ElementRef<HTMLImageElement>) => {
     const directive = new DefaultPictureDirective(element);
     expect(directive).toBeTruthy();
   }));
 
   it('should set default picture url', async () => {
     const fixture = TestBed.createComponent(TestComponent);
-    const element: HTMLElement = fixture.nativeElement;
 
-    const img = element.querySelector('img');
+    const img = fixture.debugElement.query(By.directive(DefaultPictureDirective));
     expect(img).not.toBeNull();
 
-    new DebugElement(img!).triggerEventHandler('error');
-    expect(img!.src).toMatch(/assets\/images\/default-profile.jpg$/i);
+    img.triggerEventHandler('error');
+    expect(img.nativeElement.src).toMatch(/assets\/images\/default-profile.jpg$/i);
   });
 });

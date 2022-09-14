@@ -1,5 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { MsalService } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 import { firstValueFrom } from 'rxjs';
 
 import * as uuid from 'uuid';
@@ -23,6 +25,15 @@ export const user = {
   preferredLanguage: null,
   '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity'
 }
+export const account = {
+  homeAccountId: `${uuid.v4()}.${uuid.v4()}`,
+  environment: 'login.windows.net', tenantId, username, localAccountId, name: 'User Name'
+};
+
+export const msalServiceMock = jasmine.createSpyObj<MsalService>('MsalServiceMock', ['logoutRedirect'], {
+  instance: jasmine.createSpyObj<PublicClientApplication>('ClientApplication', { getAllAccounts: [account] })
+});
+
 export const picture = buildPicture();
 
 function buildPicture(): Blob {

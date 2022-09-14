@@ -2,28 +2,22 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeValue } from '@angular/platform-browser';
+import { By, DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AccountInfo } from '@azure/msal-browser';
-import { firstValueFrom, Observable } from 'rxjs';
-
-import * as uuid from 'uuid';
+import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@environments/environment';
+import { CacheInstance } from '@modules/services/services.module';
 import { GraphClientService } from '../graph-client.service';
-import { graphApiMock, localAccountId, picture, tenantId, username } from '../graph-client.service.spec';
+import { account, graphApiMock, localAccountId, picture } from '../graph-client.service.spec';
 import { GraphPicturePipe } from './graph-picture.pipe';
 import { buildUrl } from '../structure/url-utilities';
 
-export const account = {
-  homeAccountId: `${uuid.v4()}.${uuid.v4()}`,
-  environment: 'login.windows.net', tenantId, username, localAccountId, name: 'User Name'
-};
-
 export function clearGraphPipeCache(): void {
-  const cache: { [id: string]: Observable<Blob | string | SafeValue> } = (GraphPicturePipe as any).cache;
+  const cache: CacheInstance<SafeUrl | undefined> = (GraphPicturePipe as any)._cache;
   if (cache) {
     for (const id in cache) {
-      delete cache[id];
+      cache[id] = undefined!;
     }
   }
 }
@@ -56,6 +50,10 @@ describe('GraphPicturePipe', () => {
     controller = TestBed.inject(HttpTestingController);
   });
 
+  beforeEach(() => {
+    clearGraphPipeCache();
+  });
+
   afterEach(() => {
     controller.verify();
   });
@@ -66,8 +64,6 @@ describe('GraphPicturePipe', () => {
   }));
 
   it('should transform invalid account to undefined', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
-    clearGraphPipeCache();
-
     const pipe = new GraphPicturePipe(graph, sanitizer);
     const promise = firstValueFrom(pipe.transform(null));
 
@@ -76,8 +72,6 @@ describe('GraphPicturePipe', () => {
   }));
 
   it('should transform account info into a picture', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
-    clearGraphPipeCache();
-
     const pipe = new GraphPicturePipe(graph, sanitizer);
     const promise = firstValueFrom(pipe.transform(account));
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
@@ -87,8 +81,6 @@ describe('GraphPicturePipe', () => {
   }));
 
   it('should transform account info from cached picture', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
-    clearGraphPipeCache();
-
     const pipe = new GraphPicturePipe(graph, sanitizer);
     const promise1 = firstValueFrom(pipe.transform(account));
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
@@ -104,20 +96,16 @@ describe('GraphPicturePipe', () => {
   }));
 
   it('should set picture to component', async () => {
-    clearGraphPipeCache();
-
     const fixture = TestBed.createComponent(TestComponent);
-    const element: HTMLElement = fixture.nativeElement;
-
     fixture.detectChanges();
 
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
 
+    await firstValueFrom(GraphPicturePipe.get(account));
     fixture.detectChanges();
-    await fixture.whenStable();
 
-    const img = element.querySelector('img');
-    expect(img).not.toBeNull();
-    expect(img!.src).toMatch(/^blob:http:/i);
+    const img = fixture.debugElement.query(By.css('img'));
+    expect(img.nativeElement).not.toBeNull();
+    expect(img.nativeElement.src).toMatch(/^blob:http:/i);
   });
 });
