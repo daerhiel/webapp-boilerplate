@@ -17,6 +17,7 @@ describe('DashboardComponent', () => {
   let fixture: ComponentFixture<DashboardComponent>;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       imports: [
         HttpClientModule,

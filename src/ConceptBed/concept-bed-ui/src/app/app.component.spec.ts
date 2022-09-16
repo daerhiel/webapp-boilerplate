@@ -11,6 +11,7 @@ import { LayoutModule } from './modules/layout/layout.module';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  document.body.classList.add('mat-typography');
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [

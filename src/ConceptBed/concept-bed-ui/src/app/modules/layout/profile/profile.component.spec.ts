@@ -19,6 +19,7 @@ describe('ProfileComponent', () => {
   let controller: HttpTestingController;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,

@@ -7,6 +7,7 @@ describe('FooterComponent', () => {
   let fixture: ComponentFixture<FooterComponent>;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       declarations: [
         FooterComponent

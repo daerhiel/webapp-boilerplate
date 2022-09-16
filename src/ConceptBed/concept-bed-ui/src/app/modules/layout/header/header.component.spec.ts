@@ -22,6 +22,7 @@ describe('HeaderComponent', () => {
   let controller: HttpTestingController;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -34,10 +35,7 @@ describe('HeaderComponent', () => {
       declarations: [HeaderComponent],
       providers: [
         { provide: MsalService, useValue: msalServiceMock }
-      ],
-      teardown: {
-        destroyAfterEach: false
-      }
+      ]
     }).compileComponents();
     controller = TestBed.inject(HttpTestingController);
   });

@@ -8,6 +8,7 @@ describe('SidenavActionsComponent', () => {
   let fixture: ComponentFixture<SidenavActionsComponent>;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       imports: [
         MatListModule

@@ -25,6 +25,7 @@ describe('PortalComponent', () => {
   let fixture: ComponentFixture<PortalComponent>;
 
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
     await TestBed.configureTestingModule({
       imports: [
         TestComponent,
