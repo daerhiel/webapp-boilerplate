@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" role="banner">
-  <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="layout.toggleSidenav()">
+  <button mat-icon-button id="menu" aria-label="Example icon-button with menu icon" (click)="layout.toggleSidenav()">
     <mat-icon>menu</mat-icon>
   </button>
   <a mat-button [routerLink]="['']">{{title}}</a>
@@ -15,8 +15,8 @@
   <button mat-icon-button id="help" aria-label="Bring up the Angular Help" [routerLink]="['help']">
     <mat-icon>help</mat-icon>
   </button>
-  <a mat-icon-button #profile class="app-c-profile-picture" role="button" (click)="isProfileOpen = !isProfileOpen">
+  <a mat-icon-button id="profile" class="app-c-profile-picture" role="button" (click)="toggleProfile()">
     <img [src]="account | graph | async" title="{{account?.name}}" defaultPicture>
   </a>
-  <app-profile class="app-c-profile" [hidden]="!isProfileOpen" (escape)="onProfileEscape($event)"></app-profile>
+  <app-profile class="app-c-profile" *ngIf="isProfileOpen$ | async" (escape)="toggleProfile(false)"></app-profile>
 </mat-toolbar>
