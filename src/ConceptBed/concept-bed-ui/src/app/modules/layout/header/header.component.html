@@ -9,10 +9,10 @@
     <mat-chip color="accent" selected>Accent fish</mat-chip>
   </mat-chip-list>
   <span class="mat-spacer"></span>
-  <button mat-icon-button aria-label="Example icon-button with heart icon">
+  <button mat-icon-button id="favorite" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
   </button>
-  <button mat-icon-button aria-label="Bring up the Angular Help" [routerLink]="['help']">
+  <button mat-icon-button id="help" aria-label="Bring up the Angular Help" [routerLink]="['help']">
     <mat-icon>help</mat-icon>
   </button>
   <a mat-icon-button #profile class="app-c-profile-picture" role="button" (click)="isProfileOpen = !isProfileOpen">
