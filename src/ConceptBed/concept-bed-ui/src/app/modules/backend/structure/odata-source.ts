@@ -29,6 +29,7 @@ export class ODataSource<T> implements DataSource<T> {
   private _sort: MatSort | undefined;
   private $sort: Subscription | undefined;
 
+  readonly filter$: Observable<string | undefined> = this._filter.asObservable();
   readonly loading$: Observable<boolean> = this._loading.asObservable();
   readonly length$: Observable<number> = this._length.asObservable();
 
@@ -71,6 +72,10 @@ export class ODataSource<T> implements DataSource<T> {
       );
     })));
     this._subscriptions.subscribe(this._filter.pipe(skip(1), distinctUntilChanged(), debounceTime(300), tap(filter => {
+      if (this._paginator) {
+        this._paginator.pageIndex = 0;
+        this._current.page = { pageIndex: this._paginator.pageIndex, pageSize: this._paginator.pageSize, length: this._paginator.length };
+      }
       this.load(filter, this._current.page, this._current.sort)
     })));
   }
@@ -80,10 +85,10 @@ export class ODataSource<T> implements DataSource<T> {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<T[]> {
-    if (!!this._paginator) {
+    if (this._paginator) {
       this._current.page = { pageIndex: this._paginator.pageIndex, pageSize: this._paginator.pageSize, length: this._paginator.length };
     }
-    if (!!this._sort && !!this._sort.active) {
+    if (this._sort?.active) {
       this._current.sort = { active: this._sort.active, direction: this._sort.direction ?? this._sort.start }
     }
     this.load(this._filter.value, this._current.page, this._current.sort);
@@ -95,17 +100,17 @@ export class ODataSource<T> implements DataSource<T> {
 
   load(filter: string | undefined, page: PageEvent | null, sort: Sort | null): void {
     const query: ODataQuery<T> = {};
-    if (!!this.factory) {
+    if (this.factory) {
       const $filter = this.factory(filter);
-      if (!!$filter) {
+      if ($filter) {
         query.$filter = $filter;
       }
     }
-    if (!!page) {
+    if (page) {
       query.$top = page.pageSize;
       query.$skip = page.pageIndex * query.$top;
     }
-    if (!!sort) {
+    if (sort) {
       query.$orderby = `${sort.active} ${sort.direction}`;
     }
     this._requests.next(query);

@@ -61,7 +61,7 @@ export class ProblemDetails implements ProblemDetailsApi {
   }
 
   update(values?: DeepPartial<ProblemDetailsApi>): void {
-    if (!!values) {
+    if (values) {
       Object.assign<ProblemDetailsApi, DeepPartial<ProblemDetailsApi>>(this, values);
     }
   }

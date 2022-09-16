@@ -53,6 +53,7 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
 
     contentApiMock(controller, weathers, 'weatherforecast', [], { $top: 5, $skip: 0 });
+    fixture.detectChanges();
   });
 
   it('should create', () => {

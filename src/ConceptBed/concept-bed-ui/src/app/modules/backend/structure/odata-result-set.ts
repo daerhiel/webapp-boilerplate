@@ -27,7 +27,7 @@ export function convert<T, U extends T>(l: ODataResultSet<DeepPartial<T>>, callb
   return {
     offset: l.offset,
     count: l.count,
-    elements: l.elements.filter(x => !!x).map(callbackfn),
+    elements: l.elements.filter(x => x).map(callbackfn),
     nextLink: l.nextLink
   }
 }

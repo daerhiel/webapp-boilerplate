@@ -14,14 +14,14 @@ export class WeatherForecast implements WeatherForecastApi {
   }
 
   static buildQuery(term: string | undefined): string | undefined {
-    if (!!term) {
+    if (term) {
       term = `contains(summary,'${term}')`;
     }
     return term;
   }
 
   update(values?: DeepPartial<WeatherForecastApi>): void {
-    if (!!values) {
+    if (values) {
       Object.assign<WeatherForecast, DeepPartial<WeatherForecastApi>>(this, values);
       this.date = DataUtilities.of(values.date);
     }

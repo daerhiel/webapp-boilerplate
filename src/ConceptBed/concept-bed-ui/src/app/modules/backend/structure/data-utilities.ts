@@ -17,7 +17,7 @@ export class DataUtilities {
    * @param value The object value to check for compexity.
    */
   static isComplex(value: any): value is object {
-    return !!value && !DataUtilities.types.includes(typeof value);
+    return value && !DataUtilities.types.includes(typeof value);
   }
 
   /**
@@ -28,7 +28,7 @@ export class DataUtilities {
   static of(value: string | number | Date | DeepPartial<Date> | undefined, fallback?: Date): Date {
     if (typeof value === 'number' || typeof value === 'string') {
       return new Date(value);
-    } else if (!!value) {
+    } else if (value) {
       return value as Date;
     } else {
       return fallback as Date;

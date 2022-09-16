@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
@@ -10,7 +10,8 @@ import { DashboardService } from '../../dashboard.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'date', 'summary', 'temperature', 'status'];
@@ -18,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('dataPages', { static: true }) private dataPages?: MatPaginator;
   @ViewChild(MatSort, { static: true }) private dataSort?: MatSort;
 
-  data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x).pipe(
+  readonly data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x).pipe(
     guard(isResult),
   ), x => WeatherForecast.buildQuery(x));
 
