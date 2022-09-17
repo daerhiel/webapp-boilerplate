@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { MatListModule } from '@angular/material/list';
 
 import { SidenavActionsComponent } from './sidenav-actions.component';
@@ -27,5 +28,11 @@ describe('SidenavActionsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render actions header', () => {
+    const header = fixture.debugElement.query(By.css('a[mat-list-item]'));
+
+    expect(header.nativeElement).toBeTruthy();
   });
 });
