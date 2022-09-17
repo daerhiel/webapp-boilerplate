@@ -39,7 +39,7 @@ describe('ProfileComponent', () => {
     controller = TestBed.inject(HttpTestingController);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     clearGraphPipeCache();
 
     fixture = TestBed.createComponent(ProfileComponent);
@@ -48,6 +48,11 @@ describe('ProfileComponent', () => {
 
     graphApiMock(controller, user, 'me');
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
+    fixture.detectChanges();
+
+    while (await firstValueFrom(component.isLoading$)) {
+      await (firstValueFrom(timer(100)));
+    }
     fixture.detectChanges();
   });
 
@@ -60,11 +65,6 @@ describe('ProfileComponent', () => {
   });
 
   it('should display current user', async () => {
-    while (await firstValueFrom(component.isLoading$)) {
-      await (firstValueFrom(timer(100)));
-    }
-    fixture.detectChanges();
-
     expect(account).toEqual(account);
 
     const title = fixture.debugElement.query(By.css('mat-card-title'));
@@ -75,11 +75,6 @@ describe('ProfileComponent', () => {
   });
 
   it('should display current user picture', async () => {
-    while (await firstValueFrom(component.isLoading$)) {
-      await (firstValueFrom(timer(100)));
-    }
-    fixture.detectChanges();
-
     await firstValueFrom(GraphPicturePipe.get(account));
     fixture.detectChanges();
 
@@ -89,11 +84,6 @@ describe('ProfileComponent', () => {
   });
 
   it('should load profile', async () => {
-    while (await firstValueFrom(component.isLoading$)) {
-      await (firstValueFrom(timer(100)));
-    }
-    fixture.detectChanges();
-
     expect(account).toEqual(account);
 
     expect(await firstValueFrom(component.profile$)).toEqual(user);
@@ -102,11 +92,6 @@ describe('ProfileComponent', () => {
   });
 
   it('should run logout', async () => {
-    while (await firstValueFrom(component.isLoading$)) {
-      await (firstValueFrom(timer(100)));
-    }
-    fixture.detectChanges();
-
     const button = fixture.debugElement.query(By.css('button[mat-button]#logout'));
     expect(button.nativeElement).toBeTruthy();
 

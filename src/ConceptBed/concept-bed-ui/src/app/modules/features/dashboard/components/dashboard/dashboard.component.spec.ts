@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -45,12 +46,17 @@ describe('DashboardComponent', () => {
     controller = TestBed.inject(HttpTestingController);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
     contentApiMock(controller, weathers, 'weatherforecast', [], { $top: 5, $skip: 0 });
+    fixture.detectChanges();
+
+    while (await firstValueFrom(component.data.loading$)) {
+      await (firstValueFrom(timer(100)));
+    }
     fixture.detectChanges();
   });
 
@@ -77,11 +83,13 @@ describe('DashboardComponent', () => {
     expect(icon.nativeElement.innerHTML).toEqual('search');
   });
 
-  it('should render spinner on load', async () => {
-    while (await firstValueFrom(component.data.loading$)) {
-      await (firstValueFrom(timer(100)));
-    }
+  it('should render paginator', () => {
+    const paginator = fixture.debugElement.query(By.css('mat-paginator'));
 
+    expect(paginator.nativeElement).toBeTruthy();
+  });
+
+  it('should render spinner on load', async () => {
     const toolbar = fixture.debugElement.query(By.css('div#toolbar'));
     const search = toolbar.query(By.css('mat-form-field.search input[matInput]'));
     search.nativeElement.value = 'Free';
@@ -106,5 +114,36 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
 
     expect(toolbar.query(By.css('mat-spinner'))).toBeNull();
+  });
+
+  it('should render data table headers', async () => {
+    const table = fixture.debugElement.query(By.css('table[mat-table]'));
+
+    const header = table.query(By.css('thead > tr'))
+    for (const name of component.displayedColumns) {
+      const cell = header.query(By.css(`th[mat-header-cell].mat-column-${name}`));
+      const content = cell.query(By.css('div.mat-sort-header-container > div.mat-sort-header-content'));
+
+      expect(content.nativeElement.innerHTML.trim().toLowerCase()).toContain(name);
+    }
+  });
+
+  it('should render data table content', async () => {
+    const table = fixture.debugElement.query(By.css('table[mat-table]'));
+
+    const rows = table.queryAll(By.css('tbody > tr'))
+    expect(rows.length).toEqual(weathers.elements.length);
+
+    for (const name of component.displayedColumns) {
+      for (let i = 0; i < rows.length; i++) {
+        const cell = rows[i].query(By.css(`td[mat-cell].mat-column-${name}`));
+        let value = (weathers.elements[i] as any)[name];
+        if (value instanceof Date) {
+          value = new DatePipe('en').transform(value, 'medium');
+        }
+
+        expect(cell.nativeElement.innerHTML.trim()).toContain(value);
+      }
+    }
   });
 });

@@ -18,7 +18,7 @@ export const weatherId2 = uuid.v4();
 export const weatherId3 = uuid.v4();
 export const weathers: ODataResultSet<WeatherForecastApi> = {
   offset: 0,
-  count: 50,
+  count: 3,
   elements: [{
     id: weatherId1,
     date: new Date('2022-02-15T20:16:04.6253229Z'),
