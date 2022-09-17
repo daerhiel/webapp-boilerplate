@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,8 +11,12 @@ import { LayoutModule } from './modules/layout/layout.module';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  document.body.classList.add('mat-typography');
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
+    document.body.classList.add('mat-typography');
+
     await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -30,9 +34,17 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
+  });
+
+  it('should reference layout', () => {
+    expect(component.layout).toBeTruthy();
   });
 });

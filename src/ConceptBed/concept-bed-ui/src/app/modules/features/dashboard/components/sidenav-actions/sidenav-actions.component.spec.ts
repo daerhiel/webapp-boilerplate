@@ -10,6 +10,7 @@ describe('SidenavActionsComponent', () => {
 
   beforeEach(async () => {
     document.body.classList.add('mat-typography');
+
     await TestBed.configureTestingModule({
       imports: [
         MatListModule

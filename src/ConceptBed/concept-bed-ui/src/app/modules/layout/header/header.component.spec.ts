@@ -24,6 +24,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     document.body.classList.add('mat-typography');
+
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,

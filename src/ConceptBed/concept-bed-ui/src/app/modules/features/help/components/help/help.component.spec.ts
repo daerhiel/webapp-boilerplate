@@ -11,6 +11,7 @@ describe('HelpComponent', () => {
 
   beforeEach(async () => {
     document.body.classList.add('mat-typography');
+
     await TestBed.configureTestingModule({
       declarations: [
         HelpComponent
