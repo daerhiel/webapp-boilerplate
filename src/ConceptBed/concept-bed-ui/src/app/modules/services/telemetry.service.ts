@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApplicationInsights, DistributedTracingModes, IEventTelemetry, IExceptionTelemetry, IMetricTelemetry, IPageViewTelemetry, ITraceTelemetry } from '@microsoft/applicationinsights-web';
+import { ApplicationInsights, DistributedTracingModes, ICustomProperties, IEventTelemetry, IExceptionTelemetry, IMetricTelemetry, IPageViewTelemetry, ITraceTelemetry } from '@microsoft/applicationinsights-web';
 
 import { environment } from '@environments/environment';
 
@@ -30,19 +30,19 @@ export class TelemetryService {
     this.appInsights.trackPageView(telemetry);
   }
 
-  logEvent(telemetry: IEventTelemetry, properties?: { [key: string]: any }): void {
+  logEvent(telemetry: IEventTelemetry, properties?: ICustomProperties): void {
     this.appInsights.trackEvent(telemetry, properties);
   }
 
-  logMetric(telemetry: IMetricTelemetry, properties?: { [key: string]: any }): void {
+  logMetric(telemetry: IMetricTelemetry, properties?: ICustomProperties): void {
     this.appInsights.trackMetric(telemetry, properties);
   }
 
-  logException(telemetry: IExceptionTelemetry): void {
-    this.appInsights.trackException(telemetry);
+  logException(telemetry: IExceptionTelemetry, properties?: ICustomProperties): void {
+    this.appInsights.trackException(telemetry, properties);
   }
 
-  logTrace(telemetry: ITraceTelemetry, properties?: { [key: string]: any }): void {
+  logTrace(telemetry: ITraceTelemetry, properties?: ICustomProperties): void {
     this.appInsights.trackTrace(telemetry, properties);
   }
 }

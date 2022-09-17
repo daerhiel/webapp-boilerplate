@@ -7,7 +7,7 @@ import { TelemetryService } from './telemetry.service';
 const error = new Error('Error occurred');
 const telemetryMock = jasmine.createSpyObj<TelemetryService>('TelemetryService', ['logException']);
 
-fdescribe('ErrorHandlerService', () => {
+describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
 
   beforeEach(async () => {
