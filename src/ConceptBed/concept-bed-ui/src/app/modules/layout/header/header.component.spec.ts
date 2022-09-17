@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MsalService } from '@azure/msal-angular';
 import { firstValueFrom } from 'rxjs';
 
-import { account, graphApiMock, localAccountId, msalServiceMock, picture } from '@modules/backend/graph-client.service.spec';
+import { account, graphApiMock, localAccountId, msalServiceMock, picture, user } from '@modules/backend/graph-client.service.spec';
 import { clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
 import { BackendModule, GraphPicturePipe } from '@modules/backend/backend.module';
 import { LayoutService } from '../layout.service';
@@ -51,6 +51,10 @@ describe('HeaderComponent', () => {
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
     fixture.detectChanges();
   }));
+
+  afterEach(() => {
+    controller.verify();
+  });
 
   it('should create', async () => {
     expect(component).toBeTruthy();
@@ -128,10 +132,7 @@ describe('HeaderComponent', () => {
     const icon = link.query(By.css('img'));
 
     expect(icon.nativeElement).not.toBeNull();
-
-    const profile = fixture.debugElement.query(By.css('app-profile'));
-
-    expect(profile?.nativeElement).toBeUndefined();
+    expect(fixture.debugElement.query(By.css('app-profile'))).toBeNull();
   });
 
   it('should render toggle profile closed', async () => {
@@ -139,15 +140,13 @@ describe('HeaderComponent', () => {
     fixture.componentInstance.toggleProfile(true);
     await firstValueFrom(fixture.componentInstance.isProfileOpen$);
     fixture.detectChanges();
+    graphApiMock(controller, user, 'me');
 
     link.nativeElement.click();
     fixture.detectChanges()
 
     expect(await firstValueFrom(fixture.componentInstance.isProfileOpen$)).toBeFalse();
-
-    const profile = fixture.debugElement.query(By.css('app-profile'));
-
-    expect(profile?.nativeElement).toBeUndefined();
+    expect(fixture.debugElement.query(By.css('app-profile'))).toBeNull();
   });
 
   it('should render toggle profile open', async () => {
@@ -161,9 +160,11 @@ describe('HeaderComponent', () => {
 
     expect(await firstValueFrom(fixture.componentInstance.isProfileOpen$)).toBeTrue();
 
+    graphApiMock(controller, user, 'me');
+    fixture.detectChanges();
     const profile = fixture.debugElement.query(By.css('app-profile'));
 
-    expect(profile?.nativeElement).not.toBeUndefined();
+    expect(profile).not.toBeNull();
   });
 
   it('should close profile on click aside', async () => {
@@ -171,16 +172,14 @@ describe('HeaderComponent', () => {
     fixture.componentInstance.toggleProfile(true);
     await firstValueFrom(fixture.componentInstance.isProfileOpen$);
     fixture.detectChanges();
+    graphApiMock(controller, user, 'me');
 
     const menu = fixture.debugElement.query(By.css('button[mat-icon-button]#menu'))
     menu.nativeElement.click();
     fixture.detectChanges()
 
     expect(await firstValueFrom(fixture.componentInstance.isProfileOpen$)).toBeFalse();
-
-    const profile = fixture.debugElement.query(By.css('app-profile'));
-
-    expect(profile?.nativeElement).toBeUndefined();
+    expect(fixture.debugElement.query(By.css('app-profile'))).toBeNull();
   });
 
   it('should display current user picture', async () => {

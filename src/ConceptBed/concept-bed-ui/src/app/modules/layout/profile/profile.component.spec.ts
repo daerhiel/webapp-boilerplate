@@ -51,6 +51,10 @@ describe('ProfileComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    controller.verify();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
