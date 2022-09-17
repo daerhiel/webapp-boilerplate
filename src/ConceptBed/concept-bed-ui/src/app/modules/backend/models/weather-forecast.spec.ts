@@ -3,12 +3,11 @@ import { weatherId1, weatherId2, weathers } from '@modules/backend/content-api.s
 import { WeatherForecast } from './weather-forecast';
 
 describe('WeatherForecast', () => {
-
   beforeEach(() => {
     jasmine.addCustomEqualityTester(getEqualityTester(WeatherForecast));
   });
 
-  it('should create a default instance', () => {
+  it('should create an instance', () => {
     const actual = new WeatherForecast();
 
     expect(actual).toEqual({} as any);
