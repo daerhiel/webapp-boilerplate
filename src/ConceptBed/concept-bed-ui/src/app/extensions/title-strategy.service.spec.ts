@@ -1,10 +1,10 @@
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Router, Routes, TitleStrategy } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Title } from '@angular/platform-browser';
 
 import { TitleStrategyService } from './title-strategy.service';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   template: `<router-outlet></router-outlet>`

@@ -1,4 +1,3 @@
-import { SafeUrl } from '@angular/platform-browser';
 import { map, Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 

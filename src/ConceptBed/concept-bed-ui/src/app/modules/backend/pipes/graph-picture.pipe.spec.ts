@@ -1,15 +1,16 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { By, DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AccountInfo } from '@azure/msal-browser';
 import { firstValueFrom } from 'rxjs';
 
+import { account, localAccountId, picture } from '@app/spec/helpers';
+import { graphApiMock } from '@modules/backend/graph-client.service.spec';
 import { environment } from '@environments/environment';
 import { CacheInstance } from '@modules/services/services.module';
 import { GraphClientService } from '../graph-client.service';
-import { account, graphApiMock, localAccountId, picture } from '../graph-client.service.spec';
 import { GraphPicturePipe } from './graph-picture.pipe';
 import { buildUrl } from '../structure/url-utilities';
 

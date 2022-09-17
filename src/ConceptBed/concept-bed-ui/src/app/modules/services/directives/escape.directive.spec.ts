@@ -1,5 +1,5 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { EscapeDirective } from './escape.directive';

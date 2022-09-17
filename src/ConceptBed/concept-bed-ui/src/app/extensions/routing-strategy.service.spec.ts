@@ -1,7 +1,7 @@
+import { Component, OnDestroy, Type } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Component, OnDestroy, OnInit, Type } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouteReuseStrategy, Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { PersistanceMode, Persistent } from '@modules/services/models/persistent';
 import { RoutingStrategyService } from './routing-strategy.service';

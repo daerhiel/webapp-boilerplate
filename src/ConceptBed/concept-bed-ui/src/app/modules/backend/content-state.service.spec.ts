@@ -2,8 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { failure, weatherId2, weathers } from './content-api.service.spec';
-
+import { failure, weatherId2, weathers } from '@modules/backend/content-api.service.spec';
 import { environment } from '@environments/environment';
 import { BroadcastService, MessageType } from '@modules/services/services.module';
 import { ContentStateService } from './content-state.service';

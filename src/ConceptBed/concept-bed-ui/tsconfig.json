@@ -31,6 +31,9 @@
       ],
       "@environments/*": [
         "./src/environments/*"
+      ],
+      "@spec": [
+        "./src/app/spec"
       ]
     }
   },

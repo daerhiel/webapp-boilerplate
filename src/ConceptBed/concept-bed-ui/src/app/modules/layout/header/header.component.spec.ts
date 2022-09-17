@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MsalService } from '@azure/msal-angular';
 import { firstValueFrom } from 'rxjs';
 
-import { account, graphApiMock, localAccountId, msalServiceMock, picture, user } from '@modules/backend/graph-client.service.spec';
+import { account, localAccountId, msalServiceMock, picture } from '@app/spec/helpers';
+import { graphApiMock, user } from '@modules/backend/graph-client.service.spec';
 import { clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
 import { BackendModule, GraphPicturePipe } from '@modules/backend/backend.module';
 import { LayoutService } from '../layout.service';

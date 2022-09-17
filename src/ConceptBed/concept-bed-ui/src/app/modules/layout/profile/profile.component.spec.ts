@@ -7,7 +7,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MsalService } from '@azure/msal-angular';
 
-import { account, graphApiMock, localAccountId, msalServiceMock, picture, user } from '@modules/backend/graph-client.service.spec';
+import { account, localAccountId, msalServiceMock, picture } from '@app/spec/helpers';
+import { graphApiMock, user } from '@modules/backend/graph-client.service.spec';
 import { clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
 import { BackendModule, GraphPicturePipe } from '@modules/backend/backend.module';
 import { ProfileComponent } from './profile.component';
