@@ -26,7 +26,7 @@ describe('ContentStateService', () => {
     controller.verify();
   });
 
-  it('should be created', inject([ContentStateService], async (state: ContentStateService) => {
+  it('should create an instance', inject([ContentStateService], async (state: ContentStateService) => {
     expect(state).toBeTruthy();
   }));
 

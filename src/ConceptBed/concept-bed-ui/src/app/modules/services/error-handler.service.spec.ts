@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { SeverityLevel } from '@microsoft/applicationinsights-web';
 
+import { telemetryMock } from '@modules/services/telemetry.service.spec';
 import { ErrorHandlerService } from './error-handler.service';
 import { TelemetryService } from './telemetry.service';
 
 const error = new Error('Error occurred');
-const telemetryMock = jasmine.createSpyObj<TelemetryService>('TelemetryService', ['logException']);
 
 describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
@@ -19,11 +19,11 @@ describe('ErrorHandlerService', () => {
     service = TestBed.inject(ErrorHandlerService);
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should sends telemetry event on error', () => {
+  it('should send telemetry event on error', () => {
     const spy = spyOn(console, 'error');
     service.handleError(error);
 

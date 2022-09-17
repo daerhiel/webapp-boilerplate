@@ -6,11 +6,12 @@ describe('DashboardService', () => {
   let service: DashboardService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+    }).compileComponents();
     service = TestBed.inject(DashboardService);
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     expect(service).toBeTruthy();
   });
 });

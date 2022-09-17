@@ -48,7 +48,7 @@ describe('TitleStrategyService', () => {
     fixture = TestBed.createComponent(RoutingComponent);
   });
 
-  it('should be created', inject([Router], (router: Router) => {
+  it('should create an instance', inject([Router], (router: Router) => {
     expect(router.titleStrategy).toBeTruthy();
   }));
 

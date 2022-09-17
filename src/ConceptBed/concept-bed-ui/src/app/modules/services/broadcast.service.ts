@@ -22,24 +22,24 @@ export class BroadcastService implements OnDestroy {
     this._messages.complete();
   }
 
-  success(message: string, timeout: number = 12000, canClose: boolean = true): Message {
-    this.telemetry.logTrace({ message, severityLevel: SeverityLevel.Information });
-    return this.alert(MessageType.Success, message, timeout, canClose);
-  }
-
-  error(message: string, timeout: number = 12000, canClose: boolean = true): Message {
-    this.telemetry.logTrace({ message, severityLevel: SeverityLevel.Error });
-    return this.alert(MessageType.Error, message, timeout, canClose);
-  }
-
   message(message: string, timeout: number = 12000, canClose: boolean = true): Message {
     this.telemetry.logTrace({ message, severityLevel: SeverityLevel.Verbose });
     return this.alert(MessageType.Default, message, timeout, canClose);
   }
 
+  success(text: string, timeout: number = 12000, canClose: boolean = true): Message {
+    this.telemetry.logTrace({ message: text, severityLevel: SeverityLevel.Information });
+    return this.alert(MessageType.Success, text, timeout, canClose);
+  }
+
   warning(message: string, timeout: number = 12000, canClose: boolean = true): Message {
     this.telemetry.logTrace({ message, severityLevel: SeverityLevel.Warning });
     return this.alert(MessageType.Warning, message, timeout, canClose);
+  }
+
+  error(message: string, timeout: number = 12000, canClose: boolean = true): Message {
+    this.telemetry.logTrace({ message, severityLevel: SeverityLevel.Error });
+    return this.alert(MessageType.Error, message, timeout, canClose);
   }
 
   environment(message: string, timeout: number = 12000, canClose: boolean = true): Message {
@@ -52,8 +52,8 @@ export class BroadcastService implements OnDestroy {
     return this.alert(MessageType.Error, error?.error?.message ?? error?.message, timeout, canClose);
   }
 
-  alert(type: MessageType, message: string, timeout: number, canClose: boolean): Message {
-    const alert = new Message(type, message, timeout, canClose);
+  alert(type: MessageType, text: string, timeout: number, canClose: boolean): Message {
+    const alert = new Message(type, text, timeout, canClose);
     this._messages.next(alert);
     return alert;
   }

@@ -3,12 +3,15 @@ import { ApplicationInsights, ICustomProperties, IEventTelemetry, IExceptionTele
 
 import { TelemetryService } from './telemetry.service';
 
+export const telemetryMock = jasmine.createSpyObj<TelemetryService>('TelemetryService', ['logException', 'logTrace']);
+
 describe('TelemetryService', () => {
   let service: TelemetryService;
   let appInsights: ApplicationInsights;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+    }).compileComponents();
     service = TestBed.inject(TelemetryService);
   });
 
@@ -16,7 +19,7 @@ describe('TelemetryService', () => {
     appInsights = spyOnAllFunctions((service as any).appInsights as ApplicationInsights);
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     expect(service).toBeTruthy();
   });
 

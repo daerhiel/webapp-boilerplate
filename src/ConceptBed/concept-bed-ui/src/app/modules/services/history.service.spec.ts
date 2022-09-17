@@ -15,7 +15,7 @@ describe('HistoryService', () => {
     service = TestBed.inject(HistoryService);
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     expect(service).toBeTruthy();
   });
 });

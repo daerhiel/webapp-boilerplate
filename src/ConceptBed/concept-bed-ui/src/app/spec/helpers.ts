@@ -48,4 +48,3 @@ function buildPicture(): Blob {
   const [_, type, data] = /data:(\w+\/\w+);base64,([\w\/+=]+)/i.exec(canvas.toDataURL()) as string[];
   return new Blob([new Uint8Array(window.atob(data).split('').map(x => x.charCodeAt(0)))], { type: type })
 }
-

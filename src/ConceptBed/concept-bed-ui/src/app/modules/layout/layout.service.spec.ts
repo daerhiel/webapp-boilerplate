@@ -5,10 +5,11 @@ import { LayoutService } from './layout.service';
 
 describe('LayoutService', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+    }).compileComponents();
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     const service = TestBed.inject(LayoutService);
 
     expect(service).toBeTruthy();
