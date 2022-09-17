@@ -1,4 +1,4 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Component, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -10,27 +10,34 @@ import { DefaultPictureDirective } from './default-picture.directive';
 class TestComponent { }
 
 describe('DefaultPictureDirective', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let directive: DefaultPictureDirective;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         TestComponent,
         DefaultPictureDirective
-      ],
-      providers: [
-        { provide: ElementRef, useClass: TestComponent }
       ]
     }).compileComponents();
   });
 
-  it('should create an instance', inject([ElementRef<HTMLImageElement>], (element: ElementRef<HTMLImageElement>) => {
-    const directive = new DefaultPictureDirective(element);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const element = fixture.debugElement.query(By.directive(DefaultPictureDirective));
+    directive = element.injector.get(DefaultPictureDirective);
+  });
+
+  it('should create an instance', () => {
     expect(directive).toBeTruthy();
-  }));
+  });
 
   it('should set default picture url', async () => {
     const fixture = TestBed.createComponent(TestComponent);
 
-    const img = fixture.debugElement.query(By.directive(DefaultPictureDirective));
+    const img = fixture.debugElement.query(By.css('img[defaultPicture]'));
     expect(img).not.toBeNull();
 
     img.triggerEventHandler('error');
