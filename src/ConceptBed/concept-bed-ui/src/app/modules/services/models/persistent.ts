@@ -1,3 +1,5 @@
+import { Type } from "@angular/core";
+
 export enum PersistanceMode {
   Global,
   Parent
