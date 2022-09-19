@@ -19,7 +19,7 @@ export interface ODataFilterBuilderFn {
 export class ODataSource<T> implements DataSource<T> {
   private readonly _subscriptions: Subscriptions = new Subscriptions();
   private readonly _entries = new BehaviorSubject<T[]>([]);
-  private readonly _loading = new BehaviorSubject<boolean>(true); // TODO: Fugure out change detection issue (change to false).
+  private readonly _loading = new BehaviorSubject<boolean>(false);
   private readonly _length = new BehaviorSubject<number>(0);
   private readonly _filter = new BehaviorSubject<string | undefined>(undefined);
   private readonly _current: { page: PageEvent | null; sort: Sort | null; } = { page: null, sort: null };
@@ -32,6 +32,8 @@ export class ODataSource<T> implements DataSource<T> {
   readonly filter$: Observable<string | undefined> = this._filter.asObservable();
   readonly loading$: Observable<boolean> = this._loading.asObservable();
   readonly length$: Observable<number> = this._length.asObservable();
+
+  get observed(): boolean { return this._entries.observed; }
 
   get filter(): string | undefined { return this._filter.value; }
   set filter(value: string | undefined) { this._filter.next(value); }

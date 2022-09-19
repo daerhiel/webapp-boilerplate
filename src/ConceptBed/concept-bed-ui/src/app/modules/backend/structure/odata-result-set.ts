@@ -15,11 +15,11 @@ export interface ODataResultSet<T> {
   nextLink?: string;
 }
 
-export function create<T>(): ODataResultSet<T> {
+export function create<T>(elements: T[]): ODataResultSet<T> {
   return {
     offset: 0,
-    count: 0,
-    elements: []
+    count: elements.length,
+    elements
   }
 }
 
