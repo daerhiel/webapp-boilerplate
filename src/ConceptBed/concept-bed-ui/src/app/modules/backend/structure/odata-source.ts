@@ -2,11 +2,14 @@ import { CollectionViewer } from "@angular/cdk/collections";
 import { DataSource } from "@angular/cdk/table";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort, Sort } from "@angular/material/sort";
-import { BehaviorSubject, debounceTime, distinctUntilChanged, finalize, Observable, skip, Subject, Subscription, switchMap, tap } from "rxjs";
+import { BehaviorSubject, debounceTime, distinctUntilChanged, finalize, map, Observable, shareReplay, skip, Subject, Subscription, switchMap, tap } from "rxjs";
 
 import { Subscriptions } from "@modules/services/services.module";
 import { ODataQuery } from "./odata-query";
 import { ODataResultSet } from "./odata-result-set";
+
+type Values<T extends object> = keyof T;
+const properties: Values<ODataQuery<any>>[] = ["$filter", "$expand", "$orderby", "$top", "$skip"];
 
 export interface ODataEndpointFn<T> {
   (query: ODataQuery<T>): Observable<ODataResultSet<T>>;
@@ -16,24 +19,43 @@ export interface ODataFilterBuilderFn {
   (query: string | undefined): string | undefined;
 }
 
+export function queriesEqual<T>(x: ODataQuery<T>, y: ODataQuery<T>): boolean {
+  for (const name of properties) {
+    if (x[name as keyof ODataQuery<T>] !== y[name as keyof ODataQuery<T>]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export class ODataSource<T> implements DataSource<T> {
   private readonly _subscriptions: Subscriptions = new Subscriptions();
-  private readonly _entries = new BehaviorSubject<T[]>([]);
   private readonly _loading = new BehaviorSubject<boolean>(false);
   private readonly _length = new BehaviorSubject<number>(0);
   private readonly _filter = new BehaviorSubject<string | undefined>(undefined);
   private readonly _current: { page: PageEvent | null; sort: Sort | null; } = { page: null, sort: null };
-  private readonly _requests: Subject<ODataQuery<T>> = new Subject();
+  private readonly _requests = new BehaviorSubject<ODataQuery<T>>(this.getRequest());
   private _paginator: MatPaginator | undefined;
   private $paginator: Subscription | undefined;
   private _sort: MatSort | undefined;
   private $sort: Subscription | undefined;
 
-  readonly filter$: Observable<string | undefined> = this._filter.asObservable();
-  readonly loading$: Observable<boolean> = this._loading.asObservable();
-  readonly length$: Observable<number> = this._length.asObservable();
+  private readonly entries$: Observable<T[]> = this._requests.pipe(
+    distinctUntilChanged(queriesEqual),
+    switchMap(query => {
+      this._loading.next(true);
+      return this.endpoint(query).pipe(
+        map(x => {
+          this._length.next(x.count);
+          return x.elements;
+        }),
+        finalize(() => this._loading.next(false))
+      );
+    }), shareReplay(1));
 
-  get observed(): boolean { return this._entries.observed; }
+  readonly filter$: Observable<string | undefined> = this._filter.asObservable();
+  readonly length$: Observable<number> = this._length.asObservable();
+  readonly loading$: Observable<boolean> = this._loading.asObservable();
 
   get filter(): string | undefined { return this._filter.value; }
   set filter(value: string | undefined) { this._filter.next(value); }
@@ -45,7 +67,7 @@ export class ODataSource<T> implements DataSource<T> {
       this._paginator = value;
       this.$paginator = this._paginator?.page.pipe(tap(page => {
         this._current.page = page;
-        this.load(this._filter.value, page, this._current.sort);
+        this._requests.next(this.getRequest());
       })).subscribe();
     }
   }
@@ -57,29 +79,39 @@ export class ODataSource<T> implements DataSource<T> {
       this._sort = value;
       this.$sort = this._sort?.sortChange.pipe(tap(sort => {
         this._current.sort = sort;
-        this.load(this._filter.value, this._current.page, sort);
+        this._requests.next(this.getRequest());
       })).subscribe();
     }
   }
 
   constructor(private readonly endpoint: ODataEndpointFn<T>, private readonly factory?: ODataFilterBuilderFn) {
-    this._subscriptions.subscribe(this._requests.pipe(switchMap(query => {
-      this._loading.next(true);
-      return this.endpoint(query).pipe(
-        tap(x => {
-          this._length.next(x.count);
-          this._entries.next(x.elements);
-        }),
-        finalize(() => this._loading.next(false))
-      );
-    })));
     this._subscriptions.subscribe(this._filter.pipe(skip(1), distinctUntilChanged(), debounceTime(300), tap(filter => {
-      if (this._paginator) {
-        this._paginator.pageIndex = 0;
-        this._current.page = { pageIndex: this._paginator.pageIndex, pageSize: this._paginator.pageSize, length: this._paginator.length };
+      if (this._paginator && this._current.page) {
+        this._paginator.pageIndex = this._current.page.pageIndex = 0;
       }
-      this.load(filter, this._current.page, this._current.sort)
+      this._requests.next(this.getRequest());
     })));
+  }
+
+  private getRequest(): ODataQuery<T> {
+    const query: ODataQuery<T> = {};
+    let filter = this._filter.value;
+    if (filter && this.factory) {
+      filter = this.factory(filter);
+    }
+    if (filter) {
+      query.$filter = filter;
+    }
+    const page = this._current.page;
+    if (page) {
+      query.$top = page.pageSize;
+      query.$skip = page.pageIndex * query.$top;
+    }
+    const sort = this._current.sort;
+    if (sort) {
+      query.$orderby = `${sort.active} ${sort.direction}`;
+    }
+    return query;
   }
 
   complete() {
@@ -88,33 +120,22 @@ export class ODataSource<T> implements DataSource<T> {
 
   connect(collectionViewer: CollectionViewer): Observable<T[]> {
     if (this._paginator) {
-      this._current.page = { pageIndex: this._paginator.pageIndex, pageSize: this._paginator.pageSize, length: this._paginator.length };
+      this._current.page = {
+        pageIndex: this._paginator.pageIndex,
+        pageSize: this._paginator.pageSize,
+        length: this._paginator.length
+      };
     }
     if (this._sort?.active) {
-      this._current.sort = { active: this._sort.active, direction: this._sort.direction ?? this._sort.start }
+      this._current.sort = {
+        active: this._sort.active,
+        direction: this._sort.direction ?? this._sort.start
+      }
     }
-    this.load(this._filter.value, this._current.page, this._current.sort);
-    return this._entries.asObservable();
+    this._requests.next(this.getRequest());
+    return this.entries$;
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
-  }
-
-  load(filter: string | undefined, page: PageEvent | null, sort: Sort | null): void {
-    const query: ODataQuery<T> = {};
-    if (this.factory) {
-      const $filter = this.factory(filter);
-      if ($filter) {
-        query.$filter = $filter;
-      }
-    }
-    if (page) {
-      query.$top = page.pageSize;
-      query.$skip = page.pageIndex * query.$top;
-    }
-    if (sort) {
-      query.$orderby = `${sort.active} ${sort.direction}`;
-    }
-    this._requests.next(query);
   }
 }

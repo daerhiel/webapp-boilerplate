@@ -36,8 +36,9 @@ describe('ODataSource', () => {
     }))).pipe(delay(100)));
   });
 
-  it('should create an instance', () => {
+  it('should create an instance', async () => {
     expect(source).toBeTruthy();
+    expect(await firstValueFrom(source.loading$)).toBeFalse();
   });
 
   it('should detect datasource instance', () => {
@@ -46,38 +47,26 @@ describe('ODataSource', () => {
 
   it('should connect to datasource', async () => {
     const connection = source.connect(viewer);
-    subscriptions.subscribe(connection);
 
     expect(connection).toBeTruthy();
-    expect(source.observed).toBeTrue();
-    expect(await firstValueFrom(source.loading$)).toBeTrue();
   });
 
-  it('should disconnect from datasource', async () => {
+  it('should not load on connect', async () => {
     const connection = source.connect(viewer);
-    subscriptions.subscribe(connection);
-    subscriptions.unsubscribe();
 
-    while (await firstValueFrom(source.loading$)) {
-      await (firstValueFrom(timer(100)));
-    }
-
-    expect(source.observed).toBeFalse();
+    expect(connection).toBeTruthy();
     expect(await firstValueFrom(source.loading$)).toBeFalse();
+    expect(await firstValueFrom(source.length$)).toEqual(0);
   });
 
-  it('should send loading on connect', async () => {
-    expect(await firstValueFrom(source.loading$)).toBeFalse();
-
+  it('should load on connection subscribe', async () => {
     const connection = source.connect(viewer);
     subscriptions.subscribe(connection);
 
     expect(await firstValueFrom(source.loading$)).toBeTrue();
-
     while (await firstValueFrom(source.loading$)) {
       await (firstValueFrom(timer(100)));
     }
-
     expect(await firstValueFrom(source.loading$)).toBeFalse();
   });
 
@@ -89,19 +78,24 @@ describe('ODataSource', () => {
       await (firstValueFrom(timer(100)));
     }
 
-    const request = firstValueFrom(connection);
-    expect(await request).toEqual(content);
+    expect(await firstValueFrom(connection)).toEqual(content);
+    expect(await firstValueFrom(source.length$)).toEqual(content.length);
   });
 
   it('should filter data', async () => {
+    const filter = '5';
     const connection = source.connect(viewer);
     subscriptions.subscribe(connection);
+    source.filter = filter;
 
+    await (firstValueFrom(timer(300)));
     while (await firstValueFrom(source.loading$)) {
       await (firstValueFrom(timer(100)));
     }
 
     const request = firstValueFrom(connection);
-    expect(await request).toEqual(content);
+    const result = content.filter(x => x.text.includes(filter));
+    expect(await request).toEqual(result);
+    expect(await firstValueFrom(source.length$)).toEqual(result.length);
   });
 });
