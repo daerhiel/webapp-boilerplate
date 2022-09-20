@@ -120,17 +120,12 @@ export class ODataSource<T> implements DataSource<T> {
 
   connect(collectionViewer: CollectionViewer): Observable<T[]> {
     if (this._paginator) {
-      this._current.page = {
-        pageIndex: this._paginator.pageIndex,
-        pageSize: this._paginator.pageSize,
-        length: this._paginator.length
-      };
+      const { pageIndex, pageSize, length } = this._paginator;
+      this._current.page = { pageIndex, pageSize, length };
     }
     if (this._sort?.active) {
-      this._current.sort = {
-        active: this._sort.active,
-        direction: this._sort.direction ?? this._sort.start
-      }
+      const { active, direction } = this._sort;
+      this._current.sort = { active, direction: direction ?? this._sort.start }
     }
     this._requests.next(this.getRequest());
     return this.entries$;

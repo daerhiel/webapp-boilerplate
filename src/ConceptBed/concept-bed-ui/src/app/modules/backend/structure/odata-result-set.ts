@@ -15,12 +15,12 @@ export interface ODataResultSet<T> {
   nextLink?: string;
 }
 
-export function create<T>(elements: T[]): ODataResultSet<T> {
+export function create<T>(elements: T[], top?: number, skip: number = 0): ODataResultSet<T> {
   return {
-    offset: 0,
+    offset: skip,
     count: elements.length,
-    elements
-  }
+    elements: elements.slice(skip, top ?? elements.length)
+  };
 }
 
 export function convert<T, U extends T>(l: ODataResultSet<DeepPartial<T>>, callbackfn: (value: DeepPartial<T>, index: number, array: DeepPartial<T>[]) => U): ODataResultSet<U> {
@@ -29,5 +29,5 @@ export function convert<T, U extends T>(l: ODataResultSet<DeepPartial<T>>, callb
     count: l.count,
     elements: l.elements.filter(x => x).map(callbackfn),
     nextLink: l.nextLink
-  }
+  };
 }
