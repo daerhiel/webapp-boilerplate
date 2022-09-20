@@ -23,7 +23,7 @@ export function create<T>(elements: T[], top?: number, skip: number = 0): ODataR
   };
 }
 
-export function convert<T, U extends T>(l: ODataResultSet<DeepPartial<T>>, callbackfn: (value: DeepPartial<T>, index: number, array: DeepPartial<T>[]) => U): ODataResultSet<U> {
+export function convert<T, U>(l: ODataResultSet<DeepPartial<T>>, callbackfn: (value: DeepPartial<T>, index: number, array: DeepPartial<T>[]) => U): ODataResultSet<U> {
   return {
     offset: l.offset,
     count: l.count,

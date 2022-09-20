@@ -4,18 +4,10 @@ import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, firstValueFrom, Observable, of, timer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import * as uuid from 'uuid';
-
+import { content, Data } from './odata-result-set.spec';
 import { Subscriptions } from '@modules/services/services.module';
-import { create } from './odata-result-set';
 import { ODataSource } from './odata-source';
-
-interface Data {
-  index: number;
-  text: string;
-}
-
-const content: Data[] = [...Array(100).keys()].map(x => ({ index: x, text: uuid.v4() }));
+import { create } from './odata-result-set';
 
 class TestPaginator {
   pageIndex: number = 0;

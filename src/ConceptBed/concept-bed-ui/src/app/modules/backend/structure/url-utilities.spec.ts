@@ -13,6 +13,7 @@ describe('buildUrl', () => {
 
   it('should build controller / operation url', () => {
     const actual = buildUrl(baseUrl, 'controller', ['handle']);
+
     expect(actual).toEqual(`${baseUrl}/controller/handle`);
   });
 
