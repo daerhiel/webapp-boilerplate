@@ -14,8 +14,13 @@ export class NavigationTarget {
   component: Type<any> | null;
   routeConfig: Route | null;
 
-  get title(): string { return this.data[RouteTitle]}
-  get state(): any { return this.data['state']; }
+  get title(): string | undefined {
+    for (const key of Object.getOwnPropertySymbols(this.data)) {
+      return this.data[key];
+    }
+    return undefined;
+  }
+
   get path(): string[] { return [''].concat(this.segments.map(x => x.path)); }
 
   constructor(snapshot: ActivatedRouteSnapshot) {
@@ -54,9 +59,5 @@ export class NavigationTarget {
         this.routeConfig = snapshot.routeConfig;
       }
     }
-  }
-
-  buildTitle(): Observable<string> | Promise<string> {
-    return of("test");
   }
 }
