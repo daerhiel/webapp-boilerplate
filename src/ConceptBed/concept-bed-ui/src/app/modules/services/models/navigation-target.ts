@@ -1,12 +1,10 @@
 import { Type } from "@angular/core";
 import { ActivatedRouteSnapshot, Data, Route, UrlSegment } from "@angular/router";
-import { Observable, of } from "rxjs";
 
 export function getPath(snapshots: ActivatedRouteSnapshot[]): UrlSegment[] {
   return snapshots.reduce<UrlSegment[]>((x, y) => (x.push(...y.url), x), []);
 }
 
-const RouteTitle = Symbol('RouteTitle');
 export class NavigationTarget {
   private readonly segments: UrlSegment[];
   private data: Data;
@@ -14,19 +12,23 @@ export class NavigationTarget {
   component: Type<any> | null;
   routeConfig: Route | null;
 
-  get title(): string { return this.data[RouteTitle]}
-  get state(): any { return this.data['state']; }
+  get title(): string | undefined {
+    for (const key of Object.getOwnPropertySymbols(this.data)) {
+      return this.data[key];
+    }
+    return undefined;
+  }
+
   get path(): string[] { return [''].concat(this.segments.map(x => x.path)); }
 
   constructor(snapshot: ActivatedRouteSnapshot) {
-    if (snapshot) {
-      this.component = snapshot.component;
-      this.segments = getPath(snapshot.pathFromRoot);
-      this.data = snapshot.data;
-      this.routeConfig = snapshot.routeConfig;
-    } else {
-      throw new ReferenceError(`Unable initialize navigation target.`);
+    if (!snapshot) {
+      throw new ReferenceError(`Unable initialize navigation target: ${'snapshot'}.`);
     }
+    this.segments = getPath(snapshot.pathFromRoot);
+    this.component = snapshot.component;
+    this.routeConfig = snapshot.routeConfig;
+    this.data = snapshot.data;
   }
 
   isMatch(target: NavigationTarget | UrlSegment[] | undefined | null): boolean {
@@ -54,9 +56,5 @@ export class NavigationTarget {
         this.routeConfig = snapshot.routeConfig;
       }
     }
-  }
-
-  buildTitle(): Observable<string> | Promise<string> {
-    return of("test");
   }
 }
