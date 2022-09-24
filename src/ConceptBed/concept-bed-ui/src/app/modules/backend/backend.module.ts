@@ -17,6 +17,8 @@ export * from './graph/user-identity-api';
 export * from './models/weather-forecast';
 export * from './models/weather-forecast-api';
 
+export * from './resolvers/weather-resolver';
+
 export * from './structure/deep-partial';
 export * from './structure/odata-query';
 export * from './structure/odata-result-set';

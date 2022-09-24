@@ -61,6 +61,12 @@ export function contentApiMock(controller: HttpTestingController, result: any, r
   request.flush(result);
 }
 
+export function contentApiMockFailure(controller: HttpTestingController, root: string, actions?: string[], query?: UrlParams): void {
+  const request = controller.expectOne(buildUrl(environment.apiUrl, root, actions, query));
+  expect(request.request.method).toEqual('GET');
+  request.flush(failure, { status: failure.status, statusText: failure.title });
+}
+
 describe('ContentApiService', () => {
   let controller: HttpTestingController;
 

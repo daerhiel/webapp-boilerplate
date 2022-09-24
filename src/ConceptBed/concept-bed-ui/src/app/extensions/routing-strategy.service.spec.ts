@@ -47,7 +47,7 @@ class GlobalComponent implements OnDestroy {
   ngOnDestroy(): void { GlobalComponent.instances.splice(GlobalComponent.instances.findIndex(x => x === this), 1); }
 }
 
-function getSnapshot(router: Router, component: Type<any> | null): ActivatedRouteSnapshot {
+export function getSnapshot(router: Router, component: Type<any> | null): ActivatedRouteSnapshot {
   let snapshot = router.routerState.snapshot.root;
   while (snapshot.children.length > 0 && snapshot.component !== component) {
     snapshot = snapshot.children[0];

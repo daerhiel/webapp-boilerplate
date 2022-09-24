@@ -1,12 +1,14 @@
 import { DeepPartial } from "../structure/deep-partial";
 import { DataUtilities } from "../structure/data-utilities";
 import { WeatherForecastApi } from "./weather-forecast-api";
+import { WeatherLogEntryApi } from "./weather-log-entry-api";
 
 export class WeatherForecast implements WeatherForecastApi {
   id!: string;
   date!: Date;
   temperature!: number;
   summary!: string;
+  history?: WeatherLogEntryApi[] | null;
   status!: number;
 
   constructor(values: DeepPartial<WeatherForecastApi> = {}) {

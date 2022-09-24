@@ -21,7 +21,7 @@ namespace ConceptBed.Controllers
             _weatherForecast = weatherForecast ?? throw new ArgumentNullException(nameof(weatherForecast));
 
         [HttpGet("{id}")]
-        public async Task<WeatherForecast> Get([FromQuery] string id) => await _weatherForecast.FindAsync(id).ConfigureAwait(false);
+        public async Task<WeatherForecast> Get([FromRoute] Guid id) => await _weatherForecast.FindAsync(id).ConfigureAwait(false);
 
         [HttpGet]
         public async Task<ODataResultSet<WeatherForecast>> Query(ODataQueryOptions<WeatherForecast> options, CancellationToken cancellationToken) =>

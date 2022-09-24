@@ -4,7 +4,7 @@ using Ubiquity.Framework;
 namespace ConceptBed.Framework
 {
     /// <inheritdoc/>
-    public interface IWeatherForecastAdapter : IAdapter<string, WeatherForecast>
+    public interface IWeatherForecastAdapter : IAdapter<Guid, WeatherForecast>
     {
     }
 }

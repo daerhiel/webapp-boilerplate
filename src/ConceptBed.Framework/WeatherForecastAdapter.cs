@@ -6,7 +6,7 @@ using Ubiquity.Framework;
 namespace ConceptBed.Framework
 {
     /// <inheritdoc/>
-    public class WeatherForecastAdapter : Adapter<string, WeatherForecast, ConceptUnitOfWork<ConceptContext>>, IWeatherForecastAdapter
+    public class WeatherForecastAdapter : Adapter<Guid, WeatherForecast, ConceptUnitOfWork<ConceptContext>>, IWeatherForecastAdapter
     {
         /// <inheritdoc/>
         public WeatherForecastAdapter(ConceptUnitOfWork<ConceptContext> unitOfWork)

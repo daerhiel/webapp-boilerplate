@@ -6,6 +6,10 @@ export function isResult<T>(value: T | ProblemDetails): value is T {
   return value && !(value instanceof ProblemDetails);
 }
 
+export function problemDetails(title: string): ProblemDetails {
+  return new ProblemDetails({ type: 'internal', title, status: 100 });
+}
+
 export class ProblemDetails implements ProblemDetailsApi {
   /**
    * A URI reference [RFC3986] that identifies the problem type. This specification encourages that, when
