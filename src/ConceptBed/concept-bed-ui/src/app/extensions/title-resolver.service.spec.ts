@@ -52,7 +52,7 @@ describe('TitleResolverService', () => {
   it('should resolve title for root', inject([Router, Title], async (router: Router, title: Title) => {
     await router.navigate(['']);
     await fixture.whenStable();
-    expect(title.getTitle()).toEqual('Concept Bed');
+    expect(title.getTitle()).toEqual('Concept Bed - Home');
   }));
 
   it('should resolve title for child', inject([Router, Title], async (router: Router, title: Title) => {

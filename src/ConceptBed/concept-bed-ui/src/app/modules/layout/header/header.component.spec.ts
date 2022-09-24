@@ -11,11 +11,10 @@ import { account, localAccountId, msalServiceMock, picture } from '@app/spec/hel
 import { graphApiMock, user } from '@modules/backend/graph-client.service.spec';
 import { clearGraphPipeCache } from '@modules/backend/pipes/graph-picture.pipe.spec';
 import { BackendModule, GraphPicturePipe } from '@modules/backend/backend.module';
+import { TitleStrategyService } from '@app/extensions/title-strategy.service';
 import { LayoutService } from '../layout.service';
 import { LayoutModule } from '../layout.module';
 import { HeaderComponent } from './header.component';
-
-const appTitle = 'App Title';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -42,9 +41,8 @@ describe('HeaderComponent', () => {
     controller = TestBed.inject(HttpTestingController);
   });
 
-  beforeEach(inject([Title], (title: Title) => {
+  beforeEach(() => {
     clearGraphPipeCache();
-    title.setTitle(appTitle);
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
@@ -52,7 +50,7 @@ describe('HeaderComponent', () => {
 
     graphApiMock(controller, picture, 'users', [localAccountId, 'photo', '$value']);
     fixture.detectChanges();
-  }));
+  });
 
   afterEach(() => {
     controller.verify();
@@ -62,7 +60,7 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render home button with title', inject([Title], async (title: Title) => {
+  it('should render home button with title', async () => {
     const home = fixture.debugElement.query(By.css('a[mat-button]'));
 
     expect(home.nativeElement).not.toBeNull();
@@ -70,8 +68,8 @@ describe('HeaderComponent', () => {
     const wrapper = home.query(By.css('span.mat-button-wrapper'));
 
     expect(wrapper.nativeElement).not.toBeNull();
-    expect(wrapper.nativeElement.innerHTML).toEqual(title.getTitle());
-  }));
+    expect(wrapper.nativeElement.innerHTML).toEqual(TitleStrategyService.title);
+  });
 
   it('should render menu button', async () => {
     const favorites = fixture.debugElement.query(By.css('button[mat-icon-button]#menu'));
