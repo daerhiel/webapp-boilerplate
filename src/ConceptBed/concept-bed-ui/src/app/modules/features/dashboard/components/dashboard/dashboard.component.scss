@@ -7,4 +7,9 @@
   mat-spinner {
     margin-left: 4px;
   }
+
+  a[mat-flat-button] {
+    display: block;
+    margin: -8px;
+  }
 }

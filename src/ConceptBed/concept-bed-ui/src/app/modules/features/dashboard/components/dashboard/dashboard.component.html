@@ -9,7 +9,9 @@
   <table mat-table [dataSource]="data" matSort>
     <ng-container matColumnDef="id">
       <th mat-header-cell class="app-p-1r" *matHeaderCellDef mat-sort-header> Id. </th>
-      <td mat-cell class="app-p-1r" *matCellDef="let element"> {{element.id}} </td>
+      <td mat-cell class="app-p-1r" *matCellDef="let element">
+        <a mat-flat-button [routerLink]="[element.id]" [state]="{element}">{{element.id}}</a>
+      </td>
     </ng-container>
     <ng-container matColumnDef="date">
       <th mat-header-cell class="app-p-1r" *matHeaderCellDef mat-sort-header> Date </th>

@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { guard, Persistent } from '@modules/services/services.module';
+import { Container, guard, Persistent } from '@modules/services/services.module';
 import { ContentStateService, isResult, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
-@Persistent()
+@Persistent() @Container()
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

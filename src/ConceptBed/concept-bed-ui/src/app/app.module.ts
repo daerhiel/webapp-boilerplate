@@ -4,15 +4,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy, TitleStrategy } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 
 import { configuration, guards, interceptors } from '@environments/authentication';
 import { ErrorHandlerService } from '@modules/services/services.module';
 import { LayoutModule } from '@modules/layout/layout.module';
+import { RoutingStrategyService } from '@app/extensions/routing-strategy.service';
+import { TitleStrategyService } from '@app/extensions/title-strategy.service';
 import { AppRoutingModule } from './app-routing.module';
-import { RoutingStrategyService } from './extensions/routing-strategy.service';
-import { TitleStrategyService } from './extensions/title-strategy.service';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -23,6 +25,8 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     MatSidenavModule,
+    MatButtonModule,
+    MatChipsModule,
     AppRoutingModule,
     LayoutModule,
     MsalModule.forRoot(

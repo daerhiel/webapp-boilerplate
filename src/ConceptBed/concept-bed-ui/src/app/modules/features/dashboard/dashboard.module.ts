@@ -13,13 +13,17 @@ import { ServicesModule } from '@modules/services/services.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidenavActionsComponent } from './components/sidenav-actions/sidenav-actions.component';
+import { WeatherComponent } from './components/weather/weather.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 export * from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    SidenavActionsComponent
+    SidenavActionsComponent,
+    WeatherComponent
   ],
   imports: [
     ServicesModule,
@@ -31,7 +35,9 @@ export * from './components/dashboard/dashboard.component';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
+    MatButtonModule,
     MatIconModule,
+    MatCardModule,
     DashboardRoutingModule
   ]
 })
