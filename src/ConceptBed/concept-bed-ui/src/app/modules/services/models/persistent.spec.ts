@@ -13,7 +13,7 @@ class GlobalType { }
 class ParentType { }
 
 describe('Persistent', () => {
-  it('should create an instance', () => {
+  it('should create', () => {
     const decorator: (target: object) => void = Persistent();
 
     expect(decorator).toBeTruthy();

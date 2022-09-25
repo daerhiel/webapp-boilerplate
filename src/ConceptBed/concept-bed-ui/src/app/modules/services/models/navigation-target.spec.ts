@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NavigationTarget } from './navigation-target';
 
-describe('NavigationTarget', () => {
+fdescribe('NavigationTarget', () => {
   let route: ActivatedRoute;
 
   beforeEach(async () => {
@@ -14,6 +14,10 @@ describe('NavigationTarget', () => {
       ]
     }).compileComponents();
     route = TestBed.inject(ActivatedRoute);
+  });
+
+  it('should create', () => {
+    expect(new NavigationTarget(route.snapshot)).toBeTruthy();
   });
 
   it('should create an instance', () => {

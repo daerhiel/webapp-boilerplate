@@ -19,7 +19,7 @@ describe('TelemetryService', () => {
     appInsights = spyOnAllFunctions((service as any).appInsights as ApplicationInsights);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(service).toBeTruthy();
   });
 

@@ -3,11 +3,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { MatListModule } from '@angular/material/list';
 
-import { SidenavActionsComponent } from './sidenav-actions.component';
+import { DashboardActionsComponent } from './dashboard-actions.component';
 
 describe('SidenavActionsComponent', () => {
-  let component: SidenavActionsComponent;
-  let fixture: ComponentFixture<SidenavActionsComponent>;
+  let component: DashboardActionsComponent;
+  let fixture: ComponentFixture<DashboardActionsComponent>;
 
   beforeEach(async () => {
     document.body.classList.add('mat-typography');
@@ -18,13 +18,13 @@ describe('SidenavActionsComponent', () => {
         MatListModule
       ],
       declarations: [
-        SidenavActionsComponent
+        DashboardActionsComponent
       ]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SidenavActionsComponent);
+    fixture = TestBed.createComponent(DashboardActionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

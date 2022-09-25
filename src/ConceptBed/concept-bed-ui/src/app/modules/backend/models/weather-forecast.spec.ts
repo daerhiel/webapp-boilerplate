@@ -7,26 +7,26 @@ describe('WeatherForecast', () => {
     jasmine.addCustomEqualityTester(getEqualityTester(WeatherForecast));
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     const actual = new WeatherForecast();
 
     expect(actual).toEqual({} as any);
   });
 
-  it('should create an empty instance', () => {
+  it('should create from empty object', () => {
     const actual = new WeatherForecast({});
 
     expect(actual).toEqual({} as any);
   });
 
-  it('should create an instance', () => {
+  it('should create from object', () => {
     const weather = weathers.elements.find(x => x.id === weatherId2)
     const actual = new WeatherForecast(weather);
 
     expect(actual).toEqual(weather as any);
   });
 
-  it('should update an instance', () => {
+  it('should update', () => {
     const weather1 = weathers.elements.find(x => x.id === weatherId1)
     const weather2 = weathers.elements.find(x => x.id === weatherId2)
     const actual = new WeatherForecast(weather2);

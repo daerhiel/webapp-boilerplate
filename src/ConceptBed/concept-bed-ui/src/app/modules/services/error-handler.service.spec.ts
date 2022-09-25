@@ -19,7 +19,7 @@ describe('ErrorHandlerService', () => {
     service = TestBed.inject(ErrorHandlerService);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(service).toBeTruthy();
   });
 

@@ -83,7 +83,7 @@ describe('ContentApiService', () => {
     controller.verify();
   });
 
-  it('should create an instance', inject([ContentApiService], async (api: ContentApiService) => {
+  it('should create', inject([ContentApiService], async (api: ContentApiService) => {
     expect(api).toBeTruthy();
   }));
 

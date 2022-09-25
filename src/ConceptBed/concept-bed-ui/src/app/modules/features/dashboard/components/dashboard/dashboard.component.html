@@ -10,7 +10,7 @@
     <ng-container matColumnDef="id">
       <th mat-header-cell class="app-p-1r" *matHeaderCellDef mat-sort-header> Id. </th>
       <td mat-cell class="app-p-1r" *matCellDef="let element">
-        <a mat-flat-button [routerLink]="[element.id]" [state]="{element}">{{element.id}}</a>
+        <a mat-link [routerLink]="[element.id]" [state]="{element}">{{element.id}}</a>
       </td>
     </ng-container>
     <ng-container matColumnDef="date">
@@ -35,3 +35,4 @@
   </table>
   <mat-paginator #dataPages [length]="data.length$ | async" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </section>
+<router-outlet></router-outlet>

@@ -11,7 +11,7 @@ describe('DashboardService', () => {
     service = TestBed.inject(DashboardService);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(service).toBeTruthy();
   });
 });

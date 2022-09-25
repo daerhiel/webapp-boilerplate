@@ -20,7 +20,7 @@ describe('BroadastService', () => {
     service = TestBed.inject(BroadcastService);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(service).toBeTruthy();
   });
 

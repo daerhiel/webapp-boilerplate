@@ -48,7 +48,7 @@ describe('WeatherResolver', () => {
     controller.verify();
   });
 
-  it('should create an instance', inject([WeatherResolver], (resolver: WeatherResolver) => {
+  it('should create', inject([WeatherResolver], (resolver: WeatherResolver) => {
     expect(resolver).toBeTruthy();
   }));
 

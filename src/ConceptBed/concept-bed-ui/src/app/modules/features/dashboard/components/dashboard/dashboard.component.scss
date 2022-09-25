@@ -8,8 +8,12 @@
     margin-left: 4px;
   }
 
-  a[mat-flat-button] {
-    display: block;
-    margin: -8px;
+  a[mat-link] {
+    color: white;
+    text-decoration: none;
+
+    &:visited {
+      color: lightgrey;
+    }
   }
 }

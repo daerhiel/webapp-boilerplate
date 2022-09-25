@@ -1,7 +1,7 @@
 import { DataUtilities } from './data-utilities';
 
 describe('DataUtilities', () => {
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(new DataUtilities()).toBeTruthy();
   });
 });

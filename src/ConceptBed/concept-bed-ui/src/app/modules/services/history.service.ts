@@ -60,12 +60,21 @@ export class HistoryService implements OnDestroy {
     return [];
   }
 
+  /**
+   * Handles the navigation event received from the router and submits the respective navigation state changes.
+   * @param event The navigation event indicating the navigation is ended.
+   */
   private handleNavigation(event: NavigationEnd): void {
     let current: ActivatedRoute | undefined = this.route;
+
+    /**
+     * The @const segments should contain the list of currently activated nested segment sequence bound to components.
+     * The @var segment should be the topmost segment in that sequence.
+     */
     let segment: NavigationTarget | undefined;
     const segments: NavigationTarget[] = [];
     do {
-      if (current?.outlet === 'primary' && current.routeConfig && current.snapshot) {
+      if (current.outlet === 'primary' && current.routeConfig && current.snapshot) {
         segment = segments.find(x => x.isMatch(getPath(current!.snapshot.pathFromRoot)));
         if (segment) {
           segment.update(current.snapshot);
@@ -73,8 +82,13 @@ export class HistoryService implements OnDestroy {
           segments.push(segment = new NavigationTarget(current.snapshot));
         }
       }
-      current = current?.children.find(x => x.outlet === 'primary');
+      current = current.children.find(x => x.outlet === 'primary');
     } while (current);
+
+    /**
+     * We should handle the list of navigation transitions as if we move inside the contained loop. The navigations
+     * leading to the existing item in the past in the same container should be discarded. TODO: Should I do this? The criteria is sketchy.
+     */
     if (segment) {
       const index = this.getLastSegmentIndex(segment);
       if (index < 0 || segments.length <= 2) {

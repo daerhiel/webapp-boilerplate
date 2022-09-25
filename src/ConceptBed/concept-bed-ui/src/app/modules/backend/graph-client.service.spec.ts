@@ -40,7 +40,7 @@ describe('GraphClientService', () => {
     controller.verify();
   });
 
-  it('should create an instance', inject([GraphClientService], async (graph: GraphClientService) => {
+  it('should create', inject([GraphClientService], async (graph: GraphClientService) => {
     expect(graph).toBeTruthy();
   }));
 

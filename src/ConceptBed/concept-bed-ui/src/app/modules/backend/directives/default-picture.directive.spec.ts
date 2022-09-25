@@ -30,7 +30,7 @@ describe('DefaultPictureDirective', () => {
     directive = element.injector.get(DefaultPictureDirective);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(directive).toBeTruthy();
   });
 

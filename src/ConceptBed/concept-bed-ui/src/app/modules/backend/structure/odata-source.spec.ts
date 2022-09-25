@@ -85,7 +85,7 @@ describe('ODataSource', () => {
     });
   });
 
-  it('should create an instance', async () => {
+  it('should create', async () => {
     expect(source).toBeTruthy();
     expect(await firstValueFrom(source.loading$)).toBeFalse();
   });

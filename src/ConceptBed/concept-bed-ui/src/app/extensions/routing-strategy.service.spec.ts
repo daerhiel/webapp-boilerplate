@@ -107,7 +107,7 @@ describe('RoutingStrategyService', () => {
     fixture = TestBed.createComponent(RoutingComponent);
   });
 
-  it('should create an instance', inject([Router], (router: Router) => {
+  it('should create', inject([Router], (router: Router) => {
     expect(router.routeReuseStrategy).toBeInstanceOf(RoutingStrategyService);
   }));
 

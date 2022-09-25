@@ -9,25 +9,25 @@ describe('ProblemDetails', () => {
     jasmine.addCustomEqualityTester(getEqualityTester(ProblemDetails));
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     const actual = new ProblemDetails();
 
     expect(actual).toEqual({} as any);
   });
 
-  it('should create an empty instance', () => {
+  it('should create from empty object', () => {
     const actual = new ProblemDetails({});
 
     expect(actual).toEqual({} as any);
   });
 
-  it('should create an instance', () => {
+  it('should create from object', () => {
     const actual = new ProblemDetails(failure);
 
     expect(actual).toEqual(failure as any);
   });
 
-  it('should update an instance', () => {
+  it('should update', () => {
     const actual = new ProblemDetails(failure);
     const update: DeepPartial<ProblemDetailsApi> = {
       title: "An internal error occurred while processing your request.",

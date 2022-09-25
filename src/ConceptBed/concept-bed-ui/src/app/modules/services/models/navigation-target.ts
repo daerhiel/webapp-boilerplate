@@ -31,22 +31,44 @@ export class NavigationTarget {
     this.data = snapshot.data;
   }
 
-  isMatch(target: NavigationTarget | UrlSegment[] | undefined | null): boolean {
-    if (target instanceof NavigationTarget) {
-      target = target.segments;
+  /**
+   * Check id the navigation target is has the same location information or it is in the same location.
+   * @param navigation The navigation or location to check the current navigation against.
+   * @returns True if the location of a current navigation is the same; otherwise, false.
+   */
+  isMatch(navigation: NavigationTarget | UrlSegment[] | null | undefined): boolean {
+    if (navigation instanceof NavigationTarget) {
+      navigation = navigation.segments;
     }
-    if (this.segments.length !== target?.length) {
+    if (this.segments.length !== navigation?.length) {
       return false;
     }
-    for (let i = 0; i < target.length; i++) {
-      if (this.segments[i] !== target[i]) {
+    for (let i = 0; i < navigation.length; i++) {
+      const source = this.segments[i];
+      const target = navigation[i];
+      if (source.path !== target.path) {
         return false;
+      }
+      const sources = source.parameterMap.keys;
+      const targets = target.parameterMap.keys;
+      if (sources.length !== targets.length) {
+        return false;
+      }
+      for (let j = 0; j < sources.length; j++) {
+        if (sources[j] !== targets[j]) {
+          return false;
+        }
+      }
+      for (const name of sources) {
+        if (source.parameterMap.get(name) !== target.parameterMap.get(name)) {
+          return false;
+        }
       }
     }
     return true;
   }
 
-  update(snapshot: ActivatedRouteSnapshot | undefined | null) {
+  update(snapshot: ActivatedRouteSnapshot | null | undefined) {
     if (snapshot) {
       if (!this.component) {
         this.component = snapshot.component;

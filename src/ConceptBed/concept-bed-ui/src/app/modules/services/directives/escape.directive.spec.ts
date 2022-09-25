@@ -41,7 +41,7 @@ describe('EscapeDirective', () => {
     directive = element.injector.get(EscapeDirective);
   });
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(directive).toBeTruthy();
   });
 

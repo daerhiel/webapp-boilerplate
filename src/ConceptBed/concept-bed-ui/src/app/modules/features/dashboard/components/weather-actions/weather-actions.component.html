@@ -1,0 +1,3 @@
+<mat-nav-list>
+  <a mat-list-item [routerLink]="['', weather.id]" *ngFor="let weather of data$ | async">{{weather.id.substring(0, 8)}}</a>
+</mat-nav-list>

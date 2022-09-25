@@ -5,7 +5,7 @@ import { Subscriptions } from './subscriptions';
 describe('Subscriptions', () => {
   const subscriptions = new Subscriptions();
 
-  it('should create an instance', () => {
+  it('should create', () => {
     expect(subscriptions).toBeTruthy();
   });
 

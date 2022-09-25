@@ -7,7 +7,7 @@ const timeout: number = 10000;
 const canClose: boolean = true;
 
 describe('Message', () => {
-  it('should create an instance', () => {
+  it('should create', () => {
     const message = new Message(type, text, timeout, canClose);
 
     expect(message).toBeTruthy();

@@ -35,9 +35,9 @@ export class ODataSource<T> implements DataSource<T> {
   private readonly _filter = new BehaviorSubject<string | undefined>(undefined);
   private readonly _current: { page: PageEvent | null; sort: Sort | null; } = { page: null, sort: null };
   private readonly _requests = new BehaviorSubject<ODataQuery<T>>(this.getRequest());
-  private _paginator: MatPaginator | undefined;
+  private _paginator: MatPaginator | null | undefined;
   private $paginator: Subscription | undefined;
-  private _sort: MatSort | undefined;
+  private _sort: MatSort | null | undefined;
   private $sort: Subscription | undefined;
 
   private readonly entries$: Observable<T[]> = this._requests.pipe(
@@ -60,8 +60,8 @@ export class ODataSource<T> implements DataSource<T> {
   get filter(): string | undefined { return this._filter.value; }
   set filter(value: string | undefined) { this._filter.next(value); }
 
-  get paginator(): MatPaginator | undefined { return this._paginator; }
-  set paginator(value: MatPaginator | undefined) {
+  get paginator(): MatPaginator | null | undefined { return this._paginator; }
+  set paginator(value: MatPaginator | null | undefined) {
     if (this._paginator !== value) {
       this.$paginator?.unsubscribe();
       this._paginator = value;
@@ -72,8 +72,8 @@ export class ODataSource<T> implements DataSource<T> {
     }
   }
 
-  get sort(): MatSort | undefined { return this._sort; }
-  set sort(value: MatSort | undefined) {
+  get sort(): MatSort | null | undefined { return this._sort; }
+  set sort(value: MatSort | null | undefined) {
     if (this._sort !== value) {
       this.$sort?.unsubscribe();
       this._sort = value;

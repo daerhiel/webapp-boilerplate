@@ -7,23 +7,25 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 import { ServicesModule } from '@modules/services/services.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SidenavActionsComponent } from './components/sidenav-actions/sidenav-actions.component';
+import { DashboardActionsComponent } from './components/dashboard-actions/dashboard-actions.component';
 import { WeatherComponent } from './components/weather/weather.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { WeatherActionsComponent } from './components/weather-actions/weather-actions.component';
 
 export * from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    SidenavActionsComponent,
-    WeatherComponent
+    DashboardActionsComponent,
+    WeatherComponent,
+    WeatherActionsComponent
   ],
   imports: [
     ServicesModule,

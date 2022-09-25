@@ -13,7 +13,7 @@ class RegularType { }
 class ContainerType { }
 
 describe('Container', () => {
-  it('should create an instance', () => {
+  it('should create', () => {
     const decorator: (target: object) => void = Container();
 
     expect(decorator).toBeTruthy();

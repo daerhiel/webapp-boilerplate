@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { Container, guard, Persistent } from '@modules/services/services.module';
-import { ContentStateService, isResult, ODataSource, WeatherForecast } from '@modules/backend/backend.module';
+import { Container, Persistent } from '@modules/services/services.module';
+import { ODataSource, WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
 @Persistent() @Container()
@@ -19,11 +19,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('dataPages', { static: true }) private dataPages?: MatPaginator;
   @ViewChild(MatSort, { static: true }) private dataSort?: MatSort;
 
-  readonly data: ODataSource<WeatherForecast> = new ODataSource(x => this.state.getWeatherForecast(x).pipe(
-    guard(isResult),
-  ), x => WeatherForecast.buildQuery(x));
+  get data(): ODataSource<WeatherForecast> { return this.dashboard.data;}
 
-  constructor(private state: ContentStateService, private dashboard: DashboardService) {
+  constructor(private dashboard: DashboardService) {
   }
 
   ngOnInit(): void {
@@ -32,6 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.data.complete();
+    this.data.paginator = null;
+    this.data.sort = null;
   }
 }

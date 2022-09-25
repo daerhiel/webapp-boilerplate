@@ -5,16 +5,19 @@ import { MsalGuard } from '@azure/msal-angular';
 import { TitleResolverService } from '@app/extensions/title-resolver.service';
 import { WeatherResolver } from '@modules/backend/backend.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SidenavActionsComponent } from './components/sidenav-actions/sidenav-actions.component';
+import { DashboardActionsComponent } from './components/dashboard-actions/dashboard-actions.component';
 import { WeatherComponent } from './components/weather/weather.component';
+import { WeatherActionsComponent } from './components/weather-actions/weather-actions.component';
 
 const routes: Routes = [
   {
-    path: '', component: DashboardComponent, title: TitleResolverService, canActivate: [MsalGuard], children: [
-      { path: ':id', component: WeatherComponent, title: TitleResolverService, resolve: { weather: WeatherResolver }, canActivate: [MsalGuard] },
+    path: '', title: TitleResolverService, children: [
+      { path: '', pathMatch: 'full', component: DashboardComponent, title: TitleResolverService, canActivate: [MsalGuard] },
+      { path: ':id', pathMatch: 'full', component: WeatherComponent, title: TitleResolverService, resolve: { weather: WeatherResolver }, canActivate: [MsalGuard] }
     ]
   },
-  { path: '', component: SidenavActionsComponent, canActivate: [MsalGuard], outlet: 'sidenav.actions' }
+  { path: '', component: DashboardActionsComponent, canActivate: [MsalGuard], outlet: 'sidenav.actions' },
+  { path: ':id', component: WeatherActionsComponent, canActivate: [MsalGuard], outlet: 'sidenav.actions' }
 ];
 
 @NgModule({

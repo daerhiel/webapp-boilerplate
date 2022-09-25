@@ -59,7 +59,7 @@ describe('GraphPicturePipe', () => {
     controller.verify();
   });
 
-  it('should create an instance', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
+  it('should create', inject([GraphClientService, DomSanitizer], async (graph: GraphClientService, sanitizer: DomSanitizer) => {
     const pipe = new GraphPicturePipe(graph, sanitizer);
     expect(pipe).toBeTruthy();
   }));
