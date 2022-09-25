@@ -61,7 +61,7 @@ export class HistoryService implements OnDestroy {
   }
 
   /**
-   * Handles the navigation event received from the router and submits the respective navigation state changes.
+   * Handles the navigation event r eceived from the router and submits the respective navigation state changes.
    * @param event The navigation event indicating the navigation is ended.
    */
   private handleNavigation(event: NavigationEnd): void {
@@ -97,6 +97,14 @@ export class HistoryService implements OnDestroy {
         this._navigations.splice(index + 1);
       }
     }
+
+    /**
+     * Push updated changes to data streams:
+     * The @field _segment should receive the currently navigated segment.
+     * The @field _activated should receive the sequence of currently activated segments.
+     * The @field _container should receive the latest conainer segment.
+     * The @field _breadcrumbs should receive the route track from container segment to the currently navigated segment.
+     */
     this._segment.next(segment ?? null)
     this._activated.next(segments);
     if (this.isSameContainer(segments)) {
@@ -109,6 +117,9 @@ export class HistoryService implements OnDestroy {
     this._subscriptions.unsubscribe();
   }
 
+  /**
+   * Navigates to the previously navigated segment in history.
+   */
   navigateBack(): void {
     this._navigations.pop();
     if (this._navigations.length > 0) {

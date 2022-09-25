@@ -32,12 +32,18 @@ export class NavigationTarget {
   }
 
   /**
-   * Check id the navigation target is has the same location information or it is in the same location.
+   * Checks id the navigation target is has the same location information or it is in the same location.
    * @param navigation The navigation or location to check the current navigation against.
    * @returns True if the location of a current navigation is the same; otherwise, false.
    */
   isMatch(navigation: NavigationTarget | UrlSegment[] | null | undefined): boolean {
+    if (navigation === this) {
+      return true;
+    }
     if (navigation instanceof NavigationTarget) {
+      if (navigation.segments === this.segments) {
+        return true;
+      }
       navigation = navigation.segments;
     }
     if (this.segments.length !== navigation?.length) {
