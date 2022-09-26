@@ -20,8 +20,10 @@ namespace Ubiquity.Framework
         /// Finds the single <typeparamref name="TEntity"/> matching the unique <typeparamref name="TKey"/> represented by <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The unique <typeparamref name="TEntity"/> identifier that designates the entity object.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The <typeparamref name="TEntity"/> object matching the identifier if found; otherwise, null.</returns>
-        Task<TEntity> FindAsync(TKey id);
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
+        Task<TEntity> FindAsync(TKey id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the list of <typeparamref name="TEntity"/> objects matching the filter query expression.
@@ -29,8 +31,10 @@ namespace Ubiquity.Framework
         /// <param name="filterBy">The filter query expression to match the <typeparamref name="TEntity"/> object with.</param>
         /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
         /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The list of <typeparamref name="TEntity"/> objects returned.</returns>
-        Task<IList<TEntity>> GetAsync(string? filterBy, string? expandTo = null, string? orderBy = null);
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
+        Task<IList<TEntity>> GetAsync(string? filterBy, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the paged list of <typeparamref name="TEntity"/> objects matching the filter query expression.
@@ -40,8 +44,10 @@ namespace Ubiquity.Framework
         /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
         /// <param name="pageIndex">The index of a page.</param>
         /// <param name="pageSize">The size of a page.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The paged list of <typeparamref name="TEntity"/> objects returned.</returns>
-        Task<IPagedList<TEntity>> GetPageAsync(string? filterBy, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20);
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
+        Task<IPagedList<TEntity>> GetPageAsync(string? filterBy, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Searches for the <typeparamref name="TEntity"/> objects matching the query search term expression.
@@ -49,8 +55,10 @@ namespace Ubiquity.Framework
         /// <param name="query">The query search term expression to match the <typeparamref name="TEntity"/> object with.</param>
         /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
         /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The list of <typeparamref name="TEntity"/> objects returned.</returns>
-        Task<IList<TEntity>> SearchAsync(string query, string? expandTo = null, string? orderBy = null);
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
+        Task<IList<TEntity>> SearchAsync(string query, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Searches and returns the paged list of <typeparamref name="TEntity"/> objects matching the query search term expression.
@@ -60,7 +68,9 @@ namespace Ubiquity.Framework
         /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
         /// <param name="pageIndex">The index of a page.</param>
         /// <param name="pageSize">The size of a page.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The paged list of <typeparamref name="TEntity"/> objects returned.</returns>
-        Task<IPagedList<TEntity>> SearchPageAsync(string query, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20);
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
+        Task<IPagedList<TEntity>> SearchPageAsync(string query, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default);
     }
 }

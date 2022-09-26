@@ -58,10 +58,11 @@ namespace Ubiquity.Framework
         public IQueryable<TEntity> GetQuery() => UnitOfWork.DbContext.Set<TEntity>();
 
         /// <inheritdoc/>
-        public async Task<TEntity> FindAsync(TKey id) => await UnitOfWork.GetRepository<TEntity>().FindAsync(id).ConfigureAwait(false);
+        public async Task<TEntity> FindAsync(TKey id, CancellationToken cancellationToken = default) =>
+            await UnitOfWork.GetRepository<TEntity>().FindAsync(new object[] { id! }, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         /// <inheritdoc/>
-        public async Task<IList<TEntity>> GetAsync(string? filterBy, string? expandTo = null, string? orderBy = null)
+        public async Task<IList<TEntity>> GetAsync(string? filterBy, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default)
         {
             var dataset = UnitOfWork.DbContext.Set<TEntity>()
                 .Where(filterBy.GetPredicate(GetDefaultPredicate));
@@ -69,21 +70,21 @@ namespace Ubiquity.Framework
                 dataset = include(dataset);
             if (orderBy.GetOrderBy(GetDefaultOrderBy) is Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order)
                 dataset = order(dataset);
-            return await dataset.ToListAsync().ConfigureAwait(false);
+            return await dataset.ToListAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<IPagedList<TEntity>> GetPageAsync(string? filterBy, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20)
+        public async Task<IPagedList<TEntity>> GetPageAsync(string? filterBy, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default)
         {
             return await UnitOfWork.GetRepository<TEntity>().GetPagedListAsync(
                 predicate: filterBy.GetPredicate(GetDefaultPredicate),
                 include: expandTo.GetIncludes(GetDefaultIncludes),
                 orderBy: orderBy.GetOrderBy(GetDefaultOrderBy),
-                pageIndex: pageIndex, pageSize: pageSize).ConfigureAwait(false);
+                pageIndex: pageIndex, pageSize: pageSize, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<IList<TEntity>> SearchAsync(string query, string? expandTo = null, string? orderBy = null)
+        public async Task<IList<TEntity>> SearchAsync(string query, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default)
         {
             var dataset = UnitOfWork.DbContext.Set<TEntity>()
                 .Where(GetSearchPredicate(query));
@@ -91,17 +92,17 @@ namespace Ubiquity.Framework
                 dataset = include(dataset);
             if (orderBy.GetOrderBy(GetDefaultOrderBy) is Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order)
                 dataset = order(dataset);
-            return await dataset.ToListAsync().ConfigureAwait(false);
+            return await dataset.ToListAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<IPagedList<TEntity>> SearchPageAsync(string query, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20)
+        public async Task<IPagedList<TEntity>> SearchPageAsync(string query, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default)
         {
             return await UnitOfWork.GetRepository<TEntity>().GetPagedListAsync(
                 predicate: GetSearchPredicate(query),
                 include: expandTo.GetIncludes(GetDefaultIncludes),
                 orderBy: orderBy.GetOrderBy(GetDefaultOrderBy),
-                pageIndex: pageIndex, pageSize: pageSize).ConfigureAwait(false);
+                pageIndex: pageIndex, pageSize: pageSize, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -16,9 +16,10 @@ namespace ConceptBed.OpenData
         /// <param name="sequence">The <see cref="IQueryable{TEntity}"/> entity sequence to enumerate.</param>
         /// <param name="options">The composite OData query options to get the query parameters from.</param>
         /// <param name="settings">The settings to use during query composition.</param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The OData entity result set created.</returns>
         /// <exception cref="ArgumentNullException">When <paramref name="sequence"/>, <paramref name="options"/> or <paramref name="settings"/> is null.</exception>
+        /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
         public static async Task<ODataResultSet<TEntity>> ToResultSetAsync<TEntity>(this IQueryable<TEntity> sequence, ODataQueryOptions<TEntity> options, ODataQuerySettings settings, CancellationToken cancellationToken = default)
         {
             if (sequence is null)

@@ -21,11 +21,12 @@ namespace ConceptBed.Controllers
             _weatherForecast = weatherForecast ?? throw new ArgumentNullException(nameof(weatherForecast));
 
         [HttpGet("{id}")]
-        public async Task<WeatherForecast> Get([FromRoute] Guid id) => await _weatherForecast.FindAsync(id).ConfigureAwait(false);
+        public async Task<WeatherForecast> Get([FromRoute] Guid id, CancellationToken cancellationToken) =>
+            await _weatherForecast.FindAsync(id, cancellationToken: cancellationToken).ConfigureAwait(false);
 
         [HttpGet]
         public async Task<ODataResultSet<WeatherForecast>> Query(ODataQueryOptions<WeatherForecast> options, CancellationToken cancellationToken) =>
-            await _weatherForecast.GetQuery().ToResultSetAsync(options, _settings, cancellationToken);
+            await _weatherForecast.GetQuery().ToResultSetAsync(options, _settings, cancellationToken: cancellationToken);
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
