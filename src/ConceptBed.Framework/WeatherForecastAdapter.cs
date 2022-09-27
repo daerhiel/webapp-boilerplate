@@ -15,19 +15,14 @@ namespace ConceptBed.Framework
         }
 
         /// <inheritdoc/>
-        protected override Expression<Func<WeatherForecast, bool>> GetSearchPredicate(string query)
+        protected override Expression<Func<WeatherForecast, bool>> GetSearchPredicate(string query) => query switch
         {
-            return query switch
-            {
-                var value when Guid.TryParse(value, out var id) => x => x.Id == id,
-                var value => x => x.Summary.Contains(query)
-            };
-        }
+            var value when Guid.TryParse(value, out var id) => x => x.Id == id,
+            var value => x => x.Summary.Contains(query)
+        };
 
         /// <inheritdoc/>
-        protected override Func<IQueryable<WeatherForecast>, IOrderedQueryable<WeatherForecast>> GetDefaultOrderBy()
-        {
-            return query => query.OrderBy(x => x.Id);
-        }
+        protected override Func<IQueryable<WeatherForecast>, IOrderedQueryable<WeatherForecast>> GetDefaultOrderBy() => 
+            query => query.OrderBy(x => x.Id);
     }
 }

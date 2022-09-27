@@ -23,7 +23,7 @@ describe('NavigationTarget', () => {
       ],
       imports: [
         RouterTestingModule.withRoutes([{
-          path: '', component: RootComponent, title: 'Home', children: [
+          path: '', component: RootComponent, title: 'Root', children: [
             { path: 'test', pathMatch: 'prefix', component: TestComponent, title: 'Test' },
           ]
         }])
@@ -42,7 +42,7 @@ describe('NavigationTarget', () => {
 
     expect(navigation.component).toEqual(RootComponent);
     expect(navigation.path).toEqual(['']);
-    expect(navigation.title).toEqual('Home');
+    expect(navigation.title).toEqual('Root');
     expect(navigation.routeConfig).toEqual(snapshot.routeConfig);
   }));
 

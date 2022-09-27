@@ -1,19 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Route, RouteReuseStrategy } from '@angular/router';
 
-import { Persistance, PersistanceMode } from '@modules/services/models/persistent';
-
-export function isPersistent(snapshot: ActivatedRouteSnapshot): boolean {
-  const component: any = snapshot.component;
-  switch ((component as Persistance).persistanceMode) {
-    case PersistanceMode.Parent:
-      return snapshot.children.length > 0;
-    case PersistanceMode.Global:
-      return true;
-    default:
-      return false;
-  }
-}
+import { isPersistent } from '@modules/services/models/persistent';
 
 /**
  * The routing strategy to reuse the master/detail components implemented per guide:

@@ -1,3 +1,5 @@
+import { Type } from "@angular/core";
+
 export interface Containment {
   containmentMode: boolean;
 }
@@ -11,4 +13,8 @@ export function Container(containment?: Partial<Containment>) {
       Object.defineProperty(target, propertyName, { get: () => mode });
     }
   }
+}
+
+export function isContainer(component: Type<any> | object | null): boolean {
+  return (component as Containment)?.containmentMode;
 }
