@@ -5,18 +5,6 @@
     <router-outlet name="sidenav.actions"></router-outlet>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="app-l-flex app-l-flex-column app-l-align-start app-l-glex-gap-hr app-p-1r">
-      <button mat-button *ngIf="segment$ | async as segment">{{segment.title}}</button>
-      <mat-chip-list class="app-ml-hr" aria-label="Activated">
-        <mat-chip *ngFor="let segment of activated$ | async">{{segment.title}}</mat-chip>
-      </mat-chip-list>
-      <mat-chip-list class="app-ml-hr" aria-label="Breadcrumbs">
-        <mat-chip *ngFor="let segment of breadcrumbs$ | async" color="accent" selected>{{segment.title}}</mat-chip>
-      </mat-chip-list>
-      <mat-chip-list class="app-ml-hr" aria-label="Navigations">
-        <mat-chip *ngFor="let segment of navigations" color="primary" selected>{{segment.title}}</mat-chip>
-      </mat-chip-list>
-    </div>
     <app-portal></app-portal>
   </mat-sidenav-content>
 </mat-sidenav-container>

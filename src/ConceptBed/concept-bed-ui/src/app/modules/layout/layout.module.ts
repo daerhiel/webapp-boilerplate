@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
@@ -31,6 +32,7 @@ import { ProfileComponent } from './profile/profile.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     MatCardModule
   ],

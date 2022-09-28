@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CollectionViewer, ListRange } from '@angular/cdk/collections';
-
-import { WeatherForecast } from '@app/modules/backend/backend.module';
 import { Observable, Subject } from 'rxjs';
+
+import { WeatherForecast } from '@modules/backend/backend.module';
 import { DashboardService } from '../../dashboard.service';
 
 @Component({

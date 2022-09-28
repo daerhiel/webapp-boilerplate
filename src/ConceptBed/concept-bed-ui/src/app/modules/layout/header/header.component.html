@@ -3,6 +3,11 @@
     <mat-icon>menu</mat-icon>
   </button>
   <a mat-button [routerLink]="['']">{{title}}</a>
+  <div class="app-l-flex app-l-flex-column app-l-align-start app-l-glex-gap-hr app-p-1r">
+    <mat-chip-list class="app-ml-hr" aria-label="Breadcrumbs">
+      <mat-chip *ngFor="let segment of breadcrumbs$ | async" color="primary" selected>{{segment.title}}</mat-chip>
+    </mat-chip-list>
+  </div>
   <span class="mat-spacer"></span>
   <button mat-icon-button id="favorite" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
