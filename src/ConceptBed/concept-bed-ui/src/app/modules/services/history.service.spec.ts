@@ -119,4 +119,63 @@ describe('HistoryService', () => {
     expect(navigations.map(x => x.path)).toEqual([[''], ['', 'help']]);
     expect(navigations.map(x => x.title)).toEqual(['Root', 'Help']);
   }));
+
+  it('should not navigate back from root', inject([Router], async (router: Router) => {
+    const navigations = service.navigations;
+    expect(navigations.map(x => x.path)).toEqual([['']]);
+    expect(navigations.map(x => x.title)).toEqual(['Root']);
+
+    const navigated  = await service.navigateBack();
+
+    expect(navigated).toBeFalse();
+
+    const segment = service.segment;
+    expect(segment).toBeTruthy();
+    expect(segment!.path).toEqual(['']);
+    expect(segment!.title).toEqual('Root');
+
+    expect(navigations.map(x => x.path)).toEqual([]);
+    expect(navigations.map(x => x.title)).toEqual([]);
+  }));
+
+  it('should navigate back from test to root', inject([Router], async (router: Router) => {
+    await router.navigate(['', 'test']);
+
+    const navigations = service.navigations;
+    expect(navigations.map(x => x.path)).toEqual([[''], ['', 'test']]);
+    expect(navigations.map(x => x.title)).toEqual(['Root', 'Test']);
+
+    const navigated  = await service.navigateBack();
+
+    expect(navigated).toBeTrue();
+
+    const segment = service.segment;
+    expect(segment).toBeTruthy();
+    expect(segment!.path).toEqual(['']);
+    expect(segment!.title).toEqual('Root');
+
+    expect(navigations.map(x => x.path)).toEqual([['']]);
+    expect(navigations.map(x => x.title)).toEqual(['Root']);
+  }));
+
+  it('should navigate back from help to test', inject([Router], async (router: Router) => {
+    await router.navigate(['', 'test']);
+    await router.navigate(['', 'help']);
+
+    const navigations = service.navigations;
+    expect(navigations.map(x => x.path)).toEqual([[''], ['', 'test'], ['', 'help']]);
+    expect(navigations.map(x => x.title)).toEqual(['Root', 'Test', 'Help']);
+
+    const navigated  = await service.navigateBack();
+
+    expect(navigated).toBeTrue();
+
+    const segment = service.segment;
+    expect(segment).toBeTruthy();
+    expect(segment!.path).toEqual(['', 'test']);
+    expect(segment!.title).toEqual('Test');
+
+    expect(navigations.map(x => x.path)).toEqual([[''], ['', 'test']]);
+    expect(navigations.map(x => x.title)).toEqual(['Root', 'Test']);
+  }));
 });

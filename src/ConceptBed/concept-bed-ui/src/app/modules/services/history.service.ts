@@ -147,11 +147,13 @@ export class HistoryService implements OnDestroy {
   /**
    * Navigates to the previously navigated segment in history.
    */
-  navigateBack(): void {
-    this._navigations.pop();
-    if (this._navigations.length > 0) {
-      const segment = this._navigations[this._navigations.length - 1];
-      this.router.navigate(['/'].concat(segment.path), { replaceUrl: true });
+  navigateBack(): Promise<boolean> {
+    if (this._navigations.pop()) {
+      const segment = this._navigations.pop();
+      if (segment) {
+        return this.router.navigate(segment.path, { replaceUrl: true });
+      }
     }
+    return Promise.resolve(false);
   }
 }
