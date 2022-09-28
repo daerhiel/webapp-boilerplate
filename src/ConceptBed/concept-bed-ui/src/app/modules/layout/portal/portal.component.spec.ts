@@ -54,6 +54,7 @@ describe('PortalComponent', () => {
     const history: boolean[] = [];
     subscriptions.subscribe(component.isRouteLoading$.pipe(tap(x => history.push(x))));
     expect(history).toEqual([false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -61,6 +62,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([true, false]);
+    expect(component.isRouteLoading).toBeFalse();
     subscriptions.unsubscribe();
   }));
 
@@ -69,6 +71,7 @@ describe('PortalComponent', () => {
     const history: boolean[] = [];
     subscriptions.subscribe(component.isRouteLoading$.pipe(tap(x => history.push(x))));
     expect(history).toEqual([false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -76,6 +79,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([true, false]);
+    expect(component.isRouteLoading).toBeFalse();
     subscriptions.unsubscribe();
   }));
 
@@ -84,6 +88,7 @@ describe('PortalComponent', () => {
     const history: boolean[] = [];
     subscriptions.subscribe(component.isRouteLoading$.pipe(tap(x => history.push(x))));
     expect(history).toEqual([false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -91,6 +96,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([true, false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -98,6 +104,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([true, false]);
+    expect(component.isRouteLoading).toBeFalse();
     subscriptions.unsubscribe();
   }));
 
@@ -106,6 +113,7 @@ describe('PortalComponent', () => {
     const history: boolean[] = [];
     subscriptions.subscribe(component.isRouteLoading$.pipe(tap(x => history.push(x))));
     expect(history).toEqual([false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -113,6 +121,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([true, false]);
+    expect(component.isRouteLoading).toBeFalse();
 
     history.splice(0, history.length);
     await ngZone.run(async () => {
@@ -120,6 +129,7 @@ describe('PortalComponent', () => {
     })
 
     expect(history).toEqual([]);
+    expect(component.isRouteLoading).toBeFalse();
     subscriptions.unsubscribe();
   }));
 });
