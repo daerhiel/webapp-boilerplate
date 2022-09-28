@@ -1,9 +1,14 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { DeepPartial } from "./deep-partial";
 import { ExceptionDetailsApi } from "./exception-details-api";
 import { ProblemDetailsApi } from "./problem-details-api";
 
 export function isResult<T>(value: T | ProblemDetails): value is T {
   return value && !(value instanceof ProblemDetails);
+}
+
+export function isSuccess<T>(value: T | HttpErrorResponse): value is T {
+  return value && !(value instanceof HttpErrorResponse);
 }
 
 export function problemDetails(title: string): ProblemDetails {

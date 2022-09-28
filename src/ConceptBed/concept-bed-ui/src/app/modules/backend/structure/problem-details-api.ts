@@ -1,10 +1,4 @@
-import { HttpErrorResponse } from "@angular/common/http";
-
 import { ExceptionDetailsApi } from "./exception-details-api";
-
-export function isSuccess<T>(value: T | HttpErrorResponse): value is T {
-  return value && !(value instanceof HttpErrorResponse);
-}
 
 export interface ProblemDetailsApi {
   /**
