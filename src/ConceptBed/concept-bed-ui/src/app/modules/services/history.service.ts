@@ -5,7 +5,15 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { guard, isInstanceOf } from './reactive/guard';
 import { Subscriptions } from './models/subscriptions';
 import { getPath, NavigationTarget } from './models/navigation-target';
+import { isContainer } from './models/container';
 
+/**
+ * The history tracking service that tracks the Angular route changes. the following parameters are being tracked:
+ * The @property segment should receive the currently navigated segment.
+ * The @property activated should receive the sequence of currently activated segments.
+ * The @property container should receive the latest conainer segment.
+ * The @property breadcrumbs should receive the route track from container segment to the currently navigated segment.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -28,36 +36,64 @@ export class HistoryService implements OnDestroy {
   readonly container$: Observable<NavigationTarget[]> = this._container.asObservable();
   readonly breadcrumbs$: Observable<NavigationTarget[]> = this._breadcrumbs.asObservable();
 
+  /**
+   * Initializes the history tracking service.
+   * @param route Provides access to information about a route associated with a component that is loaded in an outlet.
+   * @param router A service that provides navigation among views and URL manipulation capabilities.
+   */
   constructor(private route: ActivatedRoute, private router: Router) {
     this._subscriptions.subscribe(this.router.events.pipe(guard(isInstanceOf(NavigationEnd)), tap(event => {
       this.handleNavigation(event);
     })));
   }
 
-  private isSameContainer(segments: NavigationTarget[]): boolean {
-    return this.container.length <= 2 || segments.length <= 2 && segments.length <= this.container.length;
-  }
-
-  private getLastSegmentIndex(segment: NavigationTarget | undefined) {
-    if (segment) {
-      for (let i = this._navigations.length - 1; i >= 0; i--) {
-        if (this._navigations[i].isMatch(segment)) {
-          return i;
+  /**
+   * Gets the activated container sequence that should replace the current one.
+   * @param segments The list of acivated navigations from the root.
+   * @returns The winning activated container sequence determined; otherwise, null.
+   */
+  private getWinningContainer(segments: NavigationTarget[]): NavigationTarget[] | null {
+    if (segments.length > 0) {
+      let isMatching = true, index = -1;
+      for (let i = 0; i < segments.length; i++) {
+        if (isMatching) {
+          if (i < this.container.length) {
+            isMatching = this.container[i].isMatch(segments[i]);
+          } else if (this.container.length > 0) {
+            break;
+          } else {
+            isMatching = false;
+          }
+        }
+        if (isContainer(segments[i].component)) {
+          index = i;
         }
       }
-    }
-    return -1;
-  }
-
-  private getContainedChain(): NavigationTarget[] {
-    if (this.container.length > 0) {
-      const segment = this.container[this.container.length - 1];
-      const index = this.getLastSegmentIndex(segment);
-      if (index >= 0) {
-        return this._navigations.slice(index + 1);
+      if (!isMatching) {
+        return segments.slice(0, ++index);
       }
     }
-    return [];
+    return null;
+  }
+
+  /**
+   * Gets the breadcrumb navigation history starting with the currently activated container sequence.
+   * @returns The breadcrumb navigation history determined.
+   */
+  private getContainerHistory(): NavigationTarget[] {
+    const segments: NavigationTarget[] = [...this.container];
+    const container: NavigationTarget | undefined = segments[segments.length - 1];
+    if (container) {
+      for (let i = this._navigations.length - 1; i >= 0; i--) {
+        if (this._navigations[i].isMatch(container)) {
+          segments.push(...this._navigations.slice(i + 1));
+          break;
+        }
+      }
+    } else if (this.segment) {
+      segments.push(this.segment);
+    }
+    return segments;
   }
 
   /**
@@ -86,19 +122,6 @@ export class HistoryService implements OnDestroy {
     } while (current);
 
     /**
-     * We should handle the list of navigation transitions as if we move inside the contained loop. The navigations
-     * leading to the existing item in the past in the same container should be discarded. TODO: Should I do this? The criteria is sketchy.
-     */
-    if (segment) {
-      const index = this.getLastSegmentIndex(segment);
-      if (index < 0 || segments.length <= 2) {
-        this._navigations.push(segment);
-      } else {
-        this._navigations.splice(index + 1);
-      }
-    }
-
-    /**
      * Push updated changes to data streams:
      * The @field _segment should receive the currently navigated segment.
      * The @field _activated should receive the sequence of currently activated segments.
@@ -107,10 +130,14 @@ export class HistoryService implements OnDestroy {
      */
     this._segment.next(segment ?? null)
     this._activated.next(segments);
-    if (this.isSameContainer(segments)) {
-      this._container.next(segments);
+    const container = this.getWinningContainer(segments);
+    if (container) {
+      this._container.next(container);
     }
-    this._breadcrumbs.next(this.container.concat(this.getContainedChain()));
+    if (segment) {
+      this._navigations.push(segment);
+    }
+    this._breadcrumbs.next(this.getContainerHistory());
   }
 
   ngOnDestroy(): void {
