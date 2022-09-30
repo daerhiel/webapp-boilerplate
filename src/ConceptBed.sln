@@ -25,9 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ubiquity.Framework.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConceptBed.Data", "ConceptBed.Data\ConceptBed.Data.csproj", "{F553C0CE-917B-43D5-B703-304FAB7E2032}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptBed.Framework", "ConceptBed.Framework\ConceptBed.Framework.csproj", "{360A6442-0EF4-4DDD-A5FA-B93C142EC67A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConceptBed.Framework", "ConceptBed.Framework\ConceptBed.Framework.csproj", "{360A6442-0EF4-4DDD-A5FA-B93C142EC67A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptBed.Framework.Tests", "ConceptBed.Framework.Tests\ConceptBed.Framework.Tests.csproj", "{96EF8FCD-6046-4EBC-A128-C8B7C590498F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConceptBed.Framework.Tests", "ConceptBed.Framework.Tests\ConceptBed.Framework.Tests.csproj", "{96EF8FCD-6046-4EBC-A128-C8B7C590498F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConceptBed.Data.Tests", "ConceptBed.Data.Tests\ConceptBed.Data.Tests.csproj", "{9899A4B5-F01C-4DA2-AB8C-73C03DCBD394}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{96EF8FCD-6046-4EBC-A128-C8B7C590498F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96EF8FCD-6046-4EBC-A128-C8B7C590498F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96EF8FCD-6046-4EBC-A128-C8B7C590498F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9899A4B5-F01C-4DA2-AB8C-73C03DCBD394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9899A4B5-F01C-4DA2-AB8C-73C03DCBD394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9899A4B5-F01C-4DA2-AB8C-73C03DCBD394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9899A4B5-F01C-4DA2-AB8C-73C03DCBD394}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
