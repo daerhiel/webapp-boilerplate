@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Xunit;
-using Xunit.Abstractions;
+using Ubiquity.Data.Tests.Engine;
 
 namespace Ubiquity.Data.Tests;
 
@@ -15,7 +14,7 @@ public class EntityExtensionsTests
         public string? Name { get; set; }
     }
 
-    private class EntityContext : DbContext
+    private class EntityContext : StaticDbContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,10 +47,12 @@ public class EntityExtensionsTests
         var entity = new Entity() { Name = "Entity name" };
 
         // Act
+        context.Add(entity);
         var expected = context.PushUpdate(entity);
-        var actual = context.Set<Entity>().Find(entity.Guid);
+        context.SaveChanges();
 
         // Assert
+        var actual = context.Set<Entity>().Find(entity.Guid);
         Assert.Equal(entity, expected);
         Assert.Equal(expected, actual);
     }
@@ -62,19 +63,43 @@ public class EntityExtensionsTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
+        var guid = Guid.NewGuid();
         var name = "Updated name";
         var context = new EntityContext();
-        var entity = new Entity() { Name = "Entity name" };
-        context.Add(entity);
+        context.Setup(new Entity() { Guid = guid, Name = "Entity name" });
+        var entity = context.Set<Entity>().Find(guid)!;
 
         // Act
         entity.Name = name;
         var expected = context.PushUpdate(entity);
-        var actual = context.Set<Entity>().Find(entity.Guid);
+        context.SaveChanges();
 
         // Assert
+        var actual = context.Set<Entity>().Find(entity.Guid);
         Assert.Equal(entity, expected);
         Assert.Equal(expected, actual);
         Assert.Equal(name, actual!.Name);
+    }
+
+    [Fact]
+    public void PushUpdate_Delete()
+    {
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
+
+        // Arrange
+        var guid = Guid.NewGuid();
+        var context = new EntityContext();
+        context.Setup(new Entity() { Guid = guid, Name = "Entity name" });
+        var entity = context.Set<Entity>().Find(guid)!;
+
+        // Act
+        context.Remove(entity);
+        var expected = context.PushUpdate(entity);
+        context.SaveChanges();
+
+        // Assert
+        var actual = context.Set<Entity>().Find(entity.Guid);
+        Assert.Equal(entity, expected);
+        Assert.Null(actual);
     }
 }
