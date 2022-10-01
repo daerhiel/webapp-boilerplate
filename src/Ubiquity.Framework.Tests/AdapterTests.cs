@@ -7,7 +7,7 @@ using Ubiquity.Framework.Tests.Testing;
 
 namespace Ubiquity.Framework.Tests;
 
-public class UnitTests
+public class AdapterTests
 {
     protected ITestOutputHelper Output { get; }
 
@@ -25,7 +25,7 @@ public class UnitTests
         new Entity() { Id = _id3, Name = _name3 }
     };
 
-    public UnitTests(ITestOutputHelper output)
+    public AdapterTests(ITestOutputHelper output)
     {
         Output = output ?? throw new ArgumentNullException(nameof(output));
     }
@@ -122,7 +122,7 @@ public class UnitTests
 
     [Theory]
     [MemberData(nameof(GetGetData))]
-    public async Task GetPage(string testId, string filterBy, int[] ids)
+    public async Task GetPage(string testId, string filterBy, string queryBy, int[] ids)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
@@ -133,7 +133,7 @@ public class UnitTests
         var expected = _dataSource.Where(x => ids.Contains(x.Id));
 
         // Act
-        var actual = await adapter.GetPageAsync(filterBy);
+        var actual = await adapter.GetPageAsync(filterBy, queryBy);
 
         // Assert
         Assert.NotNull(actual);
