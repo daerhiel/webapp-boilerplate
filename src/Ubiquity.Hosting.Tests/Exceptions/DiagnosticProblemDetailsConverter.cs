@@ -28,9 +28,9 @@ public class DiagnosticProblemDetailsConverter
     [InlineData("04", nameof(DiagnosticProblemDetails.Detail), "Bad name", "{\"detail\":\"Bad name\"}")]
     [InlineData("05", nameof(DiagnosticProblemDetails.Instance), "https://test/api", "{\"instance\":\"https://test/api\"}")]
     [InlineData("06", "trackId", "00-000000-00", "{\"trackId\":\"00-000000-00\"}")]
-    public void Serialize(string id, string inputName, object inputValue, string expected)
+    public void Serialize(string testId, string inputName, object inputValue, string expected)
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {id}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
         var instance = new DiagnosticProblemDetails();
@@ -54,9 +54,9 @@ public class DiagnosticProblemDetailsConverter
     [InlineData("04", "{ detail: 'Bad name' }", nameof(DiagnosticProblemDetails.Detail), "Bad name")]
     [InlineData("05", "{ instance: 'https://test/api' }", nameof(DiagnosticProblemDetails.Instance), "https://test/api")]
     [InlineData("06", "{ trackId: '00-000000-00' }", "trackId", "00-000000-00")]
-    public void Deserialize(string id, string input, string expectedName, object expectedValue)
+    public void Deserialize(string testId, string input, string expectedName, object expectedValue)
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {id}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
 

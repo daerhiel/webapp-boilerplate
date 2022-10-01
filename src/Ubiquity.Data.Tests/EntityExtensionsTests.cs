@@ -28,7 +28,7 @@ public class EntityExtensionsTests
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Guid);
+        var actual = context.Set<Entity>().Find(entity.Id);
         Assert.Equal(entity, expected);
         Assert.Equal(expected, actual);
     }
@@ -39,10 +39,10 @@ public class EntityExtensionsTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
-        var guid = Guid.NewGuid();
+        var id = 100;
         var name = "Updated name";
-        var context = new EntityContext().Setup(new Entity() { Guid = guid, Name = "Entity name" });
-        var entity = context.Set<Entity>().Find(guid)!;
+        var context = new EntityContext().Setup(new Entity() { Id = id, Name = "Entity name" });
+        var entity = context.Set<Entity>().Find(id)!;
 
         // Act
         entity.Name = name;
@@ -50,7 +50,7 @@ public class EntityExtensionsTests
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Guid);
+        var actual = context.Set<Entity>().Find(entity.Id);
         Assert.Equal(entity, expected);
         Assert.Equal(expected, actual);
         Assert.Equal(name, actual!.Name);
@@ -62,9 +62,9 @@ public class EntityExtensionsTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
-        var guid = Guid.NewGuid();
-        var context = new EntityContext().Setup(new Entity() { Guid = guid, Name = "Entity name" });
-        var entity = context.Set<Entity>().Find(guid)!;
+        var id = 100;
+        var context = new EntityContext().Setup(new Entity() { Id = id, Name = "Entity name" });
+        var entity = context.Set<Entity>().Find(id)!;
 
         // Act
         context.Remove(entity);
@@ -72,7 +72,7 @@ public class EntityExtensionsTests
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Guid);
+        var actual = context.Set<Entity>().Find(entity.Id);
         Assert.Equal(entity, expected);
         Assert.Null(actual);
     }

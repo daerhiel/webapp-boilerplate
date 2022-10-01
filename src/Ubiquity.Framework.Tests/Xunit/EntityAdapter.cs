@@ -3,7 +3,7 @@ using Ubiquity.Data.Tests.Testing;
 
 namespace Ubiquity.Framework.Tests.Testing;
 
-public class EntityAdapter : Adapter<Guid, Entity, EntityUnitOfWork>
+public class EntityAdapter : Adapter<int, Entity, EntityUnitOfWork>
 {
     public EntityAdapter(EntityUnitOfWork unitOfWork)
         : base(unitOfWork)
@@ -11,7 +11,7 @@ public class EntityAdapter : Adapter<Guid, Entity, EntityUnitOfWork>
     }
 
     protected override Func<IQueryable<Entity>, IOrderedQueryable<Entity>> GetDefaultOrderBy() =>
-        query => query.OrderBy(x => x.Guid);
+        query => query.OrderBy(x => x.Id);
 
     protected override Expression<Func<Entity, bool>> GetSearchPredicate(string query) =>
         x => x.Name!.Contains(query);

@@ -21,9 +21,9 @@ public class StartupExtensionsTests
     [InlineData("02r", false, true)]
     [InlineData("03e", true, false)]
     [InlineData("04e", true, true)]
-    public void AddSqliteContext(string id, bool enforceMigration, bool migrate)
+    public void AddSqliteContext(string testId, bool enforceMigration, bool migrate)
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {id}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
         var connectionStrings = "ConnectionStrings";
@@ -63,9 +63,9 @@ public class StartupExtensionsTests
     [InlineData("02r", false, true)]
     [InlineData("03e", true, false)]
     [InlineData("04e", true, true)]
-    public void AddSqlServerContext(string id, bool enforceMigration, bool migrate)
+    public void AddSqlServerContext(string testId, bool enforceMigration, bool migrate)
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {id}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
         var connectionStrings = "ConnectionStrings";

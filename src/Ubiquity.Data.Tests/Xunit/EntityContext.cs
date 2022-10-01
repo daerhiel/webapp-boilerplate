@@ -9,14 +9,14 @@ public class EntityContext : StaticDbContext
     {
         base.OnModelCreating(modelBuilder);
         var entity = modelBuilder.Entity<Entity>();
-        entity.HasKey(x => x.Guid);
-        entity.Property(x => x.Guid).ValueGeneratedOnAdd();
+        entity.HasKey(x => x.Id);
+        entity.Property(x => x.Id).ValueGeneratedOnAdd();
         entity.Property(x => x.Name);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseInMemoryDatabase("EntityDb");
+        optionsBuilder.UseInMemoryDatabase($"EntityDb_{Guid.NewGuid()}");
     }
 }

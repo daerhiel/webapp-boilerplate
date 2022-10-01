@@ -25,9 +25,9 @@ public class UnitTests
 
     [Theory]
     [InlineData("01")]
-    public void Template(string id)
+    public void Template(string testId)
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {id}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
 

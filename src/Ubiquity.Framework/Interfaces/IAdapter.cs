@@ -29,17 +29,22 @@ public interface IAdapter<TKey, TEntity>
     /// Gets the list of <typeparamref name="TEntity"/> objects matching the filter query expression.
     /// </summary>
     /// <param name="filterBy">The filter query expression to match the <typeparamref name="TEntity"/> object with.</param>
+    /// <param name="queryBy">The query search term expression to match the <typeparamref name="TEntity"/> object with.</param>
     /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
     /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>The list of <typeparamref name="TEntity"/> objects returned.</returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
-    Task<IList<TEntity>> GetAsync(string? filterBy, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default);
+    Task<IList<TEntity>> GetAsync(
+        string? filterBy, string? queryBy,
+        string? expandTo = null, string? orderBy = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets the paged list of <typeparamref name="TEntity"/> objects matching the filter query expression.
     /// </summary>
     /// <param name="filterBy">The filter query expression to match the <typeparamref name="TEntity"/> object with.</param>
+    /// <param name="queryBy">The query search term expression to match the <typeparamref name="TEntity"/> object with.</param>
     /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
     /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
     /// <param name="pageIndex">The index of a page.</param>
@@ -47,29 +52,9 @@ public interface IAdapter<TKey, TEntity>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>The paged list of <typeparamref name="TEntity"/> objects returned.</returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
-    Task<IPagedList<TEntity>> GetPageAsync(string? filterBy, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Searches for the <typeparamref name="TEntity"/> objects matching the query search term expression.
-    /// </summary>
-    /// <param name="query">The query search term expression to match the <typeparamref name="TEntity"/> object with.</param>
-    /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
-    /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>The list of <typeparamref name="TEntity"/> objects returned.</returns>
-    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
-    Task<IList<TEntity>> SearchAsync(string query, string? expandTo = null, string? orderBy = null, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Searches and returns the paged list of <typeparamref name="TEntity"/> objects matching the query search term expression.
-    /// </summary>
-    /// <param name="query">The query search term expression to match the <typeparamref name="TEntity"/> object with.</param>
-    /// <param name="expandTo">The navigation property set expression to expand the <typeparamref name="TEntity"/> object to.</param>
-    /// <param name="orderBy">The property set expression to order the <typeparamref name="TEntity"/> objects by.</param>
-    /// <param name="pageIndex">The index of a page.</param>
-    /// <param name="pageSize">The size of a page.</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>The paged list of <typeparamref name="TEntity"/> objects returned.</returns>
-    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken"/> is canceled.</exception>
-    Task<IPagedList<TEntity>> SearchPageAsync(string query, string? expandTo = null, string? orderBy = null, int pageIndex = 0, int pageSize = 20, CancellationToken cancellationToken = default);
+    Task<IPagedList<TEntity>> GetPageAsync(
+        string? filterBy, string? queryBy,
+        string? expandTo = null, string? orderBy = null,
+        int pageIndex = 0, int pageSize = 20,
+        CancellationToken cancellationToken = default);
 }
