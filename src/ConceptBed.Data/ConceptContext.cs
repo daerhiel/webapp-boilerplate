@@ -1,5 +1,6 @@
 ﻿using ConceptBed.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ConceptBed.Data;
 
@@ -16,14 +17,14 @@ public class ConceptContext : DbContext
     /// </summary>
     public const string CaseInsensitive = "NOCASE"/*"SQL_Latin1_General_CP1_CI_AS"*/;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    /// <summary>
+    /// The <see cref="DbSet{TEntity}"/> that holds <see cref="WeatherForecast"/> data.
+    /// </summary>
+    [MaybeNull]
     public DbSet<WeatherForecast> Forecasts { get; set; }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     /// <inheritdoc/>
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public ConceptContext(DbContextOptions<ConceptContext> options)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         : base(options)
     {
     }
