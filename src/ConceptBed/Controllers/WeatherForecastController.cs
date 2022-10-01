@@ -6,27 +6,26 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 
-namespace ConceptBed.Controllers
-{
-    [ApiController, ApiVersion("1.0")]
-    [Route("[controller]"), Authorize(Policy = AuthorizationPolicies.IdentityActive)]
+namespace ConceptBed.Controllers;
+
+[ApiController, ApiVersion("1.0")]
+[Route("[controller]"), Authorize(Policy = AuthorizationPolicies.IdentityActive)]
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class WeatherForecastController : ControllerBase
-    {
-        private readonly IWeatherForecastAdapter _weatherForecast;
+public class WeatherForecastController : ControllerBase
+{
+    private readonly IWeatherForecastAdapter _weatherForecast;
 
-        private static readonly ODataQuerySettings _settings = new() { PageSize = 3, EnsureStableOrdering = true };
+    private static readonly ODataQuerySettings _settings = new() { PageSize = 3, EnsureStableOrdering = true };
 
-        public WeatherForecastController(IWeatherForecastAdapter weatherForecast) =>
-            _weatherForecast = weatherForecast ?? throw new ArgumentNullException(nameof(weatherForecast));
+    public WeatherForecastController(IWeatherForecastAdapter weatherForecast) =>
+        _weatherForecast = weatherForecast ?? throw new ArgumentNullException(nameof(weatherForecast));
 
-        [HttpGet("{id}")]
-        public async Task<WeatherForecast> Get([FromRoute] Guid id, CancellationToken cancellationToken) =>
-            await _weatherForecast.FindAsync(id, cancellationToken: cancellationToken).ConfigureAwait(false);
+    [HttpGet("{id}")]
+    public async Task<WeatherForecast> Get([FromRoute] Guid id, CancellationToken cancellationToken) =>
+        await _weatherForecast.FindAsync(id, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        [HttpGet]
-        public async Task<ODataResultSet<WeatherForecast>> Query(ODataQueryOptions<WeatherForecast> options, CancellationToken cancellationToken) =>
-            await _weatherForecast.GetQuery().ToResultSetAsync(options, _settings, cancellationToken: cancellationToken);
-    }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+    [HttpGet]
+    public async Task<ODataResultSet<WeatherForecast>> Query(ODataQueryOptions<WeatherForecast> options, CancellationToken cancellationToken) =>
+        await _weatherForecast.GetQuery().ToResultSetAsync(options, _settings, cancellationToken: cancellationToken);
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

@@ -1,10 +1,9 @@
 ﻿using ConceptBed.Data.Models;
 using Ubiquity.Framework;
 
-namespace ConceptBed.Framework
+namespace ConceptBed.Framework;
+
+/// <inheritdoc/>
+public interface IWeatherForecastAdapter : IAdapter<Guid, WeatherForecast>
 {
-    /// <inheritdoc/>
-    public interface IWeatherForecastAdapter : IAdapter<Guid, WeatherForecast>
-    {
-    }
 }
