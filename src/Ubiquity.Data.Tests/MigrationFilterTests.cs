@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Diagnostics;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Ubiquity.Data.Tests;
 
