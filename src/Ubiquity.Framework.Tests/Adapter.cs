@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Ubiquity.Data.Tests.Engine;
 using Ubiquity.Data.Tests.Testing;
 using Ubiquity.Framework.Tests.Testing;

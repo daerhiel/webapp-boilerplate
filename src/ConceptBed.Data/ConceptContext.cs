@@ -1,6 +1,5 @@
 ﻿using ConceptBed.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ConceptBed.Data;
 
