@@ -20,7 +20,6 @@ public class ConceptContext : DbContext
     /// <summary>
     /// The <see cref="DbSet{TEntity}"/> that holds <see cref="WeatherForecast"/> data.
     /// </summary>
-    [MaybeNull]
     public DbSet<WeatherForecast> Forecasts { get; set; }
 
     /// <inheritdoc/>

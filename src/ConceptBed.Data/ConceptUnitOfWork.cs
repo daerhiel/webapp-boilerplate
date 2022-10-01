@@ -23,11 +23,6 @@ public class ConceptUnitOfWork<TContext> : UnitOfWork<TContext>, IUnitOfWorkCont
     /// </summary>
     DbContext IUnitOfWorkContext.DbContext => DbContext;
 
-    /// <summary>
-    /// The interface to a dependency injection service provider instance that locates a service object.
-    /// </summary>
-    IServiceProvider IUnitOfWorkContext.ServiceProvider => throw new NotImplementedException();
-
     /// <inheritdoc/>
     public ConceptUnitOfWork(TContext context)
         : base(context)

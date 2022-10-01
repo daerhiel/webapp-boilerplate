@@ -20,14 +20,14 @@ public abstract class Adapter<TKey, TEntity, TUnitOfWork> : IAdapter<TKey, TEnti
     /// <summary>
     /// The <see cref="UnitOfWork{TContext}"/> associated with the current adapter.
     /// </summary>
-    protected TUnitOfWork UnitOfWork { get; }
+    public TUnitOfWork UnitOfWork { get; }
 
     /// <summary>
     /// Initializes the new instance of adapter to the <typeparamref name="TEntity"/> objects.
     /// </summary>
     /// <param name="unitOfWork">The <see cref="UnitOfWork{TContext}"/> to associate with the current adapter.</param>
     /// <exception cref="ArgumentNullException">When mandatory dependencies are null.</exception>
-    public Adapter(TUnitOfWork unitOfWork) => UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+    protected Adapter(TUnitOfWork unitOfWork) => UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
     /// <summary>
     /// Gets the default predicate lambda expression used to query the <typeparamref name="TEntity"/> objects.

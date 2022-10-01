@@ -5,7 +5,7 @@ namespace Ubiquity.Data.Tests.Engine;
 /// <inheritdoc/>
 public class StaticDbContext : DbContext
 {
-    public void Setup<TEntity>(IEnumerable<TEntity> entities)
+    public void Configure<TEntity>(IEnumerable<TEntity> entities)
         where TEntity : class
     {
         if (entities is null)
@@ -15,7 +15,7 @@ public class StaticDbContext : DbContext
         SaveChanges();
     }
 
-    public void Setup<TEntity>(params TEntity[] entities)
+    public void Configure<TEntity>(params TEntity[] entities)
         where TEntity : class
     {
         if (entities is null)

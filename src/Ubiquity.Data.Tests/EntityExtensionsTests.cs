@@ -1,36 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Ubiquity.Data.Tests.Engine;
+using Ubiquity.Data.Tests.Testing;
 
 namespace Ubiquity.Data.Tests;
 
 public class EntityExtensionsTests
 {
     protected ITestOutputHelper Output { get; }
-
-    private record Entity
-    {
-        public Guid Guid { get; set; }
-        public string? Name { get; set; }
-    }
-
-    private class EntityContext : StaticDbContext
-    {
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            var entity = modelBuilder.Entity<Entity>();
-            entity.HasKey(x => x.Guid);
-            entity.Property(x => x.Guid).ValueGeneratedOnAdd();
-            entity.Property(x => x.Name);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseInMemoryDatabase("EntityDb");
-        }
-    }
 
     public EntityExtensionsTests(ITestOutputHelper output)
     {
@@ -65,8 +41,7 @@ public class EntityExtensionsTests
         // Arrange
         var guid = Guid.NewGuid();
         var name = "Updated name";
-        var context = new EntityContext();
-        context.Setup(new Entity() { Guid = guid, Name = "Entity name" });
+        var context = new EntityContext().Setup(new Entity() { Guid = guid, Name = "Entity name" });
         var entity = context.Set<Entity>().Find(guid)!;
 
         // Act
@@ -88,8 +63,7 @@ public class EntityExtensionsTests
 
         // Arrange
         var guid = Guid.NewGuid();
-        var context = new EntityContext();
-        context.Setup(new Entity() { Guid = guid, Name = "Entity name" });
+        var context = new EntityContext().Setup(new Entity() { Guid = guid, Name = "Entity name" });
         var entity = context.Set<Entity>().Find(guid)!;
 
         // Act
