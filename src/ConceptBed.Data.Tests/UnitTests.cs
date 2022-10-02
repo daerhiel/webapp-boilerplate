@@ -11,18 +11,6 @@ public class UnitTests
         Output = output ?? throw new ArgumentNullException(nameof(output));
     }
 
-    [Fact]
-    public void Ctor()
-    {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
-
-        // Arrange
-
-        // Act
-
-        // Assert
-    }
-
     [Theory]
     [InlineData("01")]
     public void Template(string testId)

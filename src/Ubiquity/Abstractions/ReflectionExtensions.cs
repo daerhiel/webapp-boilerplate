@@ -19,7 +19,7 @@ public static partial class ReflectionExtensions
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        if (type.Name is var name && name.IndexOf('`') is var index && index > 0)
+        if (type.Name is var name && name.LastIndexOf('`') is var index && index > 0)
             return name[..index];
         else
             return name;
@@ -110,11 +110,11 @@ public static partial class ReflectionExtensions
     /// </summary>
     /// <param name="type">The type to check the implemented interface at.</param>
     /// <param name="interfaceType">The generic interface type definition to match.</param>
-    /// <param name="argumentypes">The sequence of generic arguments to build the interface type with.</param>
+    /// <param name="argumenTypes">The sequence of generic arguments to build the interface type with.</param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException">When <paramref name="type"/> or <paramref name="interfaceType"/> is null.</exception>
     /// <exception cref="ArgumentException">When <paramref name="interfaceType"/> is not a generic type definition.</exception>
-    public static bool HasGenericInterface(this Type type, Type interfaceType, params Type[] argumentypes)
+    public static bool HasGenericInterface(this Type type, Type interfaceType, params Type[] argumenTypes)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
@@ -123,7 +123,7 @@ public static partial class ReflectionExtensions
         if (!interfaceType.IsGenericType || !interfaceType.IsGenericTypeDefinition)
             throw new ArgumentException($"The generic interface type is expected: {interfaceType}.", nameof(interfaceType));
 
-        interfaceType = interfaceType.MakeGenericType(argumentypes);
+        interfaceType = interfaceType.MakeGenericType(argumenTypes);
 
         return type.GetInterfaces().Any(x => interfaceType.IsAssignableFrom(x));
     }

@@ -50,8 +50,8 @@ public class WeatherForecast
 
     public static Expression<Func<WeatherForecast, bool>>?[] IsMatching(WeatherForecast forecast) => new[]
     {
-        forecast?.Id.ToExpression(IsId),
-        forecast?.Summary.ToExpression(IsSummary)
+        forecast?.Id.ToPredicate(IsId),
+        forecast?.Summary.ToPredicate(IsSummary)
     };
 
     internal class Config : IEntityTypeConfiguration<WeatherForecast>

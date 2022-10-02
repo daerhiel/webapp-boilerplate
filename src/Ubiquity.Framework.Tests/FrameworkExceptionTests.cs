@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 
 namespace Ubiquity.Framework.Tests;
 

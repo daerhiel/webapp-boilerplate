@@ -16,7 +16,7 @@ public static partial class ExpressionExtensions
     /// <param name="factory">The factory that creates the lambda expression.</param>
     /// <returns>The lambda expression created if the value meets the criteria; otherwise, null.</returns>
     /// <exception cref="ArgumentNullException">When <paramref name="factory"/> is null.</exception>
-    public static Expression<Func<T, bool>>? ToExpression<T, R>(this R? value, Func<R, Expression<Func<T, bool>>> factory)
+    public static Expression<Func<T, bool>>? ToPredicate<T, R>(this R? value, Func<R, Expression<Func<T, bool>>> factory)
     {
         if (factory is null)
             throw new ArgumentNullException(nameof(factory));
@@ -35,7 +35,7 @@ public static partial class ExpressionExtensions
     /// <param name="factory">The factory that creates the lambda expression.</param>
     /// <returns>The lambda expression created if the value meets the criteria; otherwise, null.</returns>
     /// <exception cref="ArgumentNullException">When <paramref name="factory"/> is null.</exception>
-    public static Expression<Func<T, bool>>? ToExpression<T>(this string? value, Func<string, Expression<Func<T, bool>>> factory)
+    public static Expression<Func<T, bool>>? ToPredicate<T>(this string? value, Func<string, Expression<Func<T, bool>>> factory)
     {
         if (factory is null)
             throw new ArgumentNullException(nameof(factory));

@@ -14,6 +14,7 @@ public static partial class ActionExtensions
     /// <returns>The object or value for the fluent calls.</returns>
     /// <exception cref="ArgumentNullException">When <paramref name="action"/> is null.</exception>
     public static T Apply<T>(this T source, Action<T> action)
+        where T : class
     {
         if (action is null)
             throw new ArgumentNullException(nameof(action));
@@ -32,6 +33,7 @@ public static partial class ActionExtensions
     /// <returns>The object or value for the fluent calls.</returns>
     /// <exception cref="ArgumentNullException">When <paramref name="action"/> is null.</exception>
     public static T ApplyIf<T>(this T source, bool condition, Action<T> action)
+        where T : class
     {
         if (action is null)
             throw new ArgumentNullException(nameof(action));
