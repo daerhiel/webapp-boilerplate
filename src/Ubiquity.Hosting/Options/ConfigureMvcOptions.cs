@@ -12,7 +12,7 @@ public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
     /// <inheritdoc/>
     public void Configure(MvcOptions options)
     {
-        options.Filters.Add<DiagnosticProblemDetailsFilter>();
+        options.Filters.Add<DiagnosticDetailsFilter>();
         options.Conventions.Add(new RoutePrefixConvention(new RouteAttribute("api/v{version:apiVersion}")));
     }
 }

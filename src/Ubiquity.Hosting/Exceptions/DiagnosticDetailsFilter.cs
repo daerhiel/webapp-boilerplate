@@ -7,7 +7,7 @@ namespace Ubiquity.Hosting.Exceptions;
 /// <summary>
 /// Represents the problem details <see cref="IExceptionFilter"/> that responds to the Http pipeline exceptions.
 /// </summary>
-public class DiagnosticProblemDetailsFilter : IExceptionFilter
+public class DiagnosticDetailsFilter : IExceptionFilter
 {
     private readonly ApiBehaviorOptions _options;
 
@@ -16,7 +16,7 @@ public class DiagnosticProblemDetailsFilter : IExceptionFilter
     /// </summary>
     /// <param name="options">The required <see cref="ApiBehaviorOptions"/> accessor instance.</param>
     /// <exception cref="ArgumentNullException">When mandatory dependencies are null.</exception>
-    public DiagnosticProblemDetailsFilter(IOptions<ApiBehaviorOptions> options)
+    public DiagnosticDetailsFilter(IOptions<ApiBehaviorOptions> options)
     {
         _options = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
@@ -24,7 +24,7 @@ public class DiagnosticProblemDetailsFilter : IExceptionFilter
     /// <inheritdoc/>
     public void OnException(ExceptionContext context)
     {
-        var problemDetails = new DiagnosticProblemDetails(context, _options);
+        var problemDetails = new DiagnosticDetails(context, _options);
         context.Result = new ObjectResult(problemDetails)
         {
             StatusCode = problemDetails.Status,

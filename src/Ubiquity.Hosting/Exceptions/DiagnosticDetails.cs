@@ -15,19 +15,19 @@ namespace Ubiquity.Hosting.Exceptions;
 /// <summary>
 /// Represents a diagnostic <see cref="ProblemDetails"/> that encapsulates global application diagnostic responses.
 /// </summary>
-[JsonConverter(typeof(DiagnosticProblemDetailsConverter))]
-public class DiagnosticProblemDetails : ProblemDetails
+[JsonConverter(typeof(DiagnosticDetailsConverter))]
+public class DiagnosticDetails : ProblemDetails
 {
     /// <summary>
     /// The exception details associated with the current diagnostic reponse.
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public object? Exception { get; }
+    public ExceptionDetails? Exception { get; }
 
     /// <summary>
     /// Initializes the new instance of a diagnostic <see cref="ProblemDetails"/>.
     /// </summary>
-    public DiagnosticProblemDetails()
+    public DiagnosticDetails()
     {
     }
 
@@ -36,7 +36,7 @@ public class DiagnosticProblemDetails : ProblemDetails
     /// </summary>
     /// <param name="exceptionContext">The context for exception filters <see cref="IExceptionFilter"/> containing problem.</param>
     /// <param name="options">The required <see cref="ApiBehaviorOptions"/> accessor instance.</param>
-    public DiagnosticProblemDetails(ExceptionContext exceptionContext, ApiBehaviorOptions options)
+    public DiagnosticDetails(ExceptionContext exceptionContext, ApiBehaviorOptions options)
     {
         // Add basic diagnostic problem details based on exception.
         var statusCode = exceptionContext.Exception switch
