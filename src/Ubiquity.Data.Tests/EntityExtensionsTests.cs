@@ -41,7 +41,7 @@ public class EntityExtensionsTests
         // Arrange
         var id = 100;
         var name = "Updated name";
-        var context = new EntityContext().Setup(new Entity() { Id = id, Name = "Entity name" });
+        var context = new EntityContext().StoreRange(new Entity() { Id = id, Name = "Entity name" });
         var entity = context.Set<Entity>().Find(id)!;
 
         // Act
@@ -63,7 +63,7 @@ public class EntityExtensionsTests
 
         // Arrange
         var id = 100;
-        var context = new EntityContext().Setup(new Entity() { Id = id, Name = "Entity name" });
+        var context = new EntityContext().StoreRange(new Entity() { Id = id, Name = "Entity name" });
         var entity = context.Set<Entity>().Find(id)!;
 
         // Act

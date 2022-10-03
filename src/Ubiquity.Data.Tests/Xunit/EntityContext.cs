@@ -3,7 +3,7 @@ using Ubiquity.Data.Tests.Engine;
 
 namespace Ubiquity.Data.Tests.Testing;
 
-public class EntityContext : StaticDbContext
+public class EntityContext : DbContext
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

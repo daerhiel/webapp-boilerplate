@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Ubiquity.Data.Tests.Engine;
+using Ubiquity.Data;
 using Ubiquity.Data.Tests.Testing;
 using Ubiquity.Framework.Tests.Testing;
 
@@ -19,9 +19,9 @@ public class AdapterTests
     private static readonly string _name3 = "Entity name 3";
     private readonly IEnumerable<Entity> _dataSource = new[]
     {
-        new Entity() { Id = _id1, Name = _name1 },
-        new Entity() { Id = _id2, Name = _name2 },
-        new Entity() { Id = _id3, Name = _name3 }
+        new Entity { Id = _id1, Name = _name1 },
+        new Entity { Id = _id2, Name = _name2 },
+        new Entity { Id = _id3, Name = _name3 }
     };
 
     public AdapterTests(ITestOutputHelper output)
@@ -52,7 +52,7 @@ public class AdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
-        var context = new EntityContext().Setup(_dataSource);
+        var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
 
@@ -78,7 +78,7 @@ public class AdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var context = new EntityContext().Setup(_dataSource);
+        var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
         var expected = _dataSource.FirstOrDefault(x => x.Id == id);
@@ -107,7 +107,7 @@ public class AdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var context = new EntityContext().Setup(_dataSource);
+        var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
         var expected = _dataSource.Where(x => ids.Contains(x.Id));
@@ -126,7 +126,7 @@ public class AdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var context = new EntityContext().Setup(_dataSource);
+        var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
         var expected = _dataSource.Where(x => ids.Contains(x.Id));

@@ -3,30 +3,11 @@ using Moq;
 
 namespace Ubiquity.Data.Tests.Engine;
 
-public static partial class StaticDbExtensions
+/// <summary>
+/// Represents the extension method container class for the <see cref="DbSet{TEntity}"/> mock extensions.
+/// </summary>
+public static partial class DbSetExtensions
 {
-    public static TContext Setup<TContext, TEntity>(this TContext context, IEnumerable<TEntity> entities)
-        where TContext : StaticDbContext
-        where TEntity : class
-    {
-        if (context is null)
-            throw new ArgumentNullException(nameof(context));
-
-        context.Configure(entities);
-        return context;
-    }
-
-    public static TContext Setup<TContext, TEntity>(this TContext context, params TEntity[] entities)
-        where TContext : StaticDbContext
-        where TEntity : class
-    {
-        if (context is null)
-            throw new ArgumentNullException(nameof(context));
-
-        context.Configure(entities);
-        return context;
-    }
-
     /// <summary>
     /// Sets up the testing framework for <see cref="DbSet{TEntity}"/> for queryable tests.
     /// </summary>
