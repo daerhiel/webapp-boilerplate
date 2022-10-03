@@ -142,7 +142,7 @@ public class WeatherForecastAdapterTests
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id.ToString()));
+        var expected = _dataSource.Where(x => ids.Contains(x.Id.ToString())).ToList();
 
         // Act
         var actual = await adapter.GetPageAsync(filterBy, queryBy);
@@ -153,8 +153,8 @@ public class WeatherForecastAdapterTests
         Assert.Equal(0, actual.PageIndex);
         Assert.Equal(20, actual.PageSize);
         Assert.Equal(1, actual.TotalPages);
-        Assert.Equal(expected.Count(), actual.TotalCount);
-        Assert.Equal(expected, actual.Items);
+        Assert.Equal(expected.Count, actual.TotalCount);
+        Assert.Equivalent(expected, actual.Items);
         Assert.False(actual.HasNextPage);
         Assert.False(actual.HasPreviousPage);
     }

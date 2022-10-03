@@ -129,7 +129,7 @@ public class AdapterTests
         var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id));
+        var expected = _dataSource.Where(x => ids.Contains(x.Id)).ToList();
 
         // Act
         var actual = await adapter.GetPageAsync(filterBy, queryBy);
@@ -140,8 +140,8 @@ public class AdapterTests
         Assert.Equal(0, actual.PageIndex);
         Assert.Equal(20, actual.PageSize);
         Assert.Equal(1, actual.TotalPages);
-        Assert.Equal(expected.Count(), actual.TotalCount);
-        Assert.Equal(expected, actual.Items);
+        Assert.Equal(expected.Count, actual.TotalCount);
+        Assert.Equivalent(expected, actual.Items);
         Assert.False(actual.HasNextPage);
         Assert.False(actual.HasPreviousPage);
     }
