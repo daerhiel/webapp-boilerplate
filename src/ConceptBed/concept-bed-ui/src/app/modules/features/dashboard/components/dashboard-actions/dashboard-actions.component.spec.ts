@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { MatListModule } from '@angular/material/list';
@@ -15,6 +16,7 @@ describe('SidenavActionsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
+        HttpClientTestingModule,
         MatListModule
       ],
       declarations: [

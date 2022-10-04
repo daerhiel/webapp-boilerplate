@@ -105,7 +105,6 @@ describe('ODataSource', () => {
 
     expect(connection).toBeTruthy();
     expect(await firstValueFrom(source.loading$)).toBeFalse();
-    expect(await firstValueFrom(source.length$)).toEqual(0);
   });
 
   it('should load on connection subscribe', async () => {
@@ -128,7 +127,6 @@ describe('ODataSource', () => {
     }
 
     expect(await firstValueFrom(connection)).toEqual(content);
-    expect(await firstValueFrom(source.length$)).toEqual(content.length);
   });
 
   it('should get paginated data on connect', async () => {
@@ -144,7 +142,7 @@ describe('ODataSource', () => {
 
     const request = firstValueFrom(connection);
     expect(await request).toEqual(content.slice(0, pageSize));
-    expect(await firstValueFrom(source.length$)).toEqual(content.length);
+    expect(source.paginator?.length).toEqual(content.length);
   });
 
   it('should filter data', async () => {
@@ -160,7 +158,6 @@ describe('ODataSource', () => {
     const request = firstValueFrom(connection);
     const result = content.filter(x => x.text.includes(filter));
     expect(await request).toEqual(result);
-    expect(await firstValueFrom(source.length$)).toEqual(result.length);
   });
 
   it('should filter paginated data', async () => {
@@ -178,6 +175,6 @@ describe('ODataSource', () => {
     const request = firstValueFrom(connection);
     const expected = content.filter(x => x.text.includes(filter));
     expect(await request).toEqual(expected.slice(0, pageSize));
-    expect(await firstValueFrom(source.length$)).toEqual(expected.length);
+    expect(source.paginator?.length).toEqual(expected.length);
   });
 });

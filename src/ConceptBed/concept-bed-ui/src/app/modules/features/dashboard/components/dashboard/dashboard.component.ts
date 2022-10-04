@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('dataPages', { static: true }) private dataPages?: MatPaginator;
   @ViewChild(MatSort, { static: true }) private dataSort?: MatSort;
 
-  get data(): ODataSource<WeatherForecast> { return this.dashboard.data;}
+  get data(): ODataSource<WeatherForecast> { return this.dashboard.data; }
 
   constructor(private dashboard: DashboardService) {
   }

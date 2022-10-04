@@ -19,7 +19,7 @@ export interface ODataFilterBuilderFn {
   (query: string | undefined): string | undefined;
 }
 
-export function queriesEqual<T>(x: ODataQuery<T>, y: ODataQuery<T>): boolean {
+export function queryComparator<T>(x: ODataQuery<T>, y: ODataQuery<T>): boolean {
   for (const name of properties) {
     if (x[name as keyof ODataQuery<T>] !== y[name as keyof ODataQuery<T>]) {
       return false;
@@ -31,22 +31,21 @@ export function queriesEqual<T>(x: ODataQuery<T>, y: ODataQuery<T>): boolean {
 export class ODataSource<T> implements DataSource<T> {
   private readonly _subscriptions: Subscriptions = new Subscriptions();
   private readonly _loading = new BehaviorSubject<boolean>(false);
-  private readonly _length = new BehaviorSubject<number>(0);
   private readonly _filter = new BehaviorSubject<string | undefined>(undefined);
   private readonly _current: { page: PageEvent | null; sort: Sort | null; } = { page: null, sort: null };
-  private readonly _requests = new BehaviorSubject<ODataQuery<T>>(this.getRequest());
+  private readonly _queries = new BehaviorSubject<ODataQuery<T>>(this._getQuery());
   private _paginator: MatPaginator | null | undefined;
   private $paginator: Subscription | undefined;
   private _sort: MatSort | null | undefined;
   private $sort: Subscription | undefined;
 
-  private readonly entries$: Observable<T[]> = this._requests.pipe(
-    distinctUntilChanged(queriesEqual),
+  private readonly entries$: Observable<T[]> = this._queries.pipe(
+    distinctUntilChanged(queryComparator),
     switchMap(query => {
       this._loading.next(true);
-      return this.endpoint(query).pipe(
+      return this._endpoint(query).pipe(
         map(x => {
-          this._length.next(x.count);
+          this._updatePaginator(x.count);
           return x.elements;
         }),
         finalize(() => this._loading.next(false))
@@ -54,7 +53,6 @@ export class ODataSource<T> implements DataSource<T> {
     }), shareReplay(1));
 
   readonly filter$: Observable<string | undefined> = this._filter.asObservable();
-  readonly length$: Observable<number> = this._length.asObservable();
   readonly loading$: Observable<boolean> = this._loading.asObservable();
 
   get filter(): string | undefined { return this._filter.value; }
@@ -67,7 +65,7 @@ export class ODataSource<T> implements DataSource<T> {
       this._paginator = value;
       this.$paginator = this._paginator?.page.pipe(tap(page => {
         this._current.page = page;
-        this._requests.next(this.getRequest());
+        this._queries.next(this._getQuery());
       })).subscribe();
     }
   }
@@ -79,25 +77,25 @@ export class ODataSource<T> implements DataSource<T> {
       this._sort = value;
       this.$sort = this._sort?.sortChange.pipe(tap(sort => {
         this._current.sort = sort;
-        this._requests.next(this.getRequest());
+        this._queries.next(this._getQuery());
       })).subscribe();
     }
   }
 
-  constructor(private readonly endpoint: ODataEndpointFn<T>, private readonly factory?: ODataFilterBuilderFn) {
+  constructor(private readonly _endpoint: ODataEndpointFn<T>, private readonly _factory?: ODataFilterBuilderFn) {
     this._subscriptions.subscribe(this._filter.pipe(skip(1), distinctUntilChanged(), debounceTime(300), tap(filter => {
       if (this._paginator && this._current.page) {
         this._paginator.pageIndex = this._current.page.pageIndex = 0;
       }
-      this._requests.next(this.getRequest());
+      this._queries.next(this._getQuery());
     })));
   }
 
-  private getRequest(): ODataQuery<T> {
+  private _getQuery(): ODataQuery<T> {
     const query: ODataQuery<T> = {};
     let filter = this._filter.value;
-    if (filter && this.factory) {
-      filter = this.factory(filter);
+    if (filter && this._factory) {
+      filter = this._factory(filter);
     }
     if (filter) {
       query.$filter = filter;
@@ -114,6 +112,24 @@ export class ODataSource<T> implements DataSource<T> {
     return query;
   }
 
+  private _updatePaginator(length: number) {
+    Promise.resolve().then(() => {
+      const paginator = this.paginator;
+      if (paginator) {
+        paginator.length = length;
+
+        if (paginator.pageIndex > 0) {
+          const oldPageIndex = Math.ceil(paginator.length / paginator.pageSize) - 1 || 0;
+          const newPageIndex = Math.min(paginator.pageIndex, oldPageIndex);
+
+          if (newPageIndex !== paginator.pageIndex) {
+            paginator.pageIndex = newPageIndex;
+          }
+        }
+      }
+    });
+  }
+
   complete() {
     this._subscriptions.unsubscribe();
   }
@@ -127,7 +143,7 @@ export class ODataSource<T> implements DataSource<T> {
       const { active, direction } = this._sort;
       this._current.sort = { active, direction: direction ?? this._sort.start }
     }
-    this._requests.next(this.getRequest());
+    this._queries.next(this._getQuery());
     return this.entries$;
   }
 
