@@ -30,29 +30,22 @@ public class StartupExtensionsTests
         var connectionStringName = "TestConnection";
         var connectionString = "Connection String Value";
 
-        var services = new ServiceCollection();
-        var configuration = new Mock<IConfiguration>();
-        configuration.Setup(x => x.GetSection(It.Is(connectionStrings, StringComparer.Ordinal))).Returns(() =>
+        var services = new ServiceCollection().AddOptions();
+        services.AddOptions<StorageConfiguration>();
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
         {
-            var section = new Mock<IConfigurationSection>();
-            section.Setup(x => x[It.Is(connectionStringName, StringComparer.Ordinal)]).Returns(connectionString);
-            return section.Object;
-        });
-        configuration.Setup(x => x.GetSection(It.Is(StorageConfiguration.Storage, StringComparer.Ordinal))).Returns(() =>
-        {
-            var section = new Mock<IConfigurationSection>();
-            section.Setup(x => x[It.Is(nameof(StorageConfiguration.EnforceMigration), StringComparer.Ordinal)]).Returns(enforceMigration.ToString());
-            return section.Object;
-        });
+            { $"{connectionStrings}:{connectionStringName}", connectionString },
+            { $"{StorageConfiguration.Storage}:{nameof(StorageConfiguration.EnforceMigration)}", enforceMigration.ToString() }
+        }).Build();
 
         // Act
-        var actual = StartupExtensions.AddSqliteContext<DbContext>(services, configuration.Object, connectionStringName, migrate);
+        var actual = StartupExtensions.AddSqliteContext<DbContext>(services, configuration, connectionStringName, migrate);
         var serviceProvider = actual.BuildServiceProvider();
 
         // Assert
         Assert.Equal(services, actual);
         Assert.IsType<DbContext>(serviceProvider.GetService<DbContext>());
-        if (migrate && !Debugger.IsAttached)
+        if (migrate && (!Debugger.IsAttached || enforceMigration))
             Assert.IsType<MigrationFilter<DbContext>>(serviceProvider.GetService<IStartupFilter>());    
         else
             Assert.Null(serviceProvider.GetService<IStartupFilter>());    
@@ -72,29 +65,22 @@ public class StartupExtensionsTests
         var connectionStringName = "TestConnection";
         var connectionString = "Connection String Value";
 
-        var services = new ServiceCollection();
-        var configuration = new Mock<IConfiguration>();
-        configuration.Setup(x => x.GetSection(It.Is(connectionStrings, StringComparer.Ordinal))).Returns(() =>
+        var services = new ServiceCollection().AddOptions();
+        services.AddOptions<StorageConfiguration>();
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
         {
-            var section = new Mock<IConfigurationSection>();
-            section.Setup(x => x[It.Is(connectionStringName, StringComparer.Ordinal)]).Returns(connectionString);
-            return section.Object;
-        });
-        configuration.Setup(x => x.GetSection(It.Is(StorageConfiguration.Storage, StringComparer.Ordinal))).Returns(() =>
-        {
-            var section = new Mock<IConfigurationSection>();
-            section.Setup(x => x[It.Is(nameof(StorageConfiguration.EnforceMigration), StringComparer.Ordinal)]).Returns(enforceMigration.ToString());
-            return section.Object;
-        });
+            { $"{connectionStrings}:{connectionStringName}", connectionString },
+            { $"{StorageConfiguration.Storage}:{nameof(StorageConfiguration.EnforceMigration)}", enforceMigration.ToString() }
+        }).Build();
 
         // Act
-        var actual = StartupExtensions.AddSqlServerContext<DbContext>(services, configuration.Object, connectionStringName, migrate);
+        var actual = StartupExtensions.AddSqlServerContext<DbContext>(services, configuration, connectionStringName, migrate);
         var serviceProvider = actual.BuildServiceProvider();
 
         // Assert
         Assert.Equal(services, actual);
         Assert.IsType<DbContext>(serviceProvider.GetService<DbContext>());
-        if (migrate && !Debugger.IsAttached)
+        if (migrate && (!Debugger.IsAttached || enforceMigration))
             Assert.IsType<MigrationFilter<DbContext>>(serviceProvider.GetService<IStartupFilter>());    
         else
             Assert.Null(serviceProvider.GetService<IStartupFilter>());    

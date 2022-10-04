@@ -11,6 +11,11 @@ namespace ConceptBed.Framework;
 public static partial class StartupExtensions
 {
     /// <summary>
+    /// The configuration section name that should hold settings for database.
+    /// </summary>
+    public const string DbSectionName = "ConceptDb";
+
+    /// <summary>
     /// Adds the application framework services to the dependency injection container.
     /// </summary>
     /// <param name="services">The interface to a service desctiptor collection.</param>
@@ -22,9 +27,9 @@ public static partial class StartupExtensions
         services.AddTransient<IWeatherForecastAdapter, WeatherForecastAdapter>();
 
         // Add data access layer services
-        if (!string.IsNullOrWhiteSpace(configuration.GetConnectionString("ConceptDb")))
+        if (!string.IsNullOrWhiteSpace(configuration.GetConnectionString(DbSectionName)))
         {
-            services.AddSqliteContext<ConceptContext>(configuration, "ConceptDb");
+            services.AddSqliteContext<ConceptContext>(configuration, DbSectionName);
             services.AddScoped<ConceptUnitOfWork<ConceptContext>>();
         }
         return services;
