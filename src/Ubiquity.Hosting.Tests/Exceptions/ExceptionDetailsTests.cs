@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Net;
 using Ubiquity.Abstractions;
 using Ubiquity.Hosting.Exceptions;
 using Xunit;

@@ -154,7 +154,7 @@ public class WeatherForecastAdapterTests
         Assert.Equal(20, actual.PageSize);
         Assert.Equal(1, actual.TotalPages);
         Assert.Equal(expected.Count, actual.TotalCount);
-        Assert.Equivalent(expected, actual.Items);
+        Assert.Equivalent(expected, actual.Items, true);
         Assert.False(actual.HasNextPage);
         Assert.False(actual.HasPreviousPage);
     }

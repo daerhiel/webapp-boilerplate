@@ -7,7 +7,7 @@ namespace ConceptBed.Security.Options;
 /// <summary>
 /// Represents an <see cref="IConfigureOptions{AuthorizationOptions}"/> configurator object that sets up the respective service.
 /// </summary>
-public class ConfigureAuthorizationOptions : IConfigureOptions<AuthorizationOptions>
+internal class ConfigureAuthorizationOptions : IConfigureOptions<AuthorizationOptions>
 {
     /// <inheritdoc/>
     public void Configure(AuthorizationOptions options)
