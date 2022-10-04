@@ -11,6 +11,11 @@ public static class AuthorizationPolicies
     public const string IdentityActive = nameof(IdentityActive);
 
     /// <summary>
+    /// The authorization policy that checks if a current identity can read the specified entity.
+    /// </summary>
+    public const string CanReadEntity = nameof(CanReadEntity);
+
+    /// <summary>
     /// The authorization policy that checks if a current identity can create the specified entity.
     /// </summary>
     public const string CanCreateEntity = nameof(CanCreateEntity);
@@ -19,6 +24,11 @@ public static class AuthorizationPolicies
     /// The authorization policy that checks if a current identity can update the specified entity.
     /// </summary>
     public const string CanUpdateEntity = nameof(CanUpdateEntity);
+
+    /// <summary>
+    /// The authorization policy that checks if a current identity can remove the specified entity.
+    /// </summary>
+    public const string CanRemoveEntity = nameof(CanRemoveEntity);
 
     /// <summary>
     /// Gets a sequence of the availale authorization policy names configured.
