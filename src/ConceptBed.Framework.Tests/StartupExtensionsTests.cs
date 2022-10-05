@@ -7,7 +7,7 @@ using Ubiquity.Data;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ConceptBed.Framework;
+namespace ConceptBed.Framework.Tests;
 
 public class StartupExtensionsTests
 {
@@ -38,7 +38,7 @@ public class StartupExtensionsTests
         }).Build();
 
         // Act
-        var actual = StartupExtensions.AddFramework(services, configuration);
+        var actual = services.AddFramework(configuration);
         var serviceProvider = actual.BuildServiceProvider();
 
         // Assert

@@ -1,6 +1,7 @@
 using System.Diagnostics;
+using Xunit.Abstractions;
 
-namespace ConceptBed.Data.Tests;
+namespace ConceptBed.Tests;
 
 public class UnitTests
 {

@@ -4,8 +4,9 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using Ubiquity.Data;
 
-namespace Ubiquity.Data.Tests;
+namespace ConceptBed.Data.Tests;
 
 public class MigrationFilterTests
 {

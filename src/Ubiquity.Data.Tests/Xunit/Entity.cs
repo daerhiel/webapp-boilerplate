@@ -1,4 +1,4 @@
-﻿namespace Ubiquity.Data.Tests.Testing;
+﻿namespace Ubiquity.Data.Tests.Xunit;
 
 public record Entity
 {

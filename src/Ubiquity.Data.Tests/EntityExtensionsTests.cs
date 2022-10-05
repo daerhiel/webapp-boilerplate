@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Ubiquity.Data.Tests.Testing;
+using Ubiquity.Data.Tests.Xunit;
 
 namespace Ubiquity.Data.Tests;
 

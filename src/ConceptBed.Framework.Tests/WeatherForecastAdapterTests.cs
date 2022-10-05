@@ -6,7 +6,7 @@ using Ubiquity.Data;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ConceptBed.Framework;
+namespace ConceptBed.Framework.Tests;
 
 public class WeatherForecastAdapterTests
 {

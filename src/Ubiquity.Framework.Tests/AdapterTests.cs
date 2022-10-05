@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Ubiquity.Data;
-using Ubiquity.Data.Tests.Testing;
-using Ubiquity.Framework.Tests.Testing;
+using Ubiquity.Data.Tests.Xunit;
+using Ubiquity.Framework.Tests.Xunit;
 
 namespace Ubiquity.Framework.Tests;
 

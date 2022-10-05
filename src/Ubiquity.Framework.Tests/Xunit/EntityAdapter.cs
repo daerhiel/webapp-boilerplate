@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Ubiquity.Data.Tests.Testing;
+using Ubiquity.Data.Tests.Xunit;
 
-namespace Ubiquity.Framework.Tests.Testing;
+namespace Ubiquity.Framework.Tests.Xunit;
 
 public class EntityAdapter : Adapter<int, Entity, EntityUnitOfWork>
 {

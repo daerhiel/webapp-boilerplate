@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Ubiquity.Data;
 
-namespace ConceptBed.Data;
+namespace ConceptBed.Data.Tests;
 
 public class ConceptUnitOfWorkTests
 {
