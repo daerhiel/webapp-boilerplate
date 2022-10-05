@@ -31,11 +31,10 @@ public class WeatherForecastAdapterTests
         Output = output ?? throw new ArgumentNullException(nameof(output));
     }
 
-    [Theory]
-    [InlineData("01")]
-    public void Ctor(string testId)
+    [Fact]
+    public void Ctor()
     {
-        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
         var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
