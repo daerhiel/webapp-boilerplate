@@ -38,8 +38,7 @@ public class WeatherForecastAdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var options = new DbContextOptionsBuilder<ConceptContext>();
-        options.UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
+        var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
         var context = new ConceptContext(options.Options);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
 
@@ -57,8 +56,7 @@ public class WeatherForecastAdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}.");
 
         // Arrange
-        var options = new DbContextOptionsBuilder<ConceptContext>();
-        options.UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
+        var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
@@ -85,8 +83,7 @@ public class WeatherForecastAdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var options = new DbContextOptionsBuilder<ConceptContext>();
-        options.UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
+        var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
@@ -116,8 +113,7 @@ public class WeatherForecastAdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var options = new DbContextOptionsBuilder<ConceptContext>();
-        options.UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
+        var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
@@ -137,8 +133,7 @@ public class WeatherForecastAdapterTests
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         // Arrange
-        var options = new DbContextOptionsBuilder<ConceptContext>();
-        options.UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
+        var options = new DbContextOptionsBuilder<ConceptContext>().UseInMemoryDatabase($"WeatherDb_{Guid.NewGuid()}");
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);

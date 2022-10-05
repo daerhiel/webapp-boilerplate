@@ -36,7 +36,10 @@ public class ConceptContext : DbContext
         }
     }
 
-    private static readonly string[] Summaries = new[]
+    /// <summary>
+    /// The array of summery content values.
+    /// </summary>
+    public static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
