@@ -13,9 +13,11 @@ namespace ConceptBed.Controllers;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class WeatherForecastController : ControllerBase
 {
+    public const int DefaultPageSize = 3;
+
     private readonly IWeatherForecastAdapter _weatherForecast;
 
-    private static readonly ODataQuerySettings _settings = new() { PageSize = 3, EnsureStableOrdering = true };
+    private static readonly ODataQuerySettings _settings = new() { PageSize = DefaultPageSize, EnsureStableOrdering = true };
 
     public WeatherForecastController(IWeatherForecastAdapter weatherForecast) =>
         _weatherForecast = weatherForecast ?? throw new ArgumentNullException(nameof(weatherForecast));

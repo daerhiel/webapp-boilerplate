@@ -11,12 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OData.UriParser;
 using Moq;
-using System;
 using System.Diagnostics;
-using System.Net.Http;
 using Xunit.Abstractions;
-using static Microsoft.Graph.Constants;
-using static System.Net.WebRequestMethods;
 
 namespace ConceptBed.Tests.Controllers;
 
