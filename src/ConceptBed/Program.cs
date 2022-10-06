@@ -2,7 +2,7 @@ using Azure.Identity;
 using ConceptBed.Framework;
 using ConceptBed.OpenApi;
 using ConceptBed.OpenData;
-using ConceptBed.Security.Options;
+using ConceptBed.Security;
 using ConceptBed.Security.Requirements;
 using ConceptBed.Telemetry;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +20,6 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using Ubiquity.Hosting;
 using Ubiquity.Hosting.Options;
 
 using GraphServiceClient = Microsoft.Graph.GraphServiceClient;
@@ -58,7 +57,7 @@ builder.Services.AddTransient<IConfigurationManager<OpenIdConnectConfiguration>>
 });
 
 // Add the authorization services and options.
-builder.Services.AddTransient<IConfigureOptions<AuthorizationOptions>, ConfigureAuthorizationOptions>();
+builder.Services.AddPermissions();
 builder.Services.AddAuthorization();
 builder.Services.AddRequiredScopeAuthorization();
 builder.Services.AddSingleton<IAuthorizationHandler, IdentityActiveRequirementHandler>();
@@ -85,14 +84,15 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerUIOptions>, ConfigureSwag
 builder.Services.AddSwaggerGen().AddSwaggerGenNewtonsoftSupport();
 
 // Add Application Insights tetelemetry services.
-builder.Services.AddApplicationInsightsTelemetry(configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+builder.Services.AddApplicationInsightsTelemetry(x =>
+{
+    x.ConnectionString = configuration["APPINSIGHTS_CONNECTIONSTRING"];
+});
 builder.Services.AddApplicationInsightsTelemetryChannel("Storage/Telemetry");
 
 builder.Services.AddFramework(configuration);
 
 var app = builder.Build();
-
-app.UseDiagnostic();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
