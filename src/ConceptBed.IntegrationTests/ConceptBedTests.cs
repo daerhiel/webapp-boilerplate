@@ -45,6 +45,28 @@ public class ConceptBedTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Theory]
+    [InlineData("01", "")]
+    [InlineData("02", "/index.html")]
+    [InlineData("03", "/v1/swagger.json")]
+    public async Task ApiDocs(string testId, string path)
+    {
+        Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
+
+        // Arrange
+        var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(ClaimsAuthenticationHandler.AuthenticationScheme);
+        var uri = new Uri($"http://localhost/api-docs{path}");
+
+        // Act
+        var response = await client.GetAsync(uri);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(result);
+    }
+
+    [Theory]
     [InlineData("01", "63064af7-4fce-413a-b102-e0560701cd21")]
     public async Task Get(string testId, string id)
     {
@@ -68,6 +90,7 @@ public class ConceptBedTests : IClassFixture<WebApplicationFactory<Program>>
 
     [Theory]
     [InlineData("01", "temperature gt 30", "history")]
+    [InlineData("02", "temperature gt 30", null, "temperature", null, 10)]
     public async Task Query(string testId, string filter, string? expand = null, string? orderBy = null, int? top = null, long? skip = null)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
