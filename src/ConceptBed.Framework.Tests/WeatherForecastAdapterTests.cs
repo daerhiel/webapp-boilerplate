@@ -61,11 +61,11 @@ public class WeatherForecastAdapterTests
         var adapter = new WeatherForecastAdapter(unitOfWork);
 
         // Act
-        var actual = adapter.GetQuery();
-        var results = await actual.ToListAsync();
+        var result = adapter.GetQuery();
+        var results = await result.ToListAsync();
 
         // Assert
-        Assert.IsAssignableFrom<DbSet<WeatherForecast>>(actual);
+        Assert.IsAssignableFrom<DbSet<WeatherForecast>>(result);
         Assert.Equal(_dataSource, results);
     }
 
@@ -86,17 +86,17 @@ public class WeatherForecastAdapterTests
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
-        var expected = _dataSource.FirstOrDefault(x => x.Id == Guid.Parse(id));
+        var expectedResult = _dataSource.FirstOrDefault(x => x.Id == Guid.Parse(id));
 
         // Act
-        var actual = await adapter.FindAsync(Guid.Parse(id));
+        var result = await adapter.FindAsync(Guid.Parse(id));
 
         // Assert
-        Assert.Equal(expected, actual);
-        if (expected is not null)
+        Assert.Equal(expectedResult, result);
+        if (expectedResult is not null)
         {
-            Assert.Equal(Guid.Parse(id), actual.Id);
-            Assert.Equal(expected.Summary, actual.Summary);
+            Assert.Equal(Guid.Parse(id), result.Id);
+            Assert.Equal(expectedResult.Summary, result.Summary);
         }
     }
 
@@ -116,13 +116,13 @@ public class WeatherForecastAdapterTests
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id.ToString()));
+        var expectedResult = _dataSource.Where(x => ids.Contains(x.Id.ToString()));
 
         // Act
-        var actual = await adapter.GetAsync(filterBy, queryBy);
+        var result = await adapter.GetAsync(filterBy, queryBy);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
     }
 
     [Theory]
@@ -136,20 +136,20 @@ public class WeatherForecastAdapterTests
         var context = new ConceptContext(options.Options).StoreRange(_dataSource);
         var unitOfWork = new ConceptUnitOfWork<ConceptContext>(context);
         var adapter = new WeatherForecastAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id.ToString())).ToList();
+        var expectedResult = _dataSource.Where(x => ids.Contains(x.Id.ToString())).ToList();
 
         // Act
-        var actual = await adapter.GetPageAsync(filterBy, queryBy);
+        var result = await adapter.GetPageAsync(filterBy, queryBy);
 
         // Assert
-        Assert.NotNull(actual);
-        Assert.Equal(0, actual.IndexFrom);
-        Assert.Equal(0, actual.PageIndex);
-        Assert.Equal(20, actual.PageSize);
-        Assert.Equal(1, actual.TotalPages);
-        Assert.Equal(expected.Count, actual.TotalCount);
-        Assert.Equivalent(expected, actual.Items, true);
-        Assert.False(actual.HasNextPage);
-        Assert.False(actual.HasPreviousPage);
+        Assert.NotNull(result);
+        Assert.Equal(0, result.IndexFrom);
+        Assert.Equal(0, result.PageIndex);
+        Assert.Equal(20, result.PageSize);
+        Assert.Equal(1, result.TotalPages);
+        Assert.Equal(expectedResult.Count, result.TotalCount);
+        Assert.Equivalent(expectedResult, result.Items, true);
+        Assert.False(result.HasNextPage);
+        Assert.False(result.HasPreviousPage);
     }
 }

@@ -26,15 +26,15 @@ public class QueryExtensionsTests
     [InlineData("2", 0, 13, new int[] { 0, 3, 6, 9, 12 }, nameof(By3), null)]
     [InlineData("3", 0, 13, new int[] { 0, 6, 12 }, nameof(By2), nameof(By3))]
     [InlineData("4", 0, 13, new int[] { 0, 6, 12 }, nameof(By3), nameof(By2))]
-    public void Where(string testId, int start, int count, int[] expected, params string[] names)
+    public void Where(string testId, int start, int count, int[] expectedResult, params string[] names)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
         var sequence = Enumerable.Range(start, count).AsQueryable();
         var predicates = names.Select(GetPredicate).ToArray();
 
-        var actual = sequence.Where(predicates);
+        var result = sequence.Where(predicates);
 
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
     }
 }

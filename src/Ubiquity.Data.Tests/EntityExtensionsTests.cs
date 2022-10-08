@@ -23,13 +23,13 @@ public class EntityExtensionsTests
 
         // Act
         context.Add(entity);
-        var expected = context.PushUpdate(entity);
+        var result = context.PushUpdate(entity);
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Id);
-        Assert.Equal(entity, expected);
-        Assert.Equal(expected, actual);
+        var value = context.Set<Entity>().Find(entity.Id);
+        Assert.Equal(entity, result);
+        Assert.Equal(result, value);
     }
 
     [Fact]
@@ -45,14 +45,14 @@ public class EntityExtensionsTests
 
         // Act
         entity.Name = name;
-        var expected = context.PushUpdate(entity);
+        var result = context.PushUpdate(entity);
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Id);
-        Assert.Equal(entity, expected);
-        Assert.Equal(expected, actual);
-        Assert.Equal(name, actual!.Name);
+        var value = context.Set<Entity>().Find(entity.Id);
+        Assert.Equal(entity, result);
+        Assert.Equal(result, value);
+        Assert.Equal(name, value!.Name);
     }
 
     [Fact]
@@ -67,12 +67,12 @@ public class EntityExtensionsTests
 
         // Act
         context.Remove(entity);
-        var expected = context.PushUpdate(entity);
+        var result = context.PushUpdate(entity);
         context.SaveChanges();
 
         // Assert
-        var actual = context.Set<Entity>().Find(entity.Id);
-        Assert.Equal(entity, expected);
-        Assert.Null(actual);
+        var value = context.Set<Entity>().Find(entity.Id);
+        Assert.Equal(entity, result);
+        Assert.Null(value);
     }
 }

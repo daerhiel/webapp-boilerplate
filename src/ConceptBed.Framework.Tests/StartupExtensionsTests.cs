@@ -38,11 +38,11 @@ public class StartupExtensionsTests
         }).Build();
 
         // Act
-        var actual = services.AddFramework(configuration);
-        var serviceProvider = actual.BuildServiceProvider();
+        var result = services.AddFramework(configuration);
+        var serviceProvider = result.BuildServiceProvider();
 
         // Assert
-        Assert.Equal(services, actual);
+        Assert.Equal(services, result);
         Assert.IsType<WeatherForecastAdapter>(serviceProvider.GetService<IWeatherForecastAdapter>());
         Assert.IsType<ConceptContext>(serviceProvider.GetService<ConceptContext>());
         if (!Debugger.IsAttached || enforceMigration)

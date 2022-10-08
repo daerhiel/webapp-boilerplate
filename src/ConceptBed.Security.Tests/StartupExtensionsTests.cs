@@ -27,11 +27,11 @@ public class StartupExtensionsTests
         var services = new ServiceCollection().AddOptions();
 
         // Act
-        var actual = StartupExtensions.AddPermissions(services);
-        var serviceProvider = actual.BuildServiceProvider();
+        var result = StartupExtensions.AddPermissions(services);
+        var serviceProvider = result.BuildServiceProvider();
 
         // Assert
-        Assert.Equal(services, actual);
+        Assert.Equal(services, result);
         var options = serviceProvider.GetService<IOptions<AuthorizationOptions>>();
         Assert.IsAssignableFrom<IOptions<AuthorizationOptions>>(options);
         Assert.IsType<AuthorizationOptions>(options!.Value);

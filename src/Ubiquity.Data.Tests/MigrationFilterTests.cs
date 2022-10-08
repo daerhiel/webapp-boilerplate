@@ -25,10 +25,10 @@ public class MigrationFilterTests
         var serviceProvider = new Mock<IServiceProvider>();
 
         // Act
-        var actual = new MigrationFilter<DbContext>(serviceProvider.Object);
+        var result = new MigrationFilter<DbContext>(serviceProvider.Object);
 
         // Assert
-        Assert.NotNull(actual);
+        Assert.NotNull(result);
     }
 
     [Fact]
@@ -43,12 +43,12 @@ public class MigrationFilterTests
         var migrator = new MigrationFilter<DbContext>(serviceProvider);
 
         // Act
-        var actual = migrator.Configure(expected);
+        var result = migrator.Configure(expectedResult);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
 
-        static void expected(IApplicationBuilder builder)
+        static void expectedResult(IApplicationBuilder builder)
         {
         }
     }
@@ -70,12 +70,12 @@ public class MigrationFilterTests
         var migrator = new MigrationFilter<DbContext>(serviceProvider);
 
         // Act
-        var actual = migrator.Configure(expected);
+        var result = migrator.Configure(expectedResult);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
 
-        static void expected(IApplicationBuilder builder)
+        static void expectedResult(IApplicationBuilder builder)
         {
         }
     }

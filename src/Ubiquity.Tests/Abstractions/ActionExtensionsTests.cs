@@ -21,7 +21,7 @@ public class ActionExtensionsTests
 
     [Theory]
     [InlineData("01", 1, 2, 2)]
-    public void Apply(string traceId, int oldValue, int newValue, int expected)
+    public void Apply(string traceId, int oldValue, int newValue, int expectedValue)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {traceId}.");
 
@@ -29,11 +29,11 @@ public class ActionExtensionsTests
         var record = new Record { Value = oldValue };
 
         // Act
-        var actual = record.Apply(x => x.Value = newValue);
+        var result = record.Apply(x => x.Value = newValue);
 
         // Assert
-        Assert.Equal(record, actual);
-        Assert.Equal(expected, actual.Value);
+        Assert.Equal(record, result);
+        Assert.Equal(expectedValue, result.Value);
     }
 
     [Theory]
@@ -55,7 +55,7 @@ public class ActionExtensionsTests
     [Theory]
     [InlineData("01", false, 1, 2, 1)]
     [InlineData("01", true, 1, 2, 2)]
-    public void ApplyIf(string traceId, bool condition, int oldValue, int newValue, int expected)
+    public void ApplyIf(string traceId, bool condition, int oldValue, int newValue, int expectedValue)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {traceId}.");
 
@@ -63,11 +63,11 @@ public class ActionExtensionsTests
         var record = new Record { Value = oldValue };
 
         // Act
-        var actual = record.ApplyIf(condition, x => x.Value = newValue);
+        var result = record.ApplyIf(condition, x => x.Value = newValue);
 
         // Assert
-        Assert.Equal(record, actual);
-        Assert.Equal(expected, actual.Value);
+        Assert.Equal(record, result);
+        Assert.Equal(expectedValue, result.Value);
     }
 
     [Theory]
@@ -88,7 +88,7 @@ public class ActionExtensionsTests
 
     [Theory]
     [InlineData("01", new[] { 1 }, 2, 2)]
-    public void ApplyAll(string traceId, int[] oldValues, int newValue, int expected)
+    public void ApplyAll(string traceId, int[] oldValues, int newValue, int expectedValue)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {traceId}.");
 
@@ -96,10 +96,10 @@ public class ActionExtensionsTests
         var records = oldValues.Select(x => new Record { Value = x }).ToArray();
 
         // Act
-        var actual = records.ApplyAll(x => x.Value = newValue);
+        var result = records.ApplyAll(x => x.Value = newValue);
 
         // Assert
-        Assert.All(actual, x => Assert.Equal(expected, x.Value));
+        Assert.All(result, x => Assert.Equal(expectedValue, x.Value));
     }
 
     [Theory]
@@ -121,17 +121,17 @@ public class ActionExtensionsTests
     [Theory]
     [InlineData("01", false, 1, 2, 2)]
     [InlineData("01", true, 1, 2, 1)]
-    public void CreateIf(string traceId, bool condition, int value, int fallback, int expected)
+    public void CreateIf(string traceId, bool condition, int value, int fallback, int expectedResult)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {traceId}.");
 
         // Arrange
 
         // Act
-        var actual = condition.CreateIf(() => value, fallback);
+        var result = condition.CreateIf(() => value, fallback);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
     }
 
     [Theory]

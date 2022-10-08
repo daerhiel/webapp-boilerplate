@@ -33,12 +33,12 @@ public class MigrationFilterTests
         var migrator = new MigrationFilter<ConceptContext>(serviceProvider);
 
         // Act
-        var actual = migrator.Configure(expected);
+        var result = migrator.Configure(expectedResult);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
 
-        static void expected(IApplicationBuilder builder)
+        static void expectedResult(IApplicationBuilder builder)
         {
         }
     }

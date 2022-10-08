@@ -28,7 +28,7 @@ public class DiagnosticDetailsConverterTests
     [InlineData("04", nameof(DiagnosticDetails.Detail), "Bad name", "{\"detail\":\"Bad name\"}")]
     [InlineData("05", nameof(DiagnosticDetails.Instance), "https://test/api", "{\"instance\":\"https://test/api\"}")]
     [InlineData("07", "trackId", "00-000000-00", "{\"trackId\":\"00-000000-00\"}")]
-    public void Serialize(string testId, string inputName, object inputValue, string expected)
+    public void Serialize(string testId, string inputName, object inputValue, string expectedResult)
     {
         Output.WriteLine($"Testing {new StackTrace().GetFrame(0)?.GetMethod()?.Name}: {testId}.");
 
@@ -41,10 +41,10 @@ public class DiagnosticDetailsConverterTests
             instance.Extensions[inputName] = inputValue;
 
         // Act
-        var actual = JsonConvert.SerializeObject(instance, _settings);
+        var result = JsonConvert.SerializeObject(instance, _settings);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
     }
 
     [Theory]
@@ -61,12 +61,12 @@ public class DiagnosticDetailsConverterTests
         // Arrange
 
         // Act
-        var actual = JsonConvert.DeserializeObject<DiagnosticDetails>(input, _settings);
+        var result = JsonConvert.DeserializeObject<DiagnosticDetails>(input, _settings);
 
         // Assert
         var property = typeof(DiagnosticDetails).GetProperty(expectedName);
-        var actualValue = property?.GetValue(actual, null) ?? actual?.Extensions[expectedName];
+        var value = property?.GetValue(result, null) ?? result?.Extensions[expectedName];
 
-        Assert.Equal(expectedValue, actualValue);
+        Assert.Equal(expectedValue, value);
     }
 }

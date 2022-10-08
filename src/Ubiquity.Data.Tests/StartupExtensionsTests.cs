@@ -38,11 +38,11 @@ public class StartupExtensionsTests
         }).Build();
 
         // Act
-        var actual = StartupExtensions.AddSqliteContext<DbContext>(services, configuration, connectionStringName, migrate);
-        var serviceProvider = actual.BuildServiceProvider();
+        var result = StartupExtensions.AddSqliteContext<DbContext>(services, configuration, connectionStringName, migrate);
+        var serviceProvider = result.BuildServiceProvider();
 
         // Assert
-        Assert.Equal(services, actual);
+        Assert.Equal(services, result);
         Assert.IsType<DbContext>(serviceProvider.GetService<DbContext>());
         if (migrate && (!Debugger.IsAttached || enforceMigration))
             Assert.IsType<MigrationFilter<DbContext>>(serviceProvider.GetService<IStartupFilter>());    
@@ -73,11 +73,11 @@ public class StartupExtensionsTests
         }).Build();
 
         // Act
-        var actual = StartupExtensions.AddSqlServerContext<DbContext>(services, configuration, connectionStringName, migrate);
-        var serviceProvider = actual.BuildServiceProvider();
+        var result = StartupExtensions.AddSqlServerContext<DbContext>(services, configuration, connectionStringName, migrate);
+        var serviceProvider = result.BuildServiceProvider();
 
         // Assert
-        Assert.Equal(services, actual);
+        Assert.Equal(services, result);
         Assert.IsType<DbContext>(serviceProvider.GetService<DbContext>());
         if (migrate && (!Debugger.IsAttached || enforceMigration))
             Assert.IsType<MigrationFilter<DbContext>>(serviceProvider.GetService<IStartupFilter>());    

@@ -57,11 +57,11 @@ public class AdapterTests
         var adapter = new EntityAdapter(unitOfWork);
 
         // Act
-        var actual = adapter.GetQuery();
-        var results = await actual.ToListAsync();
+        var result = adapter.GetQuery();
+        var results = await result.ToListAsync();
 
         // Assert
-        Assert.IsAssignableFrom<DbSet<Entity>>(actual);
+        Assert.IsAssignableFrom<DbSet<Entity>>(result);
         Assert.Equal(_dataSource, results);
     }
 
@@ -81,17 +81,17 @@ public class AdapterTests
         var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
-        var expected = _dataSource.FirstOrDefault(x => x.Id == id);
+        var expectedResult = _dataSource.FirstOrDefault(x => x.Id == id);
 
         // Act
-        var actual = await adapter.FindAsync(id);
+        var result = await adapter.FindAsync(id);
 
         // Assert
-        Assert.Equal(expected, actual);
-        if (expected is not null)
+        Assert.Equal(expectedResult, result);
+        if (expectedResult is not null)
         {
-            Assert.Equal(id, actual.Id);
-            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(id, result.Id);
+            Assert.Equal(expectedResult.Name, result.Name);
         }
     }
 
@@ -110,13 +110,13 @@ public class AdapterTests
         var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id));
+        var expectedResult = _dataSource.Where(x => ids.Contains(x.Id));
 
         // Act
-        var actual = await adapter.GetAsync(filterBy, queryBy);
+        var result = await adapter.GetAsync(filterBy, queryBy);
 
         // Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(expectedResult, result);
     }
 
     [Theory]
@@ -129,20 +129,20 @@ public class AdapterTests
         var context = new EntityContext().StoreRange(_dataSource);
         var unitOfWork = new EntityUnitOfWork(context);
         var adapter = new EntityAdapter(unitOfWork);
-        var expected = _dataSource.Where(x => ids.Contains(x.Id)).ToList();
+        var expectedResult = _dataSource.Where(x => ids.Contains(x.Id)).ToList();
 
         // Act
-        var actual = await adapter.GetPageAsync(filterBy, queryBy);
+        var result = await adapter.GetPageAsync(filterBy, queryBy);
 
         // Assert
-        Assert.NotNull(actual);
-        Assert.Equal(0, actual.IndexFrom);
-        Assert.Equal(0, actual.PageIndex);
-        Assert.Equal(20, actual.PageSize);
-        Assert.Equal(1, actual.TotalPages);
-        Assert.Equal(expected.Count, actual.TotalCount);
-        Assert.Equivalent(expected, actual.Items, true);
-        Assert.False(actual.HasNextPage);
-        Assert.False(actual.HasPreviousPage);
+        Assert.NotNull(result);
+        Assert.Equal(0, result.IndexFrom);
+        Assert.Equal(0, result.PageIndex);
+        Assert.Equal(20, result.PageSize);
+        Assert.Equal(1, result.TotalPages);
+        Assert.Equal(expectedResult.Count, result.TotalCount);
+        Assert.Equivalent(expectedResult, result.Items, true);
+        Assert.False(result.HasNextPage);
+        Assert.False(result.HasPreviousPage);
     }
 }
