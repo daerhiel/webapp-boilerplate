@@ -15,7 +15,7 @@ public class MigrationFilter<TContext> : IStartupFilter
     /// <summary>
     /// The interface to a dependency injection service provider instance that locates a service object.
     /// </summary>
-    protected IServiceProvider Services { get; }
+    protected IServiceProvider ServiceProvider { get; }
 
     /// <summary>
     /// Initializes the new instance of a startup filter.
@@ -24,7 +24,7 @@ public class MigrationFilter<TContext> : IStartupFilter
     /// <exception cref="ArgumentNullException">When mandatory dependencies are null.</exception>
     public MigrationFilter(IServiceProvider serviceProvider)
     {
-        Services = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class MigrationFilter<TContext> : IStartupFilter
     /// <returns>The next startup filter action to run.</returns>
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
     {
-        using var scope = Services.CreateScope();
+        using var scope = ServiceProvider.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<TContext>();
         if (context.Database.IsRelational())
         {
