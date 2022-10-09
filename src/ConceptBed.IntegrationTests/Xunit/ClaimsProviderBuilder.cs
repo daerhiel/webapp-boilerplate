@@ -22,7 +22,7 @@ public class ClaimsProviderBuilder
     {
         foreach (var role in roles)
         {
-            _claims.Add(new Claim(ClaimConstants.Role, roles[0]));
+            _claims.Add(new Claim(ClaimConstants.Role, role));
         }
         return this;
     }
